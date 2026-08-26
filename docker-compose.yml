@@ -6,8 +6,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-tambangan}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tambangan}
       POSTGRES_DB: ${POSTGRES_DB:-tambangan}
-    ports:
-      - "5432:5432"
+    # ports: ["5432:5432"]  # uncomment untuk debug psql dari host
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
