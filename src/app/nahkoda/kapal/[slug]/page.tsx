@@ -151,7 +151,7 @@ export default function KontrolKapalPage() {
 
   if (loading && !data) {
     return (
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl">
+      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl dark:bg-slate-900">
         <ScreenHeader title="Memuat…" backHref="/nahkoda" />
         <p className="p-4 text-center text-sm text-slate-400">Mengambil data kapal…</p>
       </div>
@@ -160,7 +160,7 @@ export default function KontrolKapalPage() {
 
   if (!k) {
     return (
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl">
+      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl dark:bg-slate-900">
         <ScreenHeader title="Kapal" backHref="/nahkoda" />
         <div className="p-4">
           <ErrorNote message={error || "Kapal tidak ditemukan atau bukan milik Anda"} />
@@ -173,17 +173,17 @@ export default function KontrolKapalPage() {
   const showTimer = k.status === "titik_a" || k.status === "titik_b";
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl">
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl dark:bg-slate-900">
       <ScreenHeader title={k.nama} subtitle={k.tambanganNama} backHref="/nahkoda" />
       <div className="flex-1 space-y-5 p-4">
-        <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-sm">
+        <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <div className="flex items-center justify-between">
             <StatusBadge status={k.status} titikA={k.titikA} titikB={k.titikB} />
-            <span className="font-mono text-xs text-slate-400">{timeAgo(k.lastUpdated)}</span>
+            <span className="font-mono text-xs text-slate-400 dark:text-slate-500">{timeAgo(k.lastUpdated)}</span>
           </div>
           <div className="mt-4">
             <ChannelBar status={k.status} />
-            <div className="mt-1 flex justify-between font-mono text-xs text-slate-500">
+            <div className="mt-1 flex justify-between font-mono text-xs text-slate-500 dark:text-slate-400">
               <span>{k.titikA.nama}</span>
               <span>{k.titikB.nama}</span>
             </div>
@@ -199,7 +199,7 @@ export default function KontrolKapalPage() {
               className={`flex-1 rounded-xl py-2 text-sm font-semibold ${
                 mode !== "gps"
                   ? "bg-teal-600 text-white"
-                  : "border border-slate-200 bg-white text-slate-500"
+                  : "border border-slate-200 bg-white text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400"
               }`}
             >
               Mode Manual
@@ -209,7 +209,7 @@ export default function KontrolKapalPage() {
               className={`flex-1 rounded-xl py-2 text-sm font-semibold ${
                 mode === "gps"
                   ? "bg-teal-600 text-white"
-                  : "border border-slate-200 bg-white text-slate-500"
+                  : "border border-slate-200 bg-white text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400"
               }`}
             >
               Mode GPS Otomatis
@@ -223,7 +223,7 @@ export default function KontrolKapalPage() {
                 className={`min-h-11 rounded-xl py-3 text-xs font-bold ${
                   k.status === "titik_a"
                     ? "bg-emerald-600 text-white"
-                    : "border border-slate-200 bg-white text-slate-700 active:bg-slate-50"
+                    : "border border-slate-200 bg-white text-slate-700 active:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:active:bg-slate-700"
                 }`}
               >
                 {k.titikA.nama}
@@ -233,7 +233,7 @@ export default function KontrolKapalPage() {
                 className={`min-h-11 rounded-xl py-3 text-xs font-bold ${
                   k.status === "proses"
                     ? "bg-blue-600 text-white"
-                    : "border border-slate-200 bg-white text-slate-700 active:bg-slate-50"
+                    : "border border-slate-200 bg-white text-slate-700 active:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:active:bg-slate-700"
                 }`}
               >
                 Proses ⛵
@@ -243,7 +243,7 @@ export default function KontrolKapalPage() {
                 className={`min-h-11 rounded-xl py-3 text-xs font-bold ${
                   k.status === "titik_b"
                     ? "bg-emerald-600 text-white"
-                    : "border border-slate-200 bg-white text-slate-700 active:bg-slate-50"
+                    : "border border-slate-200 bg-white text-slate-700 active:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:active:bg-slate-700"
                 }`}
               >
                 {k.titikB.nama}
@@ -252,13 +252,13 @@ export default function KontrolKapalPage() {
           )}
 
           {mode === "gps" && (
-            <div className="space-y-2 rounded-xl border border-slate-200 bg-white p-3 text-sm">
+            <div className="space-y-2 rounded-xl border border-slate-200 bg-white p-3 text-sm dark:border-slate-600 dark:bg-slate-800">
               {gpsError && <p className="text-xs text-red-600">{gpsError}</p>}
-              <p className="flex items-center justify-between font-mono text-xs text-slate-600">
+              <p className="flex items-center justify-between font-mono text-xs text-slate-600 dark:text-slate-400">
                 <span>{k.titikA.nama}</span>
                 <span>{formatDistance(gpsDist.a)}</span>
               </p>
-              <p className="flex items-center justify-between font-mono text-xs text-slate-600">
+              <p className="flex items-center justify-between font-mono text-xs text-slate-600 dark:text-slate-400">
                 <span>{k.titikB.nama}</span>
                 <span>{formatDistance(gpsDist.b)}</span>
               </p>
@@ -266,7 +266,7 @@ export default function KontrolKapalPage() {
                 {(k.titikA.lat === null) && (
                   <button
                     onClick={() => void captureTitik("a")}
-                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-teal-50 py-1.5 text-xs font-semibold text-teal-700"
+                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-teal-50 py-1.5 text-xs font-semibold text-teal-700 dark:bg-teal-900/30 dark:text-teal-400"
                   >
                     <Crosshair size={12} />
                     {gettingLoc === "a" ? "Mengambil…" : `Set lokasi ${k.titikA.nama}`}
@@ -275,14 +275,14 @@ export default function KontrolKapalPage() {
                 {k.titikB.lat === null && (
                   <button
                     onClick={() => void captureTitik("b")}
-                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-teal-50 py-1.5 text-xs font-semibold text-teal-700"
+                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-teal-50 py-1.5 text-xs font-semibold text-teal-700 dark:bg-teal-900/30 dark:text-teal-400"
                   >
                     <Crosshair size={12} />
                     {gettingLoc === "b" ? "Mengambil…" : `Set lokasi ${k.titikB.nama}`}
                   </button>
                 )}
               </div>
-              <p className="pt-1 text-xs text-slate-400">
+              <p className="pt-1 text-xs text-slate-400 dark:text-slate-500">
                 Status terupdate otomatis dari GPS. Fitur eksperimental — kalau sinyal lemah, pakai
                 mode manual saja.
               </p>
@@ -291,17 +291,17 @@ export default function KontrolKapalPage() {
         </div>
 
         {showTimer && (
-          <div className="rounded-2xl border border-amber-100 bg-amber-50 p-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-amber-800">
+          <div className="rounded-2xl border border-amber-100 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
+            <div className="flex items-center gap-2 text-sm font-semibold text-amber-800 dark:text-amber-400">
               <Clock size={16} />
               Estimasi berangkat lagi
             </div>
             {mins !== null ? (
               <div className="mt-2 flex items-center justify-between">
-                <span className="font-mono text-2xl font-bold text-amber-800">{mins} menit</span>
+                <span className="font-mono text-2xl font-bold text-amber-800 dark:text-amber-400">{mins} menit</span>
                 <button
                   onClick={() => void patch({ action: "timer_clear" })}
-                  className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-amber-700 shadow-sm"
+                  className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-amber-700 shadow-sm dark:bg-slate-800 dark:text-amber-400"
                 >
                   Hapus Timer
                 </button>
@@ -313,7 +313,7 @@ export default function KontrolKapalPage() {
                     <button
                       key={m}
                       onClick={() => void patch({ action: "timer", minutes: m })}
-                      className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-amber-800 shadow-sm"
+                      className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-amber-800 shadow-sm dark:bg-slate-800 dark:text-amber-400"
                     >
                       {m}m
                     </button>
@@ -324,7 +324,7 @@ export default function KontrolKapalPage() {
                   onChange={(e) => setTimerInput(e.target.value.replace(/[^0-9]/g, ""))}
                   placeholder="lainnya"
                   inputMode="numeric"
-                  className="w-16 rounded-lg border border-amber-200 px-2 py-1.5 text-xs"
+                  className="w-16 rounded-lg border border-amber-200 px-2 py-1.5 text-xs dark:border-amber-700 dark:bg-slate-800 dark:text-slate-100"
                 />
                 <button
                   onClick={() => {

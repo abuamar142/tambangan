@@ -49,7 +49,7 @@ export default function NahkodaPage() {
   const list = data?.kapal ?? [];
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl">
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl dark:bg-slate-900">
       <ScreenHeader title="Mode Nahkoda" subtitle={me ? `Halo, ${me.username}` : undefined} />
       <div className="flex-1 space-y-4 p-4">
         <div className="flex gap-2">
@@ -63,7 +63,7 @@ export default function NahkodaPage() {
           {me?.role === "admin" && (
             <Link
               href="/admin"
-              className="flex items-center justify-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700 active:bg-amber-100"
+              className="flex items-center justify-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700 active:bg-amber-100 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-400 dark:active:bg-amber-900/50"
             >
               <Shield size={16} />
               Admin
@@ -71,7 +71,7 @@ export default function NahkodaPage() {
           )}
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600 active:bg-slate-50"
+            className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600 active:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:active:bg-slate-700"
           >
             <LogOut size={16} />
             Keluar
@@ -80,18 +80,18 @@ export default function NahkodaPage() {
 
         <ErrorNote message={error} />
 
-        <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+        <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
           Kapal Saya · {list.length}
         </p>
 
         {((loading && !data) || !checked) && (
-          <p className="p-4 text-center text-sm text-slate-400">Memuat…</p>
+          <p className="p-4 text-center text-sm text-slate-400 dark:text-slate-500">Memuat…</p>
         )}
 
         {!loading && list.length === 0 && checked && (
-          <div className="rounded-xl border border-dashed border-teal-200 p-6 text-center">
-            <Anchor size={24} className="mx-auto text-teal-300" />
-            <p className="mt-2 text-sm text-slate-400">
+          <div className="rounded-xl border border-dashed border-teal-200 p-6 text-center dark:border-teal-700">
+            <Anchor size={24} className="mx-auto text-teal-300 dark:text-teal-600" />
+            <p className="mt-2 text-sm text-slate-400 dark:text-slate-500">
               Belum ada kapal. Daftarkan kapal pertama Anda.
             </p>
           </div>
@@ -102,16 +102,16 @@ export default function NahkodaPage() {
             <Link
               key={k.slug}
               href={`/nahkoda/kapal/${k.slug}`}
-              className="block rounded-xl border border-teal-100 bg-white p-3.5 shadow-sm active:bg-teal-50"
+              className="block rounded-xl border border-teal-100 bg-white p-3.5 shadow-sm active:bg-teal-50 dark:border-slate-700 dark:bg-slate-800 dark:active:bg-slate-700"
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="flex items-center gap-2 font-bold text-slate-900">
-                  <Anchor size={15} className="shrink-0 text-teal-600" />
+                <span className="flex items-center gap-2 font-bold text-slate-900 dark:text-slate-100">
+                  <Anchor size={15} className="shrink-0 text-teal-600 dark:text-teal-400" />
                   {k.nama}
                 </span>
                 <StatusBadge status={k.status} titikA={k.titikA} titikB={k.titikB} />
               </div>
-              <p className="mt-1 text-xs text-slate-500">{k.tambanganNama}</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{k.tambanganNama}</p>
             </Link>
           ))}
         </div>

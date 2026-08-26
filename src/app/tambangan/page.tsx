@@ -17,28 +17,28 @@ export default function PilihTambanganPage() {
   const list = data?.tambangan ?? [];
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl">
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl dark:bg-slate-900">
       <ScreenHeader title="Pilih Tambangan" subtitle="Lihat kapal yang siap dinaiki" backHref="/" />
       <div className="flex-1 space-y-3 p-4">
         <ErrorNote message={error} />
         {loading && !data && (
-          <p className="p-4 text-center text-sm text-slate-400">Memuat…</p>
+          <p className="p-4 text-center text-sm text-slate-400 dark:text-slate-500">Memuat…</p>
         )}
         {!loading && !error && list.length === 0 && (
-          <p className="p-4 text-center text-sm text-slate-400">Belum ada tambangan terdaftar.</p>
+          <p className="p-4 text-center text-sm text-slate-400 dark:text-slate-500">Belum ada tambangan terdaftar.</p>
         )}
         {list.map((t) => (
           <Link
             key={t.slug}
             href={`/tambangan/${t.slug}`}
-            className="block rounded-xl border border-teal-100 bg-white p-4 shadow-sm active:bg-teal-50"
+            className="block rounded-xl border border-teal-100 bg-white p-4 shadow-sm active:bg-teal-50 dark:border-slate-700 dark:bg-slate-800 dark:active:bg-slate-700"
           >
             <div className="flex items-center justify-between gap-2">
-              <span className="font-bold text-slate-900">{t.nama}</span>
-              <ChevronRight className="shrink-0 text-slate-300" size={18} />
+              <span className="font-bold text-slate-900 dark:text-slate-100">{t.nama}</span>
+              <ChevronRight className="shrink-0 text-slate-300 dark:text-slate-600" size={18} />
             </div>
-            <div className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
-              <MapPin size={13} className="shrink-0 text-teal-600" />
+            <div className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+              <MapPin size={13} className="shrink-0 text-teal-600 dark:text-teal-400" />
               {t.titikA.nama} ↔ {t.titikB.nama}
               {typeof t.jumlahKapal === "number" && (
                 <span className="ml-auto font-mono">{t.jumlahKapal} kapal</span>

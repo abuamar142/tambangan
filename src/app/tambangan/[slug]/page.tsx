@@ -38,7 +38,7 @@ export default function StatusTambanganPage() {
     .sort((a, b) => new Date(a.timerEndAt!).getTime() - new Date(b.timerEndAt!).getTime())[0];
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl">
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl dark:bg-slate-900">
       <ScreenHeader
         title={t?.nama ?? "Tambangan"}
         subtitle={`${list.length} kapal terdaftar`}
@@ -47,7 +47,7 @@ export default function StatusTambanganPage() {
       <div className="flex-1 space-y-4 p-4">
         <button
           onClick={refresh}
-          className="flex items-center gap-1.5 text-xs font-semibold text-teal-700"
+          className="flex items-center gap-1.5 text-xs font-semibold text-teal-700 dark:text-teal-400"
         >
           <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
           Segarkan
@@ -69,7 +69,7 @@ export default function StatusTambanganPage() {
         )}
 
         {!loading && !error && list.length === 0 && (
-          <p className="p-4 text-center text-sm text-slate-400">Belum ada kapal di tambangan ini.</p>
+          <p className="p-4 text-center text-sm text-slate-400 dark:text-slate-500">Belum ada kapal di tambangan ini.</p>
         )}
 
         {groups.titik_a.length > 0 && t && (

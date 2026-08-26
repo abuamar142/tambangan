@@ -66,30 +66,30 @@ export default function AdminPage() {
 
   if (!checked) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <p className="text-sm text-slate-400">Memuat…</p>
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-900">
+        <p className="text-sm text-slate-400 dark:text-slate-500">Memuat…</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white">
+      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6 md:py-4">
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.push("/nahkoda")}
-              className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 active:bg-slate-200"
+              className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 active:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 dark:active:bg-slate-600"
             >
               <ArrowLeft size={18} />
             </button>
             <div>
-              <h1 className="flex items-center gap-2 text-base font-bold tracking-tight text-slate-900 md:text-lg">
+              <h1 className="flex items-center gap-2 text-base font-bold tracking-tight text-slate-900 dark:text-slate-100 md:text-lg">
                 <Shield size={18} className="text-teal-600" />
                 Panel Admin
               </h1>
-              <p className="text-xs text-slate-500 md:text-sm">
+              <p className="text-xs text-slate-500 dark:text-slate-400 md:text-sm">
                 {me ? `Masuk sebagai ${me.username}` : ""}
               </p>
             </div>
@@ -104,14 +104,14 @@ export default function AdminPage() {
       </header>
 
       {/* Tab bar */}
-      <div className="border-b border-slate-200 bg-white">
+      <div className="border-b border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
         <div className="mx-auto flex max-w-6xl gap-0 px-4 md:px-6">
           <button
             onClick={() => { setTab("users"); setError(""); }}
             className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition ${
               tab === "users"
                 ? "border-teal-600 text-teal-700"
-                : "border-transparent text-slate-500 hover:text-slate-700"
+                : "border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
             <Users size={16} />
@@ -122,7 +122,7 @@ export default function AdminPage() {
             className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition ${
               tab === "tambangan"
                 ? "border-teal-600 text-teal-700"
-                : "border-transparent text-slate-500 hover:text-slate-700"
+                : "border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
             <Map size={16} />
@@ -195,14 +195,14 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
   }
 
   if (loading) {
-    return <p className="py-12 text-center text-sm text-slate-400">Memuat…</p>;
+    return <p className="py-12 text-center text-sm text-slate-400 dark:text-slate-500">Memuat…</p>;
   }
 
   return (
     <div>
       <div className="mb-4 flex items-baseline justify-between">
-        <h2 className="text-sm font-semibold text-slate-600">
-          Semua Pengguna · <span className="text-slate-900">{users.length}</span>
+        <h2 className="text-sm font-semibold text-slate-600 dark:text-slate-400">
+          Semua Pengguna · <span className="text-slate-900 dark:text-slate-100">{users.length}</span>
         </h2>
       </div>
 
@@ -217,11 +217,11 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
               <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
             {users.map((u) => (
               <Fragment key={u.id}>
-                <tr key={u.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-900">{u.username}</td>
+                <tr key={u.id} className="hover:bg-slate-50 dark:bg-slate-900">
+                  <td className="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">{u.username}</td>
                   <td className="px-4 py-3">
                     {u.role === "admin" ? (
                       <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700">
@@ -269,7 +269,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                           value={newPass}
                           onChange={(e) => setNewPass(e.target.value)}
                           placeholder="••••••••"
-                          className="w-48 rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                          className="w-48 rounded-lg border border-slate-200 px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                         />
                         <button
                           onClick={() => handleResetPassword(u.id)}
@@ -279,7 +279,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                         </button>
                         <button
                           onClick={() => setExpandedId(null)}
-                          className="text-xs text-slate-400 hover:text-slate-600"
+                          className="text-xs text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
                         >
                           Batal
                         </button>
@@ -317,7 +317,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                     setNewPass("");
                     setError("");
                   }}
-                  className="rounded-lg bg-blue-50 p-2 text-blue-600 active:bg-blue-100"
+                  className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 active:bg-blue-100"
                   title="Reset Password"
                 >
                   <RotateCcw size={14} />
@@ -325,7 +325,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                 {u.role !== "admin" && (
                   <button
                     onClick={() => handleDelete(u.id, u.username)}
-                    className="rounded-lg bg-red-50 p-2 text-red-500 active:bg-red-100"
+                    className="rounded-lg bg-red-50 p-2 text-red-500 dark:bg-red-900/30 dark:text-red-400 active:bg-red-100"
                     title="Hapus"
                   >
                     <Trash2 size={14} />
@@ -340,7 +340,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                   value={newPass}
                   onChange={(e) => setNewPass(e.target.value)}
                   placeholder="Password baru"
-                  className="flex-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                  className="flex-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                 />
                 <button
                   onClick={() => handleResetPassword(u.id)}
@@ -436,14 +436,14 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
   }
 
   if (loading) {
-    return <p className="py-12 text-center text-sm text-slate-400">Memuat…</p>;
+    return <p className="py-12 text-center text-sm text-slate-400 dark:text-slate-500">Memuat…</p>;
   }
 
   return (
     <div>
       <div className="mb-4 flex items-baseline justify-between">
-        <h2 className="text-sm font-semibold text-slate-600">
-          Semua Tambangan · <span className="text-slate-900">{list.length}</span>
+        <h2 className="text-sm font-semibold text-slate-600 dark:text-slate-400">
+          Semua Tambangan · <span className="text-slate-900 dark:text-slate-100">{list.length}</span>
         </h2>
       </div>
 
@@ -458,14 +458,14 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
               <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
             {list.map((t) => (
               <Fragment key={t.slug}>
-                <tr key={t.slug} className="hover:bg-slate-50">
+                <tr key={t.slug} className="hover:bg-slate-50 dark:bg-slate-900">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <Anchor size={14} className="shrink-0 text-teal-500" />
-                      <span className="font-medium text-slate-900">{t.nama}</span>
+                      <span className="font-medium text-slate-900 dark:text-slate-100">{t.nama}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3 text-slate-600">
@@ -511,8 +511,8 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                     <td colSpan={4} className="px-4 py-4">
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-teal-700">Edit Tambangan</span>
-                          <button onClick={() => setExpandedSlug(null)} className="text-slate-400 hover:text-slate-600">
+                          <span className="text-xs font-bold text-teal-700 dark:text-teal-400">Edit Tambangan</span>
+                          <button onClick={() => setExpandedSlug(null)} className="text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
                             <X size={14} />
                           </button>
                         </div>
@@ -576,7 +576,7 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                         </div>
                         <button
                           onClick={() => handleSave(t.slug)}
-                          className="inline-flex items-center gap-1.5 rounded-lg bg-teal-600 px-4 py-2 text-sm font-bold text-white hover:bg-teal-700"
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-teal-600 px-4 py-2 text-sm font-bold text-white hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600"
                         >
                           <Save size={14} /> Simpan Perubahan
                         </button>
@@ -597,7 +597,7 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
             {expandedSlug === t.slug ? (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-bold text-teal-700">Edit Tambangan</p>
+                  <p className="text-xs font-bold text-teal-700 dark:text-teal-400">Edit Tambangan</p>
                   <button onClick={() => setExpandedSlug(null)} className="text-slate-400">
                     <X size={14} />
                   </button>
@@ -606,20 +606,20 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                   value={editForm.nama}
                   onChange={(e) => setEditForm({ ...editForm, nama: e.target.value })}
                   placeholder="Nama"
-                  className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                 />
                 <div className="grid grid-cols-2 gap-2">
                   <input
                     value={editForm.titik_a_nama}
                     onChange={(e) => setEditForm({ ...editForm, titik_a_nama: e.target.value })}
                     placeholder="Titik A nama"
-                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   />
                   <input
                     value={editForm.titik_b_nama}
                     onChange={(e) => setEditForm({ ...editForm, titik_b_nama: e.target.value })}
                     placeholder="Titik B nama"
-                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -627,13 +627,13 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                     value={editForm.titik_a_lat}
                     onChange={(e) => setEditForm({ ...editForm, titik_a_lat: e.target.value })}
                     placeholder="Titik A lat"
-                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   />
                   <input
                     value={editForm.titik_a_lng}
                     onChange={(e) => setEditForm({ ...editForm, titik_a_lng: e.target.value })}
                     placeholder="Titik A lng"
-                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -641,13 +641,13 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                     value={editForm.titik_b_lat}
                     onChange={(e) => setEditForm({ ...editForm, titik_b_lat: e.target.value })}
                     placeholder="Titik B lat"
-                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   />
                   <input
                     value={editForm.titik_b_lng}
                     onChange={(e) => setEditForm({ ...editForm, titik_b_lng: e.target.value })}
                     placeholder="Titik B lng"
-                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm"
+                    className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
                   />
                 </div>
                 <button
@@ -671,14 +671,14 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                 <div className="flex gap-1.5">
                   <button
                     onClick={() => startEdit(t)}
-                    className="rounded-lg bg-blue-50 p-2 text-blue-600 active:bg-blue-100"
+                    className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 active:bg-blue-100"
                     title="Edit"
                   >
                     <Pencil size={14} />
                   </button>
                   <button
                     onClick={() => handleDelete(t.slug, t.nama)}
-                    className="rounded-lg bg-red-50 p-2 text-red-500 active:bg-red-100"
+                    className="rounded-lg bg-red-50 p-2 text-red-500 dark:bg-red-900/30 dark:text-red-400 active:bg-red-100"
                     title="Hapus"
                   >
                     <Trash2 size={14} />

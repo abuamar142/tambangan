@@ -5,7 +5,7 @@ export function ChannelBar({ status, compact = false }: { status: KapalStatus; c
   const left = status === "titik_a" ? "4%" : status === "proses" ? "50%" : "96%";
   return (
     <div
-      className={`relative ${compact ? "h-1.5" : "h-2"} w-full rounded-full bg-gradient-to-r from-emerald-200 via-teal-100 to-emerald-200`}
+      className={`relative ${compact ? "h-1.5" : "h-2"} w-full rounded-full bg-gradient-to-r from-emerald-200 via-teal-100 to-emerald-200 dark:from-emerald-800 dark:via-teal-900 dark:to-emerald-800`}
     >
       <div
         className={`absolute top-1/2 rounded-full border-2 border-white shadow-sm transition-all duration-700 motion-reduce:transition-none ${dotColor} ${

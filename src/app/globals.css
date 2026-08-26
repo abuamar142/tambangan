@@ -9,6 +9,10 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
+html.dark {
+  color-scheme: dark;
+}
+
 body {
   font-family: var(--font-sans);
   overscroll-behavior-y: none;
