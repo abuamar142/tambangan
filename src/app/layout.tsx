@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tambangan Track",
+  title: "Tambangan",
   description: "Lacak perahu tambangan secara langsung - standby, menyeberang, atau tiba",
 };
 
