@@ -1,4 +1,4 @@
-.PHONY: dev build preview lint install db-up db-down db-push db-shell docker-up docker-down tunnel clean help
+.PHONY: dev build preview lint install db-up down db-push db-shell up stop clean help
 
 help: ## Tampilkan semua commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -21,7 +21,7 @@ install: ## Install dependencies
 db-up: ## Start PostgreSQL (Docker)
 	docker compose up -d db
 
-db-down: ## Stop semua services
+down: ## Stop semua containers
 	docker compose down
 
 db-push: ## Push schema ke database
@@ -30,14 +30,11 @@ db-push: ## Push schema ke database
 db-shell: ## Buka psql shell ke database
 	docker compose exec db psql -U $${POSTGRES_USER:-tambangan} -d $${POSTGRES_DB:-tambangan}
 
-docker-up: ## Start app + DB di Docker
-	docker compose up -d
+up: ## Start app + DB di Docker
+	docker compose up -d --build
 
-docker-down: ## Stop Docker services
+stop: ## Stop semua containers
 	docker compose down
-
-tunnel: ## Start dengan cloudflare tunnel
-	docker compose --profile tunnel up -d
 
 clean: ## Clean build artifacts
 	rm -rf .next node_modules/.cache

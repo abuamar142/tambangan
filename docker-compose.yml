@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:17-alpine
+    container_name: tambangan-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-tambangan}
@@ -17,6 +18,7 @@ services:
 
   app:
     build: .
+    container_name: tambangan-app
     restart: unless-stopped
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER:-tambangan}:${POSTGRES_PASSWORD:-tambangan}@db:5432/${POSTGRES_DB:-tambangan}
@@ -28,16 +30,6 @@ services:
         condition: service_healthy
     ports:
       - "3000:3000"
-
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    restart: unless-stopped
-    profiles: ["tunnel"]
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
-    environment:
-      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
-    depends_on:
-      - app
 
 volumes:
   pgdata:
