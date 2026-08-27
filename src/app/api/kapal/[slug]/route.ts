@@ -18,6 +18,7 @@ const actionSchema = z.discriminatedUnion("action", [
     lng: z.number().min(-180).max(180),
   }),
   z.object({ action: z.literal("rename"), nama: z.string().min(1).max(40) }),
+  z.object({ action: z.literal("move_tambangan"), tambanganSlug: z.string().min(1) }),
 ]);
 
 export async function GET(_req: Request, ctx: Ctx) {
@@ -103,6 +104,19 @@ export async function PATCH(req: Request, ctx: Ctx) {
       .set({ nama: body.nama })
       .where(eq(kapal.slug, slug));
     await logEvent(kapalId, "rename", { from: current.nama, to: body.nama });
+  } else if (body.action === "move_tambangan") {
+    const [newTambangan] = await db
+      .select({ id: tambangan.id })
+      .from(tambangan)
+      .where(eq(tambangan.slug, body.tambanganSlug))
+      .limit(1);
+    if (!newTambangan) return err("Tambangan tujuan tidak ditemukan", 404);
+
+    await db
+      .update(kapal)
+      .set({ tambanganId: newTambangan.id, status: "titik_a", departingFrom: null, lastUpdatedAt: new Date() })
+      .where(eq(kapal.slug, slug));
+    await logEvent(kapalId, "move_tambangan", { from: current.tambanganSlug, to: body.tambanganSlug });
   }
 
   const updated = await findOwnedKapal(slug, user.id);

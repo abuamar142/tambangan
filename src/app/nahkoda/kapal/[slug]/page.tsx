@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Clock, Crosshair, History, Pencil, Trash2 } from "lucide-react";
+import { ArrowRightLeft, Clock, Crosshair, History, Pencil, Trash2 } from "lucide-react";
 import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
@@ -13,7 +13,7 @@ import { usePolling } from "@/lib/client/usePolling";
 import { formatDistance, getPosition, haversineMeters } from "@/lib/geo";
 import { minutesLeft, timeAgo } from "@/lib/format";
 import { useCountdown } from "@/lib/client/useCountdown";
-import type { KapalMineDto } from "@/lib/types";
+import type { KapalMineDto, TambanganDto } from "@/lib/types";
 
 const NEAR_M = 120;
 const FAR_M = 250;
@@ -22,7 +22,9 @@ type StateAction =
   | { action: "status"; value: "titik_a" | "proses" | "titik_b" }
   | { action: "timer"; minutes: number }
   | { action: "timer_clear" }
-  | { action: "set_lokasi_titik"; side: "a" | "b"; lat: number; lng: number };
+  | { action: "set_lokasi_titik"; side: "a" | "b"; lat: number; lng: number }
+  | { action: "rename"; nama: string }
+  | { action: "move_tambangan"; tambanganSlug: string };
 
 export default function KontrolKapalPage() {
   const params = useParams<{ slug: string }>();
@@ -36,6 +38,13 @@ export default function KontrolKapalPage() {
   const [gettingLoc, setGettingLoc] = useState<"a" | "b" | null>(null);
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState("");
+  const [tambanganList, setTambanganList] = useState<TambanganDto[]>([]);
+
+  useEffect(() => {
+    api<{ tambangan: TambanganDto[] }>("/api/tambangan")
+      .then((r) => setTambanganList(r.tambangan))
+      .catch(() => {});
+  }, []);
 
   const { data, error, loading, refresh } = usePolling<{ kapal: KapalMineDto }>(
     (signal) => api(`/api/kapal/${slug}`, { signal }),
@@ -257,6 +266,38 @@ export default function KontrolKapalPage() {
           <Trash2 size={14} />
           Hapus Kapal
         </button>
+
+        {/* Pindah Tambangan */}
+        {tambanganList.length > 1 && (
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400">
+              <ArrowRightLeft size={13} />
+              Pindah Tambangan
+            </p>
+            <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">Sekarang: {k?.tambanganNama}</p>
+            <select
+              onChange={(e) => {
+                if (e.target.value && e.target.value !== k?.tambanganSlug) {
+                  if (confirm(`Pindah kapal ke tambangan ini? Status akan direset ke titik awal.`)) {
+                    void patch({ action: "move_tambangan", tambanganSlug: e.target.value });
+                  }
+                }
+                e.target.value = "";
+              }}
+              defaultValue=""
+              className="w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200"
+            >
+              <option value="">Pilih tambangan tujuan…</option>
+              {tambanganList
+                .filter((t) => t.slug !== k?.tambanganSlug)
+                .map((t) => (
+                  <option key={t.slug} value={t.slug}>
+                    {t.nama}
+                  </option>
+                ))}
+            </select>
+          </div>
+        )}
 
         <ErrorNote message={actionError} />
 
