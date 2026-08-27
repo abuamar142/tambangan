@@ -45,31 +45,31 @@ export function PwaInstallPrompt() {
   if (!deferred || dismissed) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md rounded-2xl border border-teal-200 bg-white p-4 shadow-lg dark:border-slate-600 dark:bg-slate-800">
+    <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-lg">
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-100 text-teal-600 dark:bg-teal-900/40 dark:text-teal-400">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-brand-100)] text-[var(--color-brand-700)] dark:bg-[var(--color-brand-900)]/40 dark:text-[var(--color-brand-500)]">
           <Download size={20} />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-slate-900 dark:text-slate-100">Install Tambangan</p>
-          <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-sm font-bold text-[var(--color-text)]">Install Tambangan</p>
+          <p className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
             Tambahkan ke home screen untuk akses cepat
           </p>
         </div>
-        <button onClick={handleDismiss} className="shrink-0 rounded-lg p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <button onClick={handleDismiss} aria-label="Tutup" className="shrink-0 rounded-lg p-1 text-[var(--color-text-muted)] hover:bg-[var(--color-border-subtle)]">
           <X size={16} />
         </button>
       </div>
       <div className="mt-3 flex gap-2">
         <button
           onClick={handleInstall}
-          className="flex-1 rounded-xl bg-teal-600 py-2.5 text-sm font-bold text-white transition hover:bg-teal-700"
+          className="flex-1 rounded-xl bg-[var(--color-brand-600)] py-2.5 text-sm font-bold text-[var(--color-brand-foreground)] transition hover:bg-[var(--color-brand-700)]"
         >
           Install
         </button>
         <button
           onClick={handleDismiss}
-          className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"
+          className="rounded-xl px-4 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] hover:bg-[var(--color-border-subtle)]"
         >
           Nanti
         </button>
