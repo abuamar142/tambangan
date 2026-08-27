@@ -23,7 +23,14 @@ export default function PilihTambanganPage() {
       <ScreenContent>
         <ErrorNote message={error} />
         {loading && !data && (
-          <p className="p-8 text-center text-sm text-slate-500 dark:text-slate-400">Memuat…</p>
+          <div className="grid gap-3 md:grid-cols-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-28 animate-pulse rounded-2xl bg-white dark:bg-slate-800"
+              />
+            ))}
+          </div>
         )}
         {!loading && !error && list.length === 0 && (
           <div className="rounded-2xl border border-dashed border-teal-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-800">
