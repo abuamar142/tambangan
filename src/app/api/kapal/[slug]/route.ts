@@ -17,6 +17,7 @@ const actionSchema = z.discriminatedUnion("action", [
     lat: z.number().min(-90).max(90),
     lng: z.number().min(-180).max(180),
   }),
+  z.object({ action: z.literal("rename"), nama: z.string().min(1).max(40) }),
 ]);
 
 export async function GET(_req: Request, ctx: Ctx) {
@@ -77,7 +78,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
       .set({ timerEndAt: null, lastUpdatedAt: new Date() })
       .where(eq(kapal.slug, slug));
     await logEvent(kapalId, "timer_clear");
-  } else {
+  } else if (body.action === "set_lokasi_titik") {
     const [t] = await db
       .select({ id: tambangan.id })
       .from(tambangan)
@@ -95,6 +96,12 @@ export async function PATCH(req: Request, ctx: Ctx) {
       .where(eq(tambangan.id, t.id));
 
     await logEvent(kapalId, "lokasi_titik", { side: body.side, lat: body.lat, lng: body.lng });
+  } else if (body.action === "rename") {
+    await db
+      .update(kapal)
+      .set({ nama: body.nama })
+      .where(eq(kapal.slug, slug));
+    await logEvent(kapalId, "rename", { from: current.nama, to: body.nama });
   }
 
   const updated = await findOwnedKapal(slug, user.id);

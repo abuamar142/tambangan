@@ -38,7 +38,16 @@ interface TambanganRow {
   titik_b_lng: number | null;
 }
 
-type Tab = "users" | "tambangan";
+interface KapalRow {
+  slug: string;
+  nama: string;
+  status: string;
+  tambanganNama: string;
+  ownerUsername: string;
+  lastUpdatedAt: string;
+}
+
+type Tab = "users" | "tambangan" | "kapal";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -132,6 +141,17 @@ export default function AdminPage() {
             <Map size={16} />
             Tambangan
           </button>
+          <button
+            onClick={() => { setTab("kapal"); setError(""); }}
+            className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition ${
+              tab === "kapal"
+                ? "border-teal-600 text-teal-700"
+                : "border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+            }`}
+          >
+            <Anchor size={16} />
+            Kapal
+          </button>
         </div>
       </div>
 
@@ -140,7 +160,167 @@ export default function AdminPage() {
         <ErrorNote message={error} />
         {tab === "users" && <UsersTab setError={setError} />}
         {tab === "tambangan" && <TambanganTab setError={setError} />}
+        {tab === "kapal" && <KapalTab setError={setError} />}
       </main>
+    </div>
+  );
+}
+
+/* ─── Kapal Tab ──────────────────────────────────────── */
+
+function KapalTab({ setError }: { setError: (s: string) => void }) {
+  const [kapalList, setKapalList] = useState<KapalRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const r = await api<{ kapal: KapalRow[] }>("/api/admin/kapal");
+        if (alive) setKapalList(r.kapal);
+      } catch {
+        if (alive) setError("Gagal memuat kapal");
+      } finally {
+        if (alive) setLoading(false);
+      }
+    })();
+    return () => { alive = false; };
+  }, [setError, tick]);
+
+  async function handleRename(slug: string) {
+    if (!editName.trim()) return;
+    try {
+      await api(`/api/admin/kapal/${slug}`, {
+        method: "PATCH",
+        body: JSON.stringify({ nama: editName.trim() }),
+      });
+      setExpandedSlug(null);
+      setTick((t) => t + 1);
+    } catch {
+      setError("Gagal mengubah nama kapal");
+    }
+  }
+
+  if (loading) {
+    return <p className="py-12 text-center text-sm text-slate-400 dark:text-slate-500">Memuat…</p>;
+  }
+
+  return (
+    <div>
+      <div className="mb-4 flex items-baseline justify-between">
+        <h2 className="text-sm font-semibold text-slate-600 dark:text-slate-400">
+          Semua Kapal · <span className="text-slate-900 dark:text-slate-100">{kapalList.length}</span>
+        </h2>
+      </div>
+
+      {/* Desktop: table */}
+      <div className="hidden overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800 md:block">
+        <table className="w-full text-left text-sm">
+          <thead>
+            <tr className="border-b border-slate-100 bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:border-slate-700 dark:bg-slate-700/50 dark:text-slate-400">
+              <th className="px-4 py-3">Nama</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Tambangan</th>
+              <th className="px-4 py-3">Owner</th>
+              <th className="px-4 py-3 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+            {kapalList.map((k) => (
+              <Fragment key={k.slug}>
+                <tr className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                  <td className="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">{k.nama}</td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                      k.status === "proses"
+                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                        : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                    }`}>
+                      {k.status === "proses" ? "Menyeberang" : `Standby`}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{k.tambanganNama}</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{k.ownerUsername}</td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={() => {
+                        setExpandedSlug(expandedSlug === k.slug ? null : k.slug);
+                        setEditName(k.nama);
+                        setError("");
+                      }}
+                      className="rounded-lg p-2 text-slate-400 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400"
+                      title="Edit Nama"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                  </td>
+                </tr>
+                {expandedSlug === k.slug && (
+                  <tr className="bg-blue-50/50 dark:bg-blue-900/20">
+                    <td colSpan={5} className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Nama baru:</span>
+                        <input
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === "Enter") void handleRename(k.slug); }}
+                          className="w-48 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                        />
+                        <button onClick={() => void handleRename(k.slug)} className="inline-flex items-center gap-1.5 rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-teal-700">
+                          <Save size={12} /> Simpan
+                        </button>
+                        <button onClick={() => setExpandedSlug(null)} className="text-xs text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
+                          Batal
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile: cards */}
+      <div className="space-y-2 md:hidden">
+        {kapalList.map((k) => (
+          <div key={k.slug} className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            {expandedSlug === k.slug ? (
+              <div className="space-y-2">
+                <p className="text-xs font-bold text-teal-700 dark:text-teal-400">Edit Nama</p>
+                <input
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") void handleRename(k.slug); }}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:border-teal-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                />
+                <div className="flex gap-2">
+                  <button onClick={() => void handleRename(k.slug)} className="flex-1 rounded-lg bg-teal-600 py-2 text-xs font-bold text-white active:bg-teal-700">Simpan</button>
+                  <button onClick={() => setExpandedSlug(null)} className="rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-600 dark:bg-slate-700 dark:text-slate-300">Batal</button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-bold text-slate-900 dark:text-slate-100">{k.nama}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{k.tambanganNama} · {k.ownerUsername}</p>
+                </div>
+                <button
+                  onClick={() => { setExpandedSlug(k.slug); setEditName(k.nama); }}
+                  className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+                  title="Edit Nama"
+                >
+                  <Pencil size={14} />
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
