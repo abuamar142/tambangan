@@ -62,7 +62,7 @@ pnpm install
 pnpm dev
 ```
 
-Seed otomatis saat boot: tambangan `jatikalen-megaluh` + akun `admin/admin123`. Daftarkan nahkoda baru di `/register`.
+Migrasi database otomatis jalan saat boot (`instrumentation.ts` → `drizzle-kit migrate`). Seed tambangan `jatikalen-megaluh` + akun `admin/admin123` juga otomatis.
 
 ---
 
@@ -84,6 +84,31 @@ Seed otomatis saat boot: tambangan `jatikalen-megaluh` + akun `admin/admin123`. 
 ## Deployment
 
 Produksi berjalan di VPS dengan Docker Compose (`db` + `app`) dan Caddy sebagai reverse proxy. CI/CD via GitHub Actions: push ke branch `main` otomatis trigger build + SSH deploy ke VPS. Lihat `.github/workflows/deploy.yml` untuk konfigurasi lengkap.
+
+### Database Migrations
+
+Menggunakan **Drizzle Kit** untuk managed migrations. Migrasi otomatis dijalankan saat app boot (`instrumentation.ts`).
+
+**Workflow saat mengubah schema:**
+
+```bash
+# 1. Edit src/lib/db/schema.ts
+# 2. Generate migration SQL
+pnpm db:generate
+# 3. Commit file drizzle/*.sql
+# 4. Push ke main → CI/CD auto-apply migration + rebuild
+```
+
+**Perintah berguna:**
+
+| Command | Fungsi |
+|---------|--------|
+| `pnpm db:generate` | Generate migration SQL dari schema.ts |
+| `pnpm db:push` | Push schema langsung ke DB (dev, tanpa migration file) |
+| `pnpm db:migrate` | Apply semua pending migration |
+| `make db-shell` | Buka psql shell ke database |
+
+Migrasi berjalan otomatis saat deploy (CI/CD) **dan** saat app boot (`instrumentation.ts`). Tidak perlu manual SSH untuk ALTER TABLE.
 
 ---
 
