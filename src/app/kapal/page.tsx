@@ -69,36 +69,42 @@ export default function SemuaKapalPage() {
     <Screen>
       <ScreenHeader title="Semua Kapal" subtitle={`${total} kapal terdaftar`} backHref="/" />
       <ScreenContent>
-        <div className="relative">
-          <select
-            value={filter}
-            onChange={(e) => {
-              setFilter(e.target.value as Filter);
-              setPage(1);
-            }}
-            className="w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 py-2.5 pr-10 text-sm font-medium text-slate-700 shadow-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
-            aria-label="Filter kapal"
-          >
-            <option value="all">Semua</option>
-            <option value="titik_a">Standby di {labelA}</option>
-            <option value="titik_b">Standby di {labelB}</option>
-            <option value="proses">Sedang Menyeberang</option>
-          </select>
-          <ChevronDown
-            size={16}
-            className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500"
-          />
-        </div>
+        <label className="block">
+          <span className="sr-only">Filter status kapal</span>
+          <div className="relative">
+            <select
+              value={filter}
+              onChange={(e) => {
+                setFilter(e.target.value as Filter);
+                setPage(1);
+              }}
+              className="w-full appearance-none rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 pr-10 text-sm font-medium text-[var(--color-text)] shadow-sm outline-none transition focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              aria-label="Filter kapal"
+            >
+              <option value="all">Semua</option>
+              <option value="titik_a">Standby di {labelA}</option>
+              <option value="titik_b">Standby di {labelB}</option>
+              <option value="proses">Sedang Menyeberang</option>
+            </select>
+            <ChevronDown
+              size={16}
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
+            />
+          </div>
+        </label>
 
-        <div className="relative">
-          <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
-          <input
-            value={searchInput}
-            onChange={(e) => handleSearchInput(e.target.value)}
-            placeholder="Cari nama kapal…"
-            className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
-          />
-        </div>
+        <label className="block">
+          <span className="sr-only">Cari nama kapal</span>
+          <div className="relative">
+            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
+            <input
+              value={searchInput}
+              onChange={(e) => handleSearchInput(e.target.value)}
+              placeholder="Cari nama kapal…"
+              className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] py-2.5 pl-9 pr-4 text-sm text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+            />
+          </div>
+        </label>
 
         <ErrorNote message={error} />
 
@@ -108,7 +114,7 @@ export default function SemuaKapalPage() {
           <EmptyState title="Belum ada kapal untuk filter ini." />
         )}
 
-        <div className="grid gap-3 md:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
           {list.map((k) => {
             const tambanganData = tambanganOpts.find((t) => t.nama === k.tambanganNama);
             return (
@@ -123,22 +129,22 @@ export default function SemuaKapalPage() {
         </div>
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-800">
+          <div className="flex items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:text-slate-300 dark:hover:bg-slate-700"
+              className="inline-flex items-center gap-1 rounded-xl px-3 py-1.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-alt)] disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronLeft size={14} />
               Sebelumnya
             </button>
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-semibold text-[var(--color-text-muted)]">
               Hal {page} / {totalPages}
             </span>
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages}
-              className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:text-slate-300 dark:hover:bg-slate-700"
+              className="inline-flex items-center gap-1 rounded-xl px-3 py-1.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-alt)] disabled:cursor-not-allowed disabled:opacity-40"
             >
               Selanjutnya
               <ChevronRight size={14} />
