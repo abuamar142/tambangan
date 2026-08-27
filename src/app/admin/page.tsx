@@ -158,11 +158,60 @@ export default function AdminPage() {
 
       {/* Content */}
       <main className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
+        {tab === "users" && <StatsOverview />}
         <ErrorNote message={error} />
         {tab === "users" && <UsersTab setError={setError} />}
         {tab === "tambangan" && <TambanganTab setError={setError} />}
         {tab === "kapal" && <KapalTab setError={setError} />}
       </main>
+    </div>
+  );
+}
+
+/* ─── Stats Overview ──────────────────────────────────── */
+
+function StatsOverview() {
+  const [stats, setStats] = useState<{ users: number; tambangan: number; kapal: number; aktif: number } | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const [u, t, k] = await Promise.all([
+          api<{ users: UserRow[] }>("/api/admin/users"),
+          api<{ tambangan: TambanganRow[] }>("/api/admin/tambangan"),
+          api<{ kapal: KapalRow[] }>("/api/admin/kapal"),
+        ]);
+        if (alive) {
+          setStats({
+            users: u.users.length,
+            tambangan: t.tambangan.length,
+            kapal: k.kapal.length,
+            aktif: k.kapal.filter((k) => k.status === "proses").length,
+          });
+        }
+      } catch {}
+    })();
+    return () => { alive = false; };
+  }, []);
+
+  if (!stats) return null;
+
+  const items = [
+    { label: "Pengguna", value: stats.users, color: "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" },
+    { label: "Tambangan", value: stats.tambangan, color: "bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400" },
+    { label: "Total Kapal", value: stats.kapal, color: "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" },
+    { label: "Sedang Berangkat", value: stats.aktif, color: "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" },
+  ];
+
+  return (
+    <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+      {items.map((item) => (
+        <div key={item.label} className={`rounded-xl p-4 ${item.color}`}>
+          <p className="text-2xl font-bold">{item.value}</p>
+          <p className="text-xs font-medium opacity-75">{item.label}</p>
+        </div>
+      ))}
     </div>
   );
 }
