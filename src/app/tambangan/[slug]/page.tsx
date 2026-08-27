@@ -60,7 +60,7 @@ export default function StatusTambanganPage() {
         <div className="inline-flex items-center gap-2">
           <button
             onClick={refresh}
-            className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-700 shadow-sm transition hover:bg-teal-50 dark:border-slate-600 dark:bg-slate-800 dark:text-teal-400 dark:hover:bg-slate-700"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-brand-200)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-brand-700)] shadow-sm transition-colors hover:bg-[var(--color-brand-50)]"
           >
             <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
             Segarkan
@@ -76,7 +76,7 @@ export default function StatusTambanganPage() {
         <ErrorNote message={error} />
 
         {fastest && t && (
-          <div className="rounded-2xl bg-linear-to-br from-amber-500 to-orange-500 p-5 text-white shadow-lg ring-1 ring-amber-500/20">
+          <div className="rounded-xl bg-linear-to-br from-amber-500 to-orange-500 p-5 text-white shadow-lg ring-1 ring-amber-500/20">
             <p className="text-xs font-semibold uppercase tracking-widest text-amber-100">Paling cepat berangkat</p>
             <p className="mt-1 text-lg font-bold">{fastest.nama}</p>
             <p className="font-mono text-sm text-amber-50">
@@ -87,12 +87,12 @@ export default function StatusTambanganPage() {
         )}
 
         {!loading && !error && list.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-teal-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-800">
+          <div className="rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center">
             <p className="text-sm text-slate-500 dark:text-slate-400">Belum ada kapal di tambangan ini.</p>
           </div>
         )}
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2">
           {groups.titik_a.length > 0 && t && <KapalGroup label={`Standby di ${t.titikA.nama}`} items={groups.titik_a} tambangan={t} />}
           {groups.titik_b.length > 0 && t && <KapalGroup label={`Standby di ${t.titikB.nama}`} items={groups.titik_b} tambangan={t} />}
         </div>

@@ -24,17 +24,17 @@ export function KapalCard({
   const countdown = useCountdown(k.timerEndAt);
 
   const card = (
-    <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 dark:border-slate-700 dark:bg-slate-800">
+    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm transition-shadow hover:shadow-md active:shadow-sm">
       <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-2 font-bold text-slate-900 dark:text-slate-100">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400">
+        <span className="flex items-center gap-2 font-bold text-[var(--color-text)]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-brand-50)] text-[var(--color-brand)]">
             <Anchor size={14} />
           </span>
           {k.nama}
         </span>
         <div className="flex items-center gap-1">
           {showTime && (
-            <span className="font-mono text-xs text-slate-400 dark:text-slate-500">{timeAgo(k.lastUpdated)}</span>
+            <span className="font-mono text-xs text-[var(--color-text-muted)]">{timeAgo(k.lastUpdated)}</span>
           )}
           <ShareButton
             title={k.nama}
@@ -45,13 +45,13 @@ export function KapalCard({
         </div>
       </div>
       {tambanganNama && !tambangan && (
-        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{tambanganNama}</p>
+        <p className="mt-2 text-xs text-[var(--color-text-secondary)]">{tambanganNama}</p>
       )}
       <div className="mt-2.5">
         <ChannelBar status={k.status} departingFrom={k.departingFrom} compact />
       </div>
       {tambangan && (
-        <div className="mt-1 flex justify-between font-mono text-xs text-slate-500 dark:text-slate-400">
+        <div className="mt-1 flex justify-between font-mono text-xs text-[var(--color-text-muted)]">
           <span>{tambangan.titikA.nama}</span>
           <span>{tambangan.titikB.nama}</span>
         </div>
