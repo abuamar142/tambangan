@@ -18,6 +18,7 @@ export async function GET(_req: Request, ctx: Ctx) {
       status: kapal.status,
       departingFrom: kapal.departingFrom,
       timerEndAt: kapal.timerEndAt,
+      lastDepartureAt: kapal.lastDepartureAt,
       lastUpdatedAt: kapal.lastUpdatedAt,
     })
     .from(kapal)
@@ -38,6 +39,7 @@ export async function GET(_req: Request, ctx: Ctx) {
       status: k.status,
       departingFrom: k.departingFrom,
       timerEndAt: k.timerEndAt ? k.timerEndAt.toISOString() : null,
+      lastDepartureAt: k.lastDepartureAt ? k.lastDepartureAt.toISOString() : null,
       lastUpdated: k.lastUpdatedAt.toISOString(),
     })),
   });

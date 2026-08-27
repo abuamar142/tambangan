@@ -60,6 +60,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
         status: body.value,
         departingFrom,
         lastUpdatedAt: new Date(),
+        ...(body.value === "proses" ? { lastDepartureAt: new Date() } : {}),
         timerEndAt: body.value === "proses" ? null : current.timerEndAt ? new Date(current.timerEndAt) : null,
       })
       .where(eq(kapal.slug, slug));

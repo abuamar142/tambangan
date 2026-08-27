@@ -45,6 +45,7 @@ export const kapal = pgTable(
     status: text("status").notNull().default("titik_a"),
     departingFrom: text("departing_from"),
     timerEndAt: timestamp("timer_end_at", { withTimezone: true }),
+    lastDepartureAt: timestamp("last_departure_at", { withTimezone: true }),
     lastUpdatedAt: timestamp("last_updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [

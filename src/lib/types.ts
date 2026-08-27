@@ -21,6 +21,7 @@ export interface KapalLiveDto {
   status: KapalStatus;
   departingFrom: KapalStatus | null;
   timerEndAt: string | null;
+  lastDepartureAt: string | null;
   lastUpdated: string;
 }
 

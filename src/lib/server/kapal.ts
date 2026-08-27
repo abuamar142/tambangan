@@ -9,6 +9,7 @@ const selection = {
   status: kapal.status,
   departingFrom: kapal.departingFrom,
   timerEndAt: kapal.timerEndAt,
+  lastDepartureAt: kapal.lastDepartureAt,
   lastUpdatedAt: kapal.lastUpdatedAt,
   tambanganSlug: tambangan.slug,
   tambanganNama: tambangan.nama,
@@ -26,6 +27,7 @@ type Row = {
   status: string;
   departingFrom: string | null;
   timerEndAt: Date | null;
+  lastDepartureAt: Date | null;
   lastUpdatedAt: Date;
   tambanganSlug: string;
   tambanganNama: string;
@@ -44,6 +46,7 @@ export function toMineDto(r: Row): KapalMineDto {
     status: r.status as KapalStatus,
     departingFrom: r.departingFrom as KapalStatus | null,
     timerEndAt: r.timerEndAt ? r.timerEndAt.toISOString() : null,
+    lastDepartureAt: r.lastDepartureAt ? r.lastDepartureAt.toISOString() : null,
     lastUpdated: r.lastUpdatedAt.toISOString(),
     tambanganSlug: r.tambanganSlug,
     tambanganNama: r.tambanganNama,
