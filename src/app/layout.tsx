@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Tambangan",
   description: "Lacak perahu tambangan secara langsung - standby, menyeberang, atau tiba",
+  manifest: "/manifest.json",
 };
 
 export const viewport: Viewport = {
