@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { Anchor, KeyRound, LogOut, Plus, Shield } from "lucide-react";
 import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
+import { KapalCard } from "@/components/KapalCard";
 import { ErrorNote } from "@/components/ErrorNote";
-import { StatusBadge } from "@/components/StatusBadge";
 import { usePolling } from "@/lib/client/usePolling";
 import { api } from "@/lib/client/api";
 import type { KapalMineDto, UserInfo } from "@/lib/types";
@@ -176,22 +176,13 @@ export default function NahkodaPage() {
 
         <div className="grid gap-3 md:grid-cols-2">
           {list.map((k) => (
-            <Link
+            <KapalCard
               key={k.slug}
+              k={k}
+              tambangan={{ id: 0, slug: "", nama: "", titikA: k.titikA, titikB: k.titikB }}
+              showTime={false}
               href={`/nahkoda/kapal/${k.slug}`}
-              className="group block rounded-2xl border border-teal-100 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 dark:border-slate-700 dark:bg-slate-800"
-            >
-              <div className="flex items-center justify-between gap-2">
-                <span className="flex items-center gap-2 font-bold text-slate-900 dark:text-slate-100">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400">
-                    <Anchor size={14} />
-                  </span>
-                  {k.nama}
-                </span>
-                <StatusBadge status={k.status} titikA={k.titikA} titikB={k.titikB} />
-              </div>
-              <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{k.tambanganNama}</p>
-            </Link>
+            />
           ))}
         </div>
       </ScreenContent>

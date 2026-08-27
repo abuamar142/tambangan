@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Anchor, ChevronDown, RefreshCw } from "lucide-react";
+import { ChevronDown, RefreshCw } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { ChannelBar } from "./ChannelBar";
+import { KapalCard } from "./KapalCard";
 import { ErrorNote } from "./ErrorNote";
 import { api } from "@/lib/client/api";
 import { usePolling } from "@/lib/client/usePolling";
-import { minutesLeft, timeAgo } from "@/lib/format";
 import type { KapalMineDto, TambanganDto } from "@/lib/types";
 
 type Filter = "all" | "titik_a" | "titik_b" | "proses";
@@ -82,29 +81,14 @@ export function HomeKapalSection() {
 
       <div className="grid gap-3 md:grid-cols-2">
         {list.map((k) => {
-          const mins = minutesLeft(k.timerEndAt);
+          const tambanganData = tambanganOpts.find((t) => t.nama === k.tambanganNama);
           return (
-            <div
+            <KapalCard
               key={k.slug}
-              className="rounded-2xl border border-teal-100 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
-            >
-              <div className="flex items-center justify-between gap-2">
-                <span className="flex items-center gap-2 font-bold text-slate-900 dark:text-slate-100">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400">
-                    <Anchor size={13} />
-                  </span>
-                  {k.nama}
-                </span>
-                <span className="font-mono text-xs text-slate-500 dark:text-slate-400">{timeAgo(k.lastUpdated)}</span>
-              </div>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{k.tambanganNama}</p>
-              <div className="mt-2.5">
-                <ChannelBar status={k.status} compact />
-              </div>
-              {mins !== null && (
-                <p className="mt-2 font-mono text-xs font-semibold text-amber-700 dark:text-amber-400">~{mins} menit lagi</p>
-              )}
-            </div>
+              k={k}
+              tambangan={tambanganData}
+              tambanganNama={k.tambanganNama}
+            />
           );
         })}
       </div>
