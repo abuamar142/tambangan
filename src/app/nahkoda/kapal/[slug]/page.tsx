@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { ArrowRightLeft, Clock, Crosshair, History, Pencil, Trash2 } from "lucide-react";
+import { ArrowRightLeft, Anchor, Clock, Crosshair, History, MapPin, Navigation, Pencil, Timer, Trash2 } from "lucide-react";
 import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
@@ -468,15 +468,74 @@ interface EventItem {
   createdAt: string;
 }
 
-const eventLabels: Record<string, string> = {
-  status: "Ubah status",
-  timer_set: "Timer diatur",
-  timer_clear: "Timer dihapus",
-  set_lokasi_titik: "Lokasi GPS diatur",
-  rename: "Nama diubah",
-  dihapus: "Kapal dihapus",
-  move_tambangan: "Pindah tambangan",
-};
+function renderEvent(e: EventItem): { label: string; detail: string; icon: React.ReactNode; color: string } {
+  const m = e.meta as Record<string, string> | null;
+  switch (e.event) {
+    case "status":
+      return {
+        label: "Ubah status",
+        detail: `${labelStatus(m?.from)} → ${labelStatus(m?.to)}`,
+        icon: <Navigation size={13} />,
+        color: "bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400",
+      };
+    case "timer_set":
+      return {
+        label: "Timer diatur",
+        detail: `${m?.minutes ?? "?"} menit`,
+        icon: <Timer size={13} />,
+        color: "bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-400",
+      };
+    case "timer_clear":
+      return {
+        label: "Timer dihapus",
+        detail: "",
+        icon: <Clock size={13} />,
+        color: "bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400",
+      };
+    case "set_lokasi_titik":
+      return {
+        label: "Lokasi GPS diatur",
+        detail: `Titik ${(m?.side ?? "").toUpperCase()}`,
+        icon: <MapPin size={13} />,
+        color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400",
+      };
+    case "rename":
+      return {
+        label: "Nama diubah",
+        detail: `${m?.from ?? "?"} → ${m?.to ?? "?"}`,
+        icon: <Pencil size={13} />,
+        color: "bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400",
+      };
+    case "dibuat":
+      return {
+        label: "Kapal dibuat",
+        detail: m?.oleh ? `oleh ${m.oloh}` : "",
+        icon: <Anchor size={13} />,
+        color: "bg-teal-100 text-teal-600 dark:bg-teal-900/40 dark:text-teal-400",
+      };
+    case "move_tambangan":
+      return {
+        label: "Pindah tambangan",
+        detail: `${m?.from ?? "?"} → ${m?.to ?? "?"}`,
+        icon: <ArrowRightLeft size={13} />,
+        color: "bg-purple-100 text-purple-600 dark:bg-purple-900/40 dark:text-purple-400",
+      };
+    default:
+      return {
+        label: e.event,
+        detail: m ? Object.entries(m).map(([k, v]) => `${k}: ${String(v)}`).join(" · ") : "",
+        icon: <Clock size={13} />,
+        color: "bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400",
+      };
+  }
+}
+
+function labelStatus(s?: string): string {
+  if (s === "titik_a") return "Titik A";
+  if (s === "titik_b") return "Titik B";
+  if (s === "proses") return "Proses";
+  return s ?? "?";
+}
 
 function EventsTimeline({ slug }: { slug: string }) {
   const [events, setEvents] = useState<EventItem[]>([]);
@@ -511,24 +570,23 @@ function EventsTimeline({ slug }: { slug: string }) {
           {!loading && events.length === 0 && (
             <p className="p-4 text-center text-xs text-slate-400 dark:text-slate-500">Belum ada riwayat.</p>
           )}
-          {events.map((e) => (
-            <div key={e.id} className="flex items-start gap-3 rounded-xl px-3 py-2 transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-              <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-teal-500 dark:bg-teal-400" />
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                  {eventLabels[e.event] ?? e.event}
-                </p>
-                {e.meta && typeof e.meta === "object" && (
-                  <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                    {Object.entries(e.meta)
-                      .map(([k, v]) => `${k}: ${String(v)}`)
-                      .join(" · ")}
-                  </p>
-                )}
+          {events.map((e) => {
+            const ev = renderEvent(e);
+            return (
+              <div key={e.id} className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                <div className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${ev.color}`}>
+                  {ev.icon}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{ev.label}</p>
+                  {ev.detail && (
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{ev.detail}</p>
+                  )}
+                </div>
+                <span className="shrink-0 font-mono text-xs text-slate-400 dark:text-slate-500">{timeAgo(e.createdAt)}</span>
               </div>
-              <span className="shrink-0 font-mono text-xs text-slate-400 dark:text-slate-500">{timeAgo(e.createdAt)}</span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
