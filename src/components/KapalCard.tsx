@@ -5,6 +5,7 @@ import { Anchor } from "lucide-react";
 import { timeAgo } from "@/lib/format";
 import { useCountdown } from "@/lib/client/useCountdown";
 import { ChannelBar } from "./ChannelBar";
+import { ShareButton } from "./ShareButton";
 import type { KapalLiveDto, TambanganDto } from "@/lib/types";
 
 export function KapalCard({
@@ -31,9 +32,17 @@ export function KapalCard({
           </span>
           {k.nama}
         </span>
-        {showTime && (
-          <span className="font-mono text-xs text-slate-400 dark:text-slate-500">{timeAgo(k.lastUpdated)}</span>
-        )}
+        <div className="flex items-center gap-1">
+          {showTime && (
+            <span className="font-mono text-xs text-slate-400 dark:text-slate-500">{timeAgo(k.lastUpdated)}</span>
+          )}
+          <ShareButton
+            title={k.nama}
+            text={`Status ${k.nama}: ${k.status === "proses" ? "sedang menyeberang" : k.status === "titik_a" ? `standby di ${tambangan?.titikA.nama ?? "titik A"}` : `standby di ${tambangan?.titikB.nama ?? "titik B"}`}`}
+            url={tambangan ? `/tambangan/${tambangan.slug}` : undefined}
+            compact
+          />
+        </div>
       </div>
       {tambanganNama && !tambangan && (
         <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{tambanganNama}</p>

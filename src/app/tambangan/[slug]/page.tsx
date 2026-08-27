@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { RefreshCw } from "lucide-react";
 import { Screen, ScreenContent } from "@/components/Screen";
+import { ShareButton } from "@/components/ShareButton";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
 import { KapalGroup } from "@/components/KapalGroup";
@@ -42,13 +43,21 @@ export default function StatusTambanganPage() {
     <Screen>
       <ScreenHeader title={t?.nama ?? "Tambangan"} subtitle={`${list.length} kapal terdaftar`} backHref="/tambangan" />
       <ScreenContent>
-        <button
-          onClick={refresh}
-          className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-700 shadow-sm transition hover:bg-teal-50 dark:border-slate-600 dark:bg-slate-800 dark:text-teal-400 dark:hover:bg-slate-700"
-        >
-          <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
-          Segarkan
-        </button>
+        <div className="inline-flex items-center gap-2">
+          <button
+            onClick={refresh}
+            className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-700 shadow-sm transition hover:bg-teal-50 dark:border-slate-600 dark:bg-slate-800 dark:text-teal-400 dark:hover:bg-slate-700"
+          >
+            <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
+            Segarkan
+          </button>
+          {t && (
+            <ShareButton
+              title={`Status ${t.nama}`}
+              text={`Status ${t.nama}: ${list.length} kapal`}
+            />
+          )}
+        </div>
 
         <ErrorNote message={error} />
 
