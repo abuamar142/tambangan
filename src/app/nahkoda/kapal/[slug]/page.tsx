@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Clock, Crosshair, Pencil, Trash2 } from "lucide-react";
+import { Clock, Crosshair, History, Pencil, Trash2 } from "lucide-react";
 import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
@@ -410,7 +410,86 @@ export default function KontrolKapalPage() {
             )}
           </div>
         )}
+
+        {/* Riwayat Perjalanan */}
+        <EventsTimeline slug={slug} />
       </ScreenContent>
     </Screen>
+  );
+}
+
+/* ─── Events Timeline ──────────────────────────────── */
+
+interface EventItem {
+  id: number;
+  event: string;
+  meta: Record<string, unknown> | null;
+  createdAt: string;
+}
+
+const eventLabels: Record<string, string> = {
+  status: "Ubah status",
+  timer_set: "Timer diatur",
+  timer_clear: "Timer dihapus",
+  set_lokasi_titik: "Lokasi GPS diatur",
+  rename: "Nama diubah",
+  dihapus: "Kapal dihapus",
+  move_tambangan: "Pindah tambangan",
+};
+
+function EventsTimeline({ slug }: { slug: string }) {
+  const [events, setEvents] = useState<EventItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    if (!expanded) return;
+    let alive = true;
+    api<{ events: EventItem[] }>(`/api/kapal/${slug}/events`)
+      .then((r) => { if (alive) setEvents(r.events); })
+      .catch(() => {})
+      .finally(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };
+  }, [expanded, slug]);
+
+  return (
+    <div>
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="flex w-full items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+      >
+        <History size={16} />
+        Riwayat Perjalanan
+        <span className="ml-auto text-xs text-slate-400 dark:text-slate-500">{expanded ? "▲" : "▼"}</span>
+      </button>
+      {expanded && (
+        <div className="mt-2 space-y-1 rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-800">
+          {loading && (
+            <p className="p-4 text-center text-xs text-slate-400 dark:text-slate-500">Memuat riwayat…</p>
+          )}
+          {!loading && events.length === 0 && (
+            <p className="p-4 text-center text-xs text-slate-400 dark:text-slate-500">Belum ada riwayat.</p>
+          )}
+          {events.map((e) => (
+            <div key={e.id} className="flex items-start gap-3 rounded-xl px-3 py-2 transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
+              <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-teal-500 dark:bg-teal-400" />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  {eventLabels[e.event] ?? e.event}
+                </p>
+                {e.meta && typeof e.meta === "object" && (
+                  <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                    {Object.entries(e.meta)
+                      .map(([k, v]) => `${k}: ${String(v)}`)
+                      .join(" · ")}
+                  </p>
+                )}
+              </div>
+              <span className="shrink-0 font-mono text-xs text-slate-400 dark:text-slate-500">{timeAgo(e.createdAt)}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

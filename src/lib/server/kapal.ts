@@ -112,3 +112,17 @@ export async function findKapalIdBySlug(slug: string): Promise<number | null> {
 export async function logEvent(kapalId: number, event: string, meta?: unknown) {
   await db.insert(kapalEvents).values({ kapalId, event, meta: meta ?? null });
 }
+
+export async function listKapalEvents(kapalId: number, limit = 20) {
+  return db
+    .select({
+      id: kapalEvents.id,
+      event: kapalEvents.event,
+      meta: kapalEvents.meta,
+      createdAt: kapalEvents.createdAt,
+    })
+    .from(kapalEvents)
+    .where(eq(kapalEvents.kapalId, kapalId))
+    .orderBy(desc(kapalEvents.createdAt))
+    .limit(limit);
+}
