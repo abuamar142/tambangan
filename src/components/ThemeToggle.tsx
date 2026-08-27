@@ -10,7 +10,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     return (
       <span
         aria-hidden
-        className={`inline-block h-9 w-9 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800 ${className}`}
+        className={`inline-block h-9 w-9 animate-pulse rounded-xl bg-[var(--color-border-subtle)] ${className}`}
       />
     );
   }
@@ -18,7 +18,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   return (
     <button
       onClick={toggle}
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:shadow active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 ${className}`}
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] shadow-sm transition-all hover:bg-[var(--color-surface-alt)] hover:shadow active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]/50 ${className}`}
       aria-label={theme === "dark" ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
     >
       {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}

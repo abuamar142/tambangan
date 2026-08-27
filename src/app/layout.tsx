@@ -41,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           }}
         />
       </head>
-      <body className="min-h-full bg-teal-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+      <body className="min-h-full bg-[var(--color-bg)] text-[var(--color-text)]">
         <ThemeProvider>{children}</ThemeProvider>
         <PwaInstallPrompt />
       </body>
