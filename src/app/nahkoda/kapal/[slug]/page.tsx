@@ -12,6 +12,7 @@ import { api } from "@/lib/client/api";
 import { usePolling } from "@/lib/client/usePolling";
 import { formatDistance, getPosition, haversineMeters } from "@/lib/geo";
 import { minutesLeft, timeAgo } from "@/lib/format";
+import { useCountdown } from "@/lib/client/useCountdown";
 import type { KapalMineDto } from "@/lib/types";
 
 const NEAR_M = 120;
@@ -181,6 +182,8 @@ export default function KontrolKapalPage() {
     };
   }, [mode, measure, patch]);
 
+  const countdown = useCountdown(k?.timerEndAt ?? null);
+
   if (loading && !data) {
     return (
       <Screen>
@@ -201,8 +204,8 @@ export default function KontrolKapalPage() {
     );
   }
 
-  const mins = minutesLeft(k.timerEndAt);
-  const showTimer = k.status === "titik_a" || k.status === "titik_b";
+  const mins = minutesLeft(k?.timerEndAt ?? null);
+  const showTimer = k && (k.status === "titik_a" || k.status === "titik_b");
 
   return (
     <Screen>
@@ -362,7 +365,9 @@ export default function KontrolKapalPage() {
             </div>
             {mins !== null ? (
               <div className="mt-3 flex items-center justify-between">
-                <span className="font-mono text-2xl font-bold text-amber-800 dark:text-amber-300">{mins} menit</span>
+                <span className="font-mono text-2xl font-bold text-amber-800 dark:text-amber-300">
+                  {countdown ? countdown.display : `${mins}m`}
+                </span>
                 <button
                   onClick={() => void patch({ action: "timer_clear" })}
                   className="rounded-xl bg-white px-4 py-2 text-xs font-semibold text-amber-700 shadow-sm ring-1 ring-amber-200 transition hover:bg-amber-50 dark:bg-slate-800 dark:text-amber-300 dark:ring-amber-800"
