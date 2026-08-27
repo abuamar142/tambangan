@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { Clock, Crosshair } from "lucide-react";
+import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -151,21 +152,21 @@ export default function KontrolKapalPage() {
 
   if (loading && !data) {
     return (
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl dark:bg-slate-900">
+      <Screen>
         <ScreenHeader title="Memuat…" backHref="/nahkoda" />
-        <p className="p-4 text-center text-sm text-slate-400">Mengambil data kapal…</p>
-      </div>
+        <p className="p-8 text-center text-sm text-slate-500 dark:text-slate-400">Mengambil data kapal…</p>
+      </Screen>
     );
   }
 
   if (!k) {
     return (
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl dark:bg-slate-900">
+      <Screen>
         <ScreenHeader title="Kapal" backHref="/nahkoda" />
-        <div className="p-4">
+        <ScreenContent>
           <ErrorNote message={error || "Kapal tidak ditemukan atau bukan milik Anda"} />
-        </div>
-      </div>
+        </ScreenContent>
+      </Screen>
     );
   }
 
@@ -173,17 +174,17 @@ export default function KontrolKapalPage() {
   const showTimer = k.status === "titik_a" || k.status === "titik_b";
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-teal-50 shadow-xl dark:bg-slate-900">
+    <Screen>
       <ScreenHeader title={k.nama} subtitle={k.tambanganNama} backHref="/nahkoda" />
-      <div className="flex-1 space-y-5 p-4">
-        <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-          <div className="flex items-center justify-between">
+      <ScreenContent>
+        <div className="rounded-2xl border border-teal-100 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+          <div className="flex items-center justify-between gap-2">
             <StatusBadge status={k.status} titikA={k.titikA} titikB={k.titikB} />
-            <span className="font-mono text-xs text-slate-400 dark:text-slate-500">{timeAgo(k.lastUpdated)}</span>
+            <span className="font-mono text-xs text-slate-500 dark:text-slate-400">{timeAgo(k.lastUpdated)}</span>
           </div>
           <div className="mt-4">
             <ChannelBar status={k.status} />
-            <div className="mt-1 flex justify-between font-mono text-xs text-slate-500 dark:text-slate-400">
+            <div className="mt-2 flex justify-between font-mono text-xs text-slate-500 dark:text-slate-400">
               <span>{k.titikA.nama}</span>
               <span>{k.titikB.nama}</span>
             </div>
@@ -192,81 +193,81 @@ export default function KontrolKapalPage() {
 
         <ErrorNote message={actionError} />
 
-        <div>
-          <div className="mb-2 flex gap-2">
+        <div className="rounded-2xl border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+          <div className="flex gap-1">
             <button
               onClick={() => setMode("manual")}
-              className={`flex-1 rounded-xl py-2 text-sm font-semibold ${
+              className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition ${
                 mode !== "gps"
-                  ? "bg-teal-600 text-white"
-                  : "border border-slate-200 bg-white text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                  ? "bg-teal-600 text-white shadow-sm"
+                  : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-700"
               }`}
             >
-              Mode Manual
+              Manual
             </button>
             <button
               onClick={() => setMode("gps")}
-              className={`flex-1 rounded-xl py-2 text-sm font-semibold ${
+              className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition ${
                 mode === "gps"
-                  ? "bg-teal-600 text-white"
-                  : "border border-slate-200 bg-white text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                  ? "bg-teal-600 text-white shadow-sm"
+                  : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-700"
               }`}
             >
-              Mode GPS Otomatis
+              GPS Otomatis
             </button>
           </div>
 
-          {mode !== "gps" && (
-            <div className="grid grid-cols-3 gap-2">
+          {mode !== "gps" ? (
+            <div className="grid grid-cols-3 gap-2 p-2">
               <button
                 onClick={() => void patch({ action: "status", value: "titik_a" })}
-                className={`min-h-11 rounded-xl py-3 text-xs font-bold ${
+                className={`min-h-11 rounded-xl py-3 text-xs font-bold transition ${
                   k.status === "titik_a"
-                    ? "bg-emerald-600 text-white"
-                    : "border border-slate-200 bg-white text-slate-700 active:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:active:bg-slate-700"
+                    ? "bg-emerald-600 text-white shadow-sm"
+                    : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
                 }`}
               >
                 {k.titikA.nama}
               </button>
               <button
                 onClick={() => void patch({ action: "status", value: "proses" })}
-                className={`min-h-11 rounded-xl py-3 text-xs font-bold ${
+                className={`min-h-11 rounded-xl py-3 text-xs font-bold transition ${
                   k.status === "proses"
-                    ? "bg-blue-600 text-white"
-                    : "border border-slate-200 bg-white text-slate-700 active:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:active:bg-slate-700"
+                    ? "bg-blue-600 text-white shadow-sm"
+                    : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
                 }`}
               >
                 Proses ⛵
               </button>
               <button
                 onClick={() => void patch({ action: "status", value: "titik_b" })}
-                className={`min-h-11 rounded-xl py-3 text-xs font-bold ${
+                className={`min-h-11 rounded-xl py-3 text-xs font-bold transition ${
                   k.status === "titik_b"
-                    ? "bg-emerald-600 text-white"
-                    : "border border-slate-200 bg-white text-slate-700 active:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:active:bg-slate-700"
+                    ? "bg-emerald-600 text-white shadow-sm"
+                    : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
                 }`}
               >
                 {k.titikB.nama}
               </button>
             </div>
-          )}
-
-          {mode === "gps" && (
-            <div className="space-y-2 rounded-xl border border-slate-200 bg-white p-3 text-sm dark:border-slate-600 dark:bg-slate-800">
-              {gpsError && <p className="text-xs text-red-600">{gpsError}</p>}
-              <p className="flex items-center justify-between font-mono text-xs text-slate-600 dark:text-slate-400">
-                <span>{k.titikA.nama}</span>
-                <span>{formatDistance(gpsDist.a)}</span>
-              </p>
-              <p className="flex items-center justify-between font-mono text-xs text-slate-600 dark:text-slate-400">
-                <span>{k.titikB.nama}</span>
-                <span>{formatDistance(gpsDist.b)}</span>
-              </p>
-              <div className="flex gap-2 pt-1">
-                {(k.titikA.lat === null) && (
+          ) : (
+            <div className="space-y-3 p-3">
+              {gpsError && <p className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-900/30 dark:text-red-400">{gpsError}</p>}
+              <div className="space-y-2 rounded-xl bg-slate-50 p-3 dark:bg-slate-900/50">
+                <p className="flex items-center justify-between font-mono text-xs text-slate-600 dark:text-slate-400">
+                  <span>{k.titikA.nama}</span>
+                  <span className="font-semibold">{formatDistance(gpsDist.a)}</span>
+                </p>
+                <p className="flex items-center justify-between font-mono text-xs text-slate-600 dark:text-slate-400">
+                  <span>{k.titikB.nama}</span>
+                  <span className="font-semibold">{formatDistance(gpsDist.b)}</span>
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {k.titikA.lat === null && (
                   <button
                     onClick={() => void captureTitik("a")}
-                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-teal-50 py-1.5 text-xs font-semibold text-teal-700 dark:bg-teal-900/30 dark:text-teal-400"
+                    className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl bg-teal-50 py-2.5 text-xs font-semibold text-teal-700 transition hover:bg-teal-100 dark:bg-teal-900/30 dark:text-teal-300"
                   >
                     <Crosshair size={12} />
                     {gettingLoc === "a" ? "Mengambil…" : `Set lokasi ${k.titikA.nama}`}
@@ -275,45 +276,44 @@ export default function KontrolKapalPage() {
                 {k.titikB.lat === null && (
                   <button
                     onClick={() => void captureTitik("b")}
-                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-teal-50 py-1.5 text-xs font-semibold text-teal-700 dark:bg-teal-900/30 dark:text-teal-400"
+                    className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl bg-teal-50 py-2.5 text-xs font-semibold text-teal-700 transition hover:bg-teal-100 dark:bg-teal-900/30 dark:text-teal-300"
                   >
                     <Crosshair size={12} />
                     {gettingLoc === "b" ? "Mengambil…" : `Set lokasi ${k.titikB.nama}`}
                   </button>
                 )}
               </div>
-              <p className="pt-1 text-xs text-slate-400 dark:text-slate-500">
-                Status terupdate otomatis dari GPS. Fitur eksperimental — kalau sinyal lemah, pakai
-                mode manual saja.
+              <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                Status terupdate otomatis dari GPS. Kalau sinyal lemah, pakai mode manual saja.
               </p>
             </div>
           )}
         </div>
 
         {showTimer && (
-          <div className="rounded-2xl border border-amber-100 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
-            <div className="flex items-center gap-2 text-sm font-semibold text-amber-800 dark:text-amber-400">
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-800 dark:bg-amber-900/20">
+            <div className="flex items-center gap-2 text-sm font-semibold text-amber-800 dark:text-amber-300">
               <Clock size={16} />
               Estimasi berangkat lagi
             </div>
             {mins !== null ? (
-              <div className="mt-2 flex items-center justify-between">
-                <span className="font-mono text-2xl font-bold text-amber-800 dark:text-amber-400">{mins} menit</span>
+              <div className="mt-3 flex items-center justify-between">
+                <span className="font-mono text-2xl font-bold text-amber-800 dark:text-amber-300">{mins} menit</span>
                 <button
                   onClick={() => void patch({ action: "timer_clear" })}
-                  className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-amber-700 shadow-sm dark:bg-slate-800 dark:text-amber-400"
+                  className="rounded-xl bg-white px-4 py-2 text-xs font-semibold text-amber-700 shadow-sm ring-1 ring-amber-200 transition hover:bg-amber-50 dark:bg-slate-800 dark:text-amber-300 dark:ring-amber-800"
                 >
                   Hapus Timer
                 </button>
               </div>
             ) : (
-              <div className="mt-2 flex items-center gap-2">
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 <div className="flex gap-1.5">
                   {[5, 10, 15].map((m) => (
                     <button
                       key={m}
                       onClick={() => void patch({ action: "timer", minutes: m })}
-                      className="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-amber-800 shadow-sm dark:bg-slate-800 dark:text-amber-400"
+                      className="rounded-xl bg-white px-4 py-2 text-xs font-semibold text-amber-800 shadow-sm ring-1 ring-amber-200 transition hover:bg-amber-50 dark:bg-slate-800 dark:text-amber-300 dark:ring-amber-800"
                     >
                       {m}m
                     </button>
@@ -324,7 +324,7 @@ export default function KontrolKapalPage() {
                   onChange={(e) => setTimerInput(e.target.value.replace(/[^0-9]/g, ""))}
                   placeholder="lainnya"
                   inputMode="numeric"
-                  className="w-16 rounded-lg border border-amber-200 px-2 py-1.5 text-xs dark:border-amber-700 dark:bg-slate-800 dark:text-slate-100"
+                  className="w-16 rounded-xl border border-amber-200 bg-white px-3 py-2 text-xs outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-200 dark:border-amber-800 dark:bg-slate-800 dark:text-slate-100"
                 />
                 <button
                   onClick={() => {
@@ -333,7 +333,7 @@ export default function KontrolKapalPage() {
                     setTimerInput("");
                   }}
                   disabled={!timerInput}
-                  className="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
+                  className="rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Set
                 </button>
@@ -341,7 +341,7 @@ export default function KontrolKapalPage() {
             )}
           </div>
         )}
-      </div>
-    </div>
+      </ScreenContent>
+    </Screen>
   );
 }

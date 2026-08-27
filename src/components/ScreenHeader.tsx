@@ -12,14 +12,14 @@ export function ScreenHeader({
   backHref?: string;
 }) {
   return (
-    <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-teal-100 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-800">
+    <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-teal-100/80 bg-white/85 px-4 py-3 backdrop-blur-md dark:border-slate-700 dark:bg-slate-800/80">
       {backHref && (
         <Link
           href={backHref}
           aria-label="Kembali"
-          className="rounded-full p-1.5 text-teal-700 hover:bg-teal-50 active:bg-teal-100 dark:text-teal-400 dark:hover:bg-slate-700 dark:active:bg-slate-600"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-xl text-teal-700 transition hover:bg-teal-50 active:bg-teal-100 dark:text-teal-400 dark:hover:bg-slate-700 dark:active:bg-slate-600"
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft size={18} />
         </Link>
       )}
       <div className="min-w-0 flex-1">

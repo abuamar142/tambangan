@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { kapalEvents, kapal, tambangan } from "@/lib/db/schema";
 import type { KapalMineDto, KapalStatus } from "@/lib/types";
@@ -73,6 +73,28 @@ export async function findOwnedKapal(
     .where(and(eq(kapal.slug, slug), eq(kapal.ownerId, ownerId)))
     .limit(1);
   return rows[0] ? toMineDto(rows[0]) : null;
+}
+
+export async function listKapalPublic(opts: {
+  status?: KapalStatus;
+  limit: number;
+  offset: number;
+}): Promise<{ rows: KapalMineDto[]; total: number }> {
+  const where = opts.status ? eq(kapal.status, opts.status) : undefined;
+  const totalRows = await db
+    .select({ c: count() })
+    .from(kapal)
+    .where(where);
+  const total = Number(totalRows[0]?.c ?? 0);
+  const rows = await db
+    .select(selection)
+    .from(kapal)
+    .innerJoin(tambangan, eq(kapal.tambanganId, tambangan.id))
+    .where(where)
+    .orderBy(desc(kapal.lastUpdatedAt))
+    .limit(opts.limit)
+    .offset(opts.offset);
+  return { rows: rows.map(toMineDto), total };
 }
 
 export async function findKapalIdBySlug(slug: string): Promise<number | null> {

@@ -3,13 +3,32 @@ import { z } from "zod";
 import { currentUser, err, ok } from "@/lib/api-utils";
 import { db } from "@/lib/db";
 import { kapal, tambangan } from "@/lib/db/schema";
-import { findKapalIdBySlug, logEvent } from "@/lib/server/kapal";
+import { findKapalIdBySlug, listKapalPublic, logEvent } from "@/lib/server/kapal";
 import { slugify } from "@/lib/slugify";
 
 const bodySchema = z.object({
   nama: z.string().min(1).max(40),
   tambanganId: z.number().int().positive(),
 });
+
+const querySchema = z.object({
+  status: z.enum(["titik_a", "proses", "titik_b"]).optional(),
+  limit: z.coerce.number().int().min(1).max(50).default(5),
+  offset: z.coerce.number().int().min(0).max(10000).default(0),
+});
+
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const parsed = querySchema.safeParse({
+    status: url.searchParams.get("status") ?? undefined,
+    limit: url.searchParams.get("limit") ?? undefined,
+    offset: url.searchParams.get("offset") ?? undefined,
+  });
+  if (!parsed.success) return err("Parameter tidak valid", 400);
+  const { status, limit, offset } = parsed.data;
+  const { rows, total } = await listKapalPublic({ status, limit, offset });
+  return ok({ kapal: rows, total });
+}
 
 export async function POST(req: Request) {
   const user = await currentUser();

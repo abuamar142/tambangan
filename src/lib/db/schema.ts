@@ -47,7 +47,11 @@ export const kapal = pgTable(
     timerEndAt: timestamp("timer_end_at", { withTimezone: true }),
     lastUpdatedAt: timestamp("last_updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index("kapal_tambangan_idx").on(t.tambanganId), index("kapal_owner_idx").on(t.ownerId)],
+  (t) => [
+    index("kapal_tambangan_idx").on(t.tambanganId),
+    index("kapal_owner_idx").on(t.ownerId),
+    index("kapal_lastUpdated_status_idx").on(t.lastUpdatedAt, t.status),
+  ],
 );
 
 export const kapalEvents = pgTable(

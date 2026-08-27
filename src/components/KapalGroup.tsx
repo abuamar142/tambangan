@@ -14,7 +14,7 @@ export function KapalGroup({ label, items }: { label: string; items: KapalLiveDt
         {items.map((k) => {
           const mins = minutesLeft(k.timerEndAt);
           return (
-            <div key={k.slug} className="rounded-xl border border-teal-100 bg-white p-3.5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <div key={k.slug} className="rounded-xl border border-teal-100 bg-white p-3.5 shadow-sm transition hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-2 font-bold text-slate-900 dark:text-slate-100">
                   <Anchor size={15} className="text-teal-600 dark:text-teal-400" />
