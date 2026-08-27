@@ -30,3 +30,20 @@ export async function PATCH(
   if (updated.length === 0) return err("Kapal not found", 404);
   return ok({ kapal: updated[0] });
 }
+
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> },
+) {
+  const admin = await requireAdmin();
+  if (!admin) return err("Unauthorized", 403);
+
+  const { slug } = await params;
+  const deleted = await db
+    .delete(kapal)
+    .where(eq(kapal.slug, slug))
+    .returning({ slug: kapal.slug });
+
+  if (deleted.length === 0) return err("Kapal not found", 404);
+  return ok({ message: "Kapal deleted" });
+}

@@ -205,6 +205,16 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
     }
   }
 
+  async function handleDelete(slug: string, nama: string) {
+    if (!confirm(`Hapus kapal "${nama}"?`)) return;
+    try {
+      await api(`/api/admin/kapal/${slug}`, { method: "DELETE" });
+      setTick((t) => t + 1);
+    } catch {
+      setError("Gagal menghapus kapal");
+    }
+  }
+
   if (loading) {
     return <p className="py-12 text-center text-sm text-slate-400 dark:text-slate-500">Memuat…</p>;
   }
@@ -246,17 +256,26 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
                   <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{k.tambanganNama}</td>
                   <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{k.ownerUsername}</td>
                   <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => {
-                        setExpandedSlug(expandedSlug === k.slug ? null : k.slug);
-                        setEditName(k.nama);
-                        setError("");
-                      }}
-                      className="rounded-lg p-2 text-slate-400 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400"
-                      title="Edit Nama"
-                    >
-                      <Pencil size={14} />
-                    </button>
+                    <div className="flex justify-end gap-1">
+                      <button
+                        onClick={() => {
+                          setExpandedSlug(expandedSlug === k.slug ? null : k.slug);
+                          setEditName(k.nama);
+                          setError("");
+                        }}
+                        className="rounded-lg p-2 text-slate-400 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400"
+                        title="Edit Nama"
+                      >
+                        <Pencil size={14} />
+                      </button>
+                      <button
+                        onClick={() => void handleDelete(k.slug, k.nama)}
+                        className="rounded-lg p-2 text-slate-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/30 dark:hover:text-red-400"
+                        title="Hapus"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
                 {expandedSlug === k.slug && (
@@ -310,13 +329,22 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
                   <p className="font-bold text-slate-900 dark:text-slate-100">{k.nama}</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">{k.tambanganNama} · {k.ownerUsername}</p>
                 </div>
-                <button
-                  onClick={() => { setExpandedSlug(k.slug); setEditName(k.nama); }}
-                  className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
-                  title="Edit Nama"
-                >
-                  <Pencil size={14} />
-                </button>
+                <div className="flex gap-1.5">
+                  <button
+                    onClick={() => { setExpandedSlug(k.slug); setEditName(k.nama); }}
+                    className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+                    title="Edit Nama"
+                  >
+                    <Pencil size={14} />
+                  </button>
+                  <button
+                    onClick={() => void handleDelete(k.slug, k.nama)}
+                    className="rounded-lg bg-red-50 p-2 text-red-500 dark:bg-red-900/30 dark:text-red-400"
+                    title="Hapus"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
             )}
           </div>
