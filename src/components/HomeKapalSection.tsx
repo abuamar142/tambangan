@@ -5,6 +5,8 @@ import { ChevronDown, RefreshCw } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { KapalCard } from "./KapalCard";
 import { ErrorNote } from "./ErrorNote";
+import { EmptyState } from "./EmptyState";
+import { SkeletonCard } from "./Skeleton";
 import { api } from "@/lib/client/api";
 import { usePolling } from "@/lib/client/usePolling";
 import type { KapalMineDto, TambanganDto } from "@/lib/types";
@@ -65,18 +67,10 @@ export function HomeKapalSection() {
 
       <ErrorNote message={error} />
 
-      {loading && !data && (
-        <div className="grid gap-3 md:grid-cols-2">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-24 animate-pulse rounded-2xl bg-white dark:bg-slate-800" />
-          ))}
-        </div>
-      )}
+      {loading && !data && <SkeletonCard count={5} />}
 
       {!loading && !error && list.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-teal-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-800">
-          <p className="text-sm text-slate-500 dark:text-slate-400">Belum ada kapal untuk filter ini.</p>
-        </div>
+        <EmptyState title="Belum ada kapal untuk filter ini." />
       )}
 
       <div className="grid gap-3 md:grid-cols-2">
