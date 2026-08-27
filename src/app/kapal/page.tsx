@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Anchor, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Anchor, ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ChannelBar } from "@/components/ChannelBar";
@@ -15,6 +15,8 @@ type Filter = "all" | "titik_a" | "titik_b" | "proses";
 
 export default function SemuaKapalPage() {
   const [filter, setFilter] = useState<Filter>("all");
+  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
   const [tambanganOpts, setTambanganOpts] = useState<TambanganDto[]>([]);
 
@@ -27,9 +29,23 @@ export default function SemuaKapalPage() {
   const labelA = useMemo(() => tambanganOpts[0]?.titikA.nama ?? "Titik A", [tambanganOpts]);
   const labelB = useMemo(() => tambanganOpts[0]?.titikB.nama ?? "Titik B", [tambanganOpts]);
 
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const handleSearchInput = (value: string) => {
+    setSearchInput(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setSearch(value);
+      setPage(1);
+    }, 300);
+  };
+  useEffect(() => () => { if (debounceRef.current) clearTimeout(debounceRef.current); }, []);
+
   const limit = 10;
   const offset = (page - 1) * limit;
-  const query = `/api/kapal?limit=${limit}&offset=${offset}${filter !== "all" ? `&status=${filter}` : ""}`;
+  const params = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+  if (filter !== "all") params.set("status", filter);
+  if (search) params.set("search", search);
+  const query = `/api/kapal?${params}`;
 
   const { data, error, loading } = usePolling<{ kapal: KapalMineDto[]; total: number }>(
     (signal) => api(query, { signal }),
@@ -62,6 +78,16 @@ export default function SemuaKapalPage() {
           <ChevronDown
             size={16}
             className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500"
+          />
+        </div>
+
+        <div className="relative">
+          <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+          <input
+            value={searchInput}
+            onChange={(e) => handleSearchInput(e.target.value)}
+            placeholder="Cari nama kapal…"
+            className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
           />
         </div>
 

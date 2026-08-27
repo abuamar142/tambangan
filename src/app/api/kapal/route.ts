@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, ilike } from "drizzle-orm";
 import { z } from "zod";
 import { currentUser, err, ok } from "@/lib/api-utils";
 import { db } from "@/lib/db";
@@ -13,6 +13,7 @@ const bodySchema = z.object({
 
 const querySchema = z.object({
   status: z.enum(["titik_a", "proses", "titik_b"]).optional(),
+  search: z.string().min(1).max(100).optional(),
   limit: z.coerce.number().int().min(1).max(50).default(5),
   offset: z.coerce.number().int().min(0).max(10000).default(0),
 });
@@ -21,12 +22,13 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const parsed = querySchema.safeParse({
     status: url.searchParams.get("status") ?? undefined,
+    search: url.searchParams.get("search") ?? undefined,
     limit: url.searchParams.get("limit") ?? undefined,
     offset: url.searchParams.get("offset") ?? undefined,
   });
   if (!parsed.success) return err("Parameter tidak valid", 400);
-  const { status, limit, offset } = parsed.data;
-  const { rows, total } = await listKapalPublic({ status, limit, offset });
+  const { status, search, limit, offset } = parsed.data;
+  const { rows, total } = await listKapalPublic({ status, search, limit, offset });
   return ok({ kapal: rows, total });
 }
 

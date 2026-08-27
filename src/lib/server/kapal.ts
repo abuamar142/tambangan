@@ -1,4 +1,4 @@
-import { and, count, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq, ilike } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { kapalEvents, kapal, tambangan } from "@/lib/db/schema";
 import type { KapalMineDto, KapalStatus } from "@/lib/types";
@@ -77,10 +77,14 @@ export async function findOwnedKapal(
 
 export async function listKapalPublic(opts: {
   status?: KapalStatus;
+  search?: string;
   limit: number;
   offset: number;
 }): Promise<{ rows: KapalMineDto[]; total: number }> {
-  const where = opts.status ? eq(kapal.status, opts.status) : undefined;
+  const conditions = [];
+  if (opts.status) conditions.push(eq(kapal.status, opts.status));
+  if (opts.search) conditions.push(ilike(kapal.nama, `%${opts.search}%`));
+  const where = conditions.length > 0 ? and(...conditions) : undefined;
   const totalRows = await db
     .select({ c: count() })
     .from(kapal)
