@@ -12,7 +12,7 @@ export function ScreenHeader({
   backHref?: string;
 }) {
   return (
-    <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-teal-100/80 bg-white/85 px-4 py-3 backdrop-blur-md dark:border-slate-700 dark:bg-slate-800/80">
+    <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]/85 px-4 py-3 backdrop-blur-md dark:border-[var(--color-border)] dark:bg-[var(--color-surface)]/80">
       {backHref && (
         <Link
           href={backHref}
@@ -23,8 +23,8 @@ export function ScreenHeader({
         </Link>
       )}
       <div className="min-w-0 flex-1">
-        <h1 className="truncate text-base font-bold tracking-tight text-slate-900 dark:text-slate-100">{title}</h1>
-        {subtitle && <p className="truncate text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>}
+        <h1 className="truncate text-base font-bold tracking-tight text-[var(--color-text)] dark:text-slate-100">{title}</h1>
+        {subtitle && <p className="truncate text-xs text-[var(--color-text-secondary)] dark:text-slate-400">{subtitle}</p>}
       </div>
       <ThemeToggle />
     </div>

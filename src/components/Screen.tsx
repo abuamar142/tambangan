@@ -11,7 +11,7 @@ export function Screen({
 }) {
   const maxW = size === "wide" ? "max-w-6xl" : "max-w-md md:max-w-3xl";
   return (
-    <div className={`min-h-screen bg-teal-50 dark:bg-slate-900 ${className}`}>
+    <div className={`min-h-screen bg-[var(--color-bg)] dark:bg-[var(--color-bg)] ${className}`}>
       <div className={`mx-auto flex min-h-screen w-full ${maxW} flex-col`}>{children}</div>
     </div>
   );
