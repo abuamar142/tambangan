@@ -23,6 +23,7 @@ interface UserRow {
   id: number;
   username: string;
   role: string;
+  tambanganId: number | null;
   createdAt: string;
 }
 
@@ -329,6 +330,7 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
 
 function UsersTab({ setError }: { setError: (s: string) => void }) {
   const [users, setUsers] = useState<UserRow[]>([]);
+  const [tambanganList, setTambanganList] = useState<TambanganRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [newPass, setNewPass] = useState("");
@@ -338,8 +340,11 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
     let alive = true;
     (async () => {
       try {
-        const r = await api<{ users: UserRow[] }>("/api/admin/users");
-        if (alive) setUsers(r.users);
+        const [u, t] = await Promise.all([
+          api<{ users: UserRow[] }>("/api/admin/users"),
+          api<{ tambangan: TambanganRow[] }>("/api/admin/tambangan"),
+        ]);
+        if (alive) { setUsers(u.users); setTambanganList(t.tambangan); }
       } catch {
         if (alive) setError("Gagal memuat pengguna");
       } finally {
@@ -365,6 +370,18 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
       setTick((t) => t + 1);
     } catch {
       setError("Gagal reset password");
+    }
+  }
+
+  async function handleAssignTambangan(userId: number, tambanganId: number | null) {
+    try {
+      await api(`/api/admin/users/${userId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ tambanganId }),
+      });
+      setTick((t) => t + 1);
+    } catch {
+      setError("Gagal assign tambangan");
     }
   }
 
@@ -446,27 +463,38 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                 {expandedId === u.id && (
                   <tr key={`${u.id}-expand`} className="bg-blue-50/50 dark:bg-blue-900/20">
                     <td colSpan={4} className="px-4 py-3">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Password baru:</span>
-                        <input
-                          type="password"
-                          value={newPass}
-                          onChange={(e) => setNewPass(e.target.value)}
-                          placeholder="••••••••"
-                          className="w-48 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-                        />
-                        <button
-                          onClick={() => handleResetPassword(u.id)}
-                          className="inline-flex items-center gap-1.5 rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-teal-700"
-                        >
-                          <Save size={12} /> Simpan
-                        </button>
-                        <button
-                          onClick={() => setExpandedId(null)}
-                          className="text-xs text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
-                        >
-                          Batal
-                        </button>
+                      <div className="space-y-3">
+                        <div className="flex flex-wrap items-center gap-3">
+                          <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Password baru:</span>
+                          <input
+                            type="password"
+                            value={newPass}
+                            onChange={(e) => setNewPass(e.target.value)}
+                            placeholder="••••••••"
+                            className="w-48 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                          />
+                          <button
+                            onClick={() => handleResetPassword(u.id)}
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-teal-700"
+                          >
+                            <Save size={12} /> Reset Password
+                          </button>
+                        </div>
+                        {u.role === "nahkoda" && (
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Tambangan:</span>
+                            <select
+                              value={u.tambanganId ?? ""}
+                              onChange={(e) => handleAssignTambangan(u.id, e.target.value ? Number(e.target.value) : null)}
+                              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:border-teal-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                            >
+                              <option value="">Belum diassign</option>
+                              {tambanganList.map((t) => (
+                                <option key={t.id} value={t.id}>{t.nama}</option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
                       </div>
                     </td>
                   </tr>

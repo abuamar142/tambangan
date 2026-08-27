@@ -7,7 +7,8 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 
 const resetSchema = z.object({
-  password: z.string().min(4),
+  password: z.string().min(4).optional(),
+  tambanganId: z.number().int().positive().nullable().optional(),
 });
 
 export async function PATCH(
@@ -23,12 +24,20 @@ export async function PATCH(
 
   const body = await _req.json();
   const parsed = resetSchema.safeParse(body);
-  if (!parsed.success) return err(parsed.error.flatten().fieldErrors.password?.[0] ?? "Invalid");
+  if (!parsed.success) return err("Invalid data");
 
-  const hash = bcrypt.hashSync(parsed.data.password, 10);
+  const updates: Record<string, unknown> = {};
+  if (parsed.data.password) {
+    updates.passwordHash = bcrypt.hashSync(parsed.data.password, 10);
+  }
+  if (parsed.data.tambanganId !== undefined) {
+    updates.tambanganId = parsed.data.tambanganId;
+  }
+  if (Object.keys(updates).length === 0) return err("No fields to update");
+
   const updated = await db
     .update(users)
-    .set({ passwordHash: hash })
+    .set(updates)
     .where(eq(users.id, id))
     .returning({ id: users.id, username: users.username });
 
