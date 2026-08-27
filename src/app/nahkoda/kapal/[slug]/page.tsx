@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { Clock, Crosshair, Pencil } from "lucide-react";
+import { Clock, Crosshair, Pencil, Trash2 } from "lucide-react";
 import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
@@ -131,6 +131,17 @@ export default function KontrolKapalPage() {
     }
   }, [editName, slug, k, refresh]);
 
+  const handleDelete = useCallback(async () => {
+    if (!confirm(`Hapus kapal "${k?.nama}"? Tindakan ini tidak dapat dibatalkan.`)) return;
+    setActionError("");
+    try {
+      await api(`/api/kapal/${slug}`, { method: "DELETE" });
+      window.location.href = "/nahkoda";
+    } catch (e) {
+      setActionError((e as Error).message);
+    }
+  }, [slug, k, refresh]);
+
   useEffect(() => {
     if (mode !== "gps") return;
 
@@ -221,6 +232,7 @@ export default function KontrolKapalPage() {
             <Pencil size={14} className="text-slate-400 dark:text-slate-500" />
           </button>
         )}
+
         <div className="rounded-2xl border border-teal-100 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <div className="flex items-center justify-between gap-2">
             <StatusBadge status={k.status} departingFrom={k.departingFrom} titikA={k.titikA} titikB={k.titikB} />
@@ -234,6 +246,14 @@ export default function KontrolKapalPage() {
             </div>
           </div>
         </div>
+
+        <button
+          onClick={() => void handleDelete()}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-red-200 bg-red-50 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-100 active:bg-red-200 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40"
+        >
+          <Trash2 size={14} />
+          Hapus Kapal
+        </button>
 
         <ErrorNote message={actionError} />
 

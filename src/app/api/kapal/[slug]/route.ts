@@ -107,3 +107,18 @@ export async function PATCH(req: Request, ctx: Ctx) {
   const updated = await findOwnedKapal(slug, user.id);
   return ok({ kapal: updated });
 }
+
+export async function DELETE(_req: Request, ctx: Ctx) {
+  const user = await currentUser();
+  if (!user) return err("Perlu login", 401);
+
+  const { slug } = await ctx.params;
+  const current = await findOwnedKapal(slug, user.id);
+  if (!current) return err("Kapal tidak ditemukan atau bukan milik Anda", 404);
+
+  const kapalId = await findKapalIdBySlug(slug);
+  if (kapalId) await logEvent(kapalId, "dihapus", { oleh: user.username });
+
+  await db.delete(kapal).where(eq(kapal.slug, slug));
+  return ok({ message: "Kapal berhasil dihapus" });
+}
