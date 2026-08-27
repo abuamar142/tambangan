@@ -6,6 +6,8 @@ import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { KapalCard } from "@/components/KapalCard";
 import { ErrorNote } from "@/components/ErrorNote";
+import { EmptyState } from "@/components/EmptyState";
+import { SkeletonCard } from "@/components/Skeleton";
 import { api } from "@/lib/client/api";
 import { usePolling } from "@/lib/client/usePolling";
 import type { KapalMineDto, TambanganDto } from "@/lib/types";
@@ -100,18 +102,10 @@ export default function SemuaKapalPage() {
 
         <ErrorNote message={error} />
 
-        {loading && !data && (
-          <div className="grid gap-3 md:grid-cols-2">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-28 animate-pulse rounded-2xl bg-white dark:bg-slate-800" />
-            ))}
-          </div>
-        )}
+        {loading && !data && <SkeletonCard count={6} />}
 
         {!loading && !error && list.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-teal-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-800">
-            <p className="text-sm text-slate-500 dark:text-slate-400">Belum ada kapal untuk filter ini.</p>
-          </div>
+          <EmptyState title="Belum ada kapal untuk filter ini." />
         )}
 
         <div className="grid gap-3 md:grid-cols-2">

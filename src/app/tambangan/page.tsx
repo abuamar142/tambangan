@@ -5,6 +5,8 @@ import { ChevronRight, MapPin } from "lucide-react";
 import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
+import { EmptyState } from "@/components/EmptyState";
+import { SkeletonCard } from "@/components/Skeleton";
 import { usePolling } from "@/lib/client/usePolling";
 import { api } from "@/lib/client/api";
 import type { TambanganDto } from "@/lib/types";
@@ -22,20 +24,9 @@ export default function PilihTambanganPage() {
       <ScreenHeader title="Pilih Tambangan" subtitle="Lihat kapal yang siap dinaiki" backHref="/" />
       <ScreenContent>
         <ErrorNote message={error} />
-        {loading && !data && (
-          <div className="grid gap-3 md:grid-cols-2">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-28 animate-pulse rounded-2xl bg-white dark:bg-slate-800"
-              />
-            ))}
-          </div>
-        )}
+        {loading && !data && <SkeletonCard count={4} />}
         {!loading && !error && list.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-teal-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-800">
-            <p className="text-sm text-slate-500 dark:text-slate-400">Belum ada tambangan terdaftar.</p>
-          </div>
+          <EmptyState title="Belum ada tambangan terdaftar." />
         )}
         <div className="grid gap-3 md:grid-cols-2">
           {list.map((t) => (
