@@ -1,5 +1,5 @@
 const CACHE_NAME = "tambangan-v1";
-const STATIC_ASSETS = ["/", "/icon.svg", "/manifest.json"];
+const STATIC_ASSETS = ["/", "/icon.svg", "/manifest.json", "/offline.html"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -29,7 +29,13 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return response;
-      }).catch(() => cached);
+      }).catch(() => {
+        if (cached) return cached;
+        if (event.request.mode === "navigate") {
+          return caches.match("/offline.html");
+        }
+        return new Response("Offline", { status: 503, statusText: "Offline" });
+      });
       return cached || fetchPromise;
     }),
   );
