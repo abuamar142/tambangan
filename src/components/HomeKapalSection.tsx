@@ -37,10 +37,10 @@ export function HomeKapalSection() {
   return (
     <section className="w-full space-y-3 px-4 py-6 md:px-6">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-sm font-bold tracking-tight text-slate-900 dark:text-slate-100">Kapal Terbaru</h2>
+        <h2 className="text-sm font-bold tracking-tight text-[var(--color-text)]">Kapal Terbaru</h2>
         <button
           onClick={refresh}
-          className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-700 shadow-sm transition hover:bg-teal-50 dark:border-slate-600 dark:bg-slate-800 dark:text-teal-400"
+          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-brand-700)] shadow-sm transition hover:bg-[var(--color-brand-50)] dark:text-[var(--color-brand-500)]"
         >
           <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
           Segarkan
@@ -51,7 +51,7 @@ export function HomeKapalSection() {
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value as Filter)}
-          className="w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 py-2.5 pr-10 text-sm font-medium text-slate-700 shadow-sm outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+          className="w-full appearance-none rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 pr-10 text-sm font-medium text-[var(--color-text-secondary)] shadow-sm outline-none transition focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
           aria-label="Filter kapal"
         >
           <option value="all">Semua</option>
@@ -61,7 +61,7 @@ export function HomeKapalSection() {
         </select>
         <ChevronDown
           size={16}
-          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500"
+          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
         />
       </div>
 
@@ -89,7 +89,7 @@ export function HomeKapalSection() {
 
       <Link
         href="/kapal"
-        className="flex w-full items-center justify-center gap-2 rounded-xl border border-teal-200 bg-white py-3 text-sm font-bold text-teal-700 shadow-sm transition hover:bg-teal-50 active:bg-teal-100 dark:border-slate-600 dark:bg-slate-800 dark:text-teal-400 dark:hover:bg-slate-700"
+        className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] py-3 text-sm font-bold text-[var(--color-brand-700)] shadow-sm transition hover:bg-[var(--color-brand-50)] active:bg-[var(--color-brand-100)] dark:text-[var(--color-brand-500)] dark:hover:bg-[var(--color-surface-alt)]"
       >
         Lihat semua kapal →
       </Link>
