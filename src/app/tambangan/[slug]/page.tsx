@@ -70,10 +70,10 @@ export default function StatusTambanganPage() {
         )}
 
         <div className="grid gap-6 md:grid-cols-2">
-          {groups.titik_a.length > 0 && t && <KapalGroup label={`Standby di ${t.titikA.nama}`} items={groups.titik_a} />}
-          {groups.titik_b.length > 0 && t && <KapalGroup label={`Standby di ${t.titikB.nama}`} items={groups.titik_b} />}
+          {groups.titik_a.length > 0 && t && <KapalGroup label={`Standby di ${t.titikA.nama}`} items={groups.titik_a} tambangan={t} />}
+          {groups.titik_b.length > 0 && t && <KapalGroup label={`Standby di ${t.titikB.nama}`} items={groups.titik_b} tambangan={t} />}
         </div>
-        <KapalGroup label="Sedang Menyeberang" items={groups.proses} />
+        <KapalGroup label="Sedang Menyeberang" items={groups.proses} tambangan={t} />
       </ScreenContent>
     </Screen>
   );

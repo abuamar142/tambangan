@@ -179,11 +179,11 @@ export default function KontrolKapalPage() {
       <ScreenContent>
         <div className="rounded-2xl border border-teal-100 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <div className="flex items-center justify-between gap-2">
-            <StatusBadge status={k.status} titikA={k.titikA} titikB={k.titikB} />
+            <StatusBadge status={k.status} departingFrom={k.departingFrom} titikA={k.titikA} titikB={k.titikB} />
             <span className="font-mono text-xs text-slate-500 dark:text-slate-400">{timeAgo(k.lastUpdated)}</span>
           </div>
           <div className="mt-4">
-            <ChannelBar status={k.status} />
+            <ChannelBar status={k.status} departingFrom={k.departingFrom} />
             <div className="mt-2 flex justify-between font-mono text-xs text-slate-500 dark:text-slate-400">
               <span>{k.titikA.nama}</span>
               <span>{k.titikB.nama}</span>

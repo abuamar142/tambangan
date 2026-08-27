@@ -3,18 +3,21 @@ import type { KapalStatus, Titik } from "@/lib/types";
 
 export function StatusBadge({
   status,
+  departingFrom,
   titikA,
   titikB,
 }: {
   status: KapalStatus;
+  departingFrom?: KapalStatus | null;
   titikA: Titik;
   titikB: Titik;
 }) {
   if (status === "proses") {
+    const destination = departingFrom === "titik_a" ? titikB : titikA;
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-700 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
         <Navigation size={13} />
-        Menyeberang
+        Menuju {destination.nama}
       </span>
     );
   }

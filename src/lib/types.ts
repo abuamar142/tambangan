@@ -19,6 +19,7 @@ export interface KapalLiveDto {
   slug: string;
   nama: string;
   status: KapalStatus;
+  departingFrom: KapalStatus | null;
   timerEndAt: string | null;
   lastUpdated: string;
 }

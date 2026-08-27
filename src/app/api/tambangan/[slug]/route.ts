@@ -16,6 +16,7 @@ export async function GET(_req: Request, ctx: Ctx) {
       slug: kapal.slug,
       nama: kapal.nama,
       status: kapal.status,
+      departingFrom: kapal.departingFrom,
       timerEndAt: kapal.timerEndAt,
       lastUpdatedAt: kapal.lastUpdatedAt,
     })
@@ -35,6 +36,7 @@ export async function GET(_req: Request, ctx: Ctx) {
       slug: k.slug,
       nama: k.nama,
       status: k.status,
+      departingFrom: k.departingFrom,
       timerEndAt: k.timerEndAt ? k.timerEndAt.toISOString() : null,
       lastUpdated: k.lastUpdatedAt.toISOString(),
     })),
