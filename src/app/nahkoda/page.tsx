@@ -8,6 +8,7 @@ import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { KapalCard } from "@/components/KapalCard";
 import { ErrorNote } from "@/components/ErrorNote";
+import { EmptyState } from "@/components/EmptyState";
 import { usePolling } from "@/lib/client/usePolling";
 import { api } from "@/lib/client/api";
 import type { KapalMineDto, UserInfo } from "@/lib/types";
@@ -167,11 +168,11 @@ export default function NahkodaPage() {
         )}
 
         {!loading && list.length === 0 && checked && (
-          <div className="rounded-2xl border border-dashed border-teal-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-800">
-            <Anchor size={28} className="mx-auto text-teal-300 dark:text-teal-600" />
-            <p className="mt-3 text-sm font-medium text-slate-600 dark:text-slate-300">Belum ada kapal</p>
-            <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">Daftarkan kapal pertama Anda untuk mulai.</p>
-          </div>
+          <EmptyState
+            icon={<Anchor size={28} />}
+            title="Belum ada kapal"
+            description="Daftarkan kapal pertama Anda untuk mulai."
+          />
         )}
 
         <div className="grid gap-3 md:grid-cols-2">
