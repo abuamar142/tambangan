@@ -1,122 +1,107 @@
 # Tambangan Track
 
-Web mobile-first untuk lacak perahu tambangan (Jatikalen–Megaluh, Nganjuk). Mode **Penumpang** melihat posisi kapal secara live (polling 4 detik), mode **Nahkoda** mengelola kapalnya setelah login.
+<p align="center">
+  <a href="https://nextjs.org"><img alt="Next.js" src="https://img.shields.io/badge/Next.js-16.3-black?logo=next.js&logoColor=white" /></a>
+  <a href="https://tailwindcss.com"><img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4-38BDF8?logo=tailwindcss&logoColor=white" /></a>
+  <a href="https://www.docker.com"><img alt="Docker" src="https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white" /></a>
+  <a href="https://www.postgresql.org"><img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white" /></a>
+  <a href="https://www.typescriptlang.org"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white" /></a>
+  <a href="./LICENSE"><img alt="License" src="https://img.shields.io/badge/License-MIT-green" /></a>
+</p>
 
-Migrasi dari single-file `TambanganTrack.tsx` (AI Studio `window.storage`) ke **Next.js App Router + PostgreSQL (Docker) + JWT auth**, diekspos online via `cloudflared tunnel` di `tambangan.abuamar.online`.
+<p align="center">
+  Aplikasi pelacakan perahu tambangan <strong>Jatikalen – Megaluh (Nganjuk)</strong> — mobile-first, real-time, dan siap produksi.<br />
+  <strong>Demo:</strong> <a href="https://tambangan.abuamar.online">https://tambangan.abuamar.online</a>
+</p>
 
-## Stack
+<p align="center">
+  <img src="./docs/screenshot.png" alt="Screenshot Tambangan Track" width="720" />
+</p>
 
-- Next.js 16.3 (App Router, Turbopack) — `output: standalone` untuk Docker
-- Tailwind CSS 4, lucide-react
-- PostgreSQL 17 + Drizzle ORM
-- `jose` JWT (httpOnly cookie), `bcryptjs`
-- `zod` validasi
+---
 
-## Struktur
+## Fitur
 
-```
-src/
-  app/
-    page.tsx                    # home — pilih role
-    login/ page.tsx             # login
-    register/ page.tsx          # register
-    tambangan/page.tsx          # daftar tambangan (publik)
-    tambangan/[slug]/page.tsx   # status kapal live, polling
-    nahkoda/page.tsx            # dashboard kapal milik saya (protected)
-    nahkoda/kapal/baru/page.tsx # daftar kapal (pilih/buat tambangan)
-    nahkoda/kapal/[slug]/page.tsx # kontrol status, GPS, timer
-    api/                        # auth, tambangan, kapal
-  components/ ChannelBar, StatusBadge, ScreenHeader, KapalGroup, ErrorNote
-  lib/db/ schema.ts, index.ts, bootstrap.ts
-  lib/auth/ session.ts, password.ts
-  proxy.ts                      # guard /nahkoda/*
-  instrumentation.ts            # bootstrap DB + seed saat boot
-```
+### Peran & Hak Akses
 
-## Prasyarat
+| Peran | Akses | Kemampuan |
+|-------|-------|-----------|
+| **Penumpang** | Publik, tanpa akun | Melihat status kapal live (polling 4s), estimasi timer |
+| **Nahkoda** | Login (`tb_session` cookie) | Kelola kapal, kontrol status, timer, dan GPS titik A/B |
+| **Admin** | Login (role `admin`) | Seed akun `admin/admin123`, kelola data awal |
 
-- Node 22+, pnpm 11
-- Docker + Docker Compose
-- (untuk publik) akun Cloudflare Zero Trust + domain `abuamar.online`
+### Daftar Fitur
 
-## Jalankan lokal (dev)
+- **Live polling 4 detik** — status kapal real-time tanpa WebSocket, ringan di jaringan seluler.
+- **GPS presisi** — simpan koordinat titik penyeberangan via Geolocation API (**HTTPS required**).
+- **Dark / Light mode** — toggle tema dengan persistensi.
+- **Mobile-first & aksesibel** — layout dioptimalkan untuk HP, navigasi bottom.
+- **Keamanan** — JWT (`jose`) httpOnly cookie, bcrypt password hash, route guard (`proxy.ts`), validasi `zod`.
 
-```bash
-# 1. DB
-docker compose up -d db             # postgres di localhost:5432
-# 2. cek .env (sudah terisi default dev)
-cat .env
-# 3. app
-pnpm install
-pnpm dev                            # http://localhost:3000
-```
+---
 
-Seed otomatis saat boot: tambangan `jatikalen-megaluh` + akun `admin/admin123`.
-Daftarkan nahkoda baru di `/register` atau login sebagai `admin`.
+## Tech Stack
 
-Polling penumpang 4 detik; nahkoda mengontrol status (`titik_a`/`proses`/`titik_b`), timer, dan lokasi titik via GPS.
+| Layer | Teknologi | Versi | Keterangan |
+|-------|-----------|-------|------------|
+| Framework | **Next.js** (App Router, Turbopack) | `16.3.2` | `output: standalone` untuk Docker multi-stage |
+| UI | **Tailwind CSS** | `4.x` | Utility-first, mobile-first |
+| Database | **PostgreSQL** | `17-alpine` | Service `db` di Docker Compose |
+| ORM | **Drizzle ORM** | `0.45.2` | Schema di `src/lib/db/schema.ts` |
+| Auth | **jose** (JWT) + **bcryptjs** | `6.x` / `3.x` | Cookie `tb_session`, hash password |
+| Infra | **Docker Compose**, **Caddy**, **Cloudflare Tunnel** | — | VPS `43.129.53.235`, CI/CD via GitHub Actions |
 
-## Produksi (Docker)
+---
+
+## Quick Start
 
 ```bash
 cp .env.example .env
-# isi JWT_SECRET (string acak panjang) dan credential lain
-
-docker compose up -d --build db app
-# cek http://localhost:3000
+docker compose up -d db
+pnpm install
+pnpm dev
 ```
 
-## Online via cloudflared (`tambangan.abuamar.online`)
+Seed otomatis saat boot: tambangan `jatikalen-megaluh` + akun `admin/admin123`. Daftarkan nahkoda baru di `/register`.
 
-Di server/VPS yang jalankan compose:
+---
 
-1. Cloudflare Dashboard -> Zero Trust -> Networks -> Tunnels -> Create tunnel (Cloudflared).
-2. Route hostname `tambangan.abuamar.online` -> `http://app:3000`.
-3. Copy **Tunnel Token**.
-4. Di host, set env dan nyalakan service tunnel:
+## Environment Variables
 
-```bash
-# .env
-CLOUDFLARE_TUNNEL_TOKEN=eyJhIjoi...token-dari-dashboard
+| Key | Default | Keterangan |
+|-----|---------|------------|
+| `DATABASE_URL` | `postgres://tambangan:tambangan@localhost:5432/tambangan` | URL PostgreSQL (di Compose otomatis ke `@db`) |
+| `JWT_SECRET` | `insecure-dev-secret-...` | Secret JWT, **wajib ganti di produksi** (≥32 char) |
+| `ADMIN_USERNAME` | `admin` | Username seed admin |
+| `ADMIN_PASSWORD` | `admin123` | Password seed admin (bcrypt hash) |
+| `POSTGRES_USER` | `tambangan` | User PostgreSQL untuk service `db` |
+| `POSTGRES_PASSWORD` | `tambangan` | Password PostgreSQL |
+| `POSTGRES_DB` | `tambangan` | Nama database |
+| `CLOUDFLARE_TUNNEL_TOKEN` | — | Token Cloudflare Zero Trust Tunnel (opsional) |
 
-docker compose --profile tunnel up -d db app cloudflared
-# tanpa tunnel: docker compose up -d db app
-```
+---
 
-Cloudflare otomatis menerbitkan HTTPS; tidak perlu Nginx/Certbot. Tunnel berjalan di dalam compose, me-route `https://tambangan.abuamar.online` -> `app:3000` di jaringan Docker.
+## Deployment
 
-## Env
+Produksi berjalan di VPS dengan Docker Compose (`db` + `app`) dan Caddy sebagai reverse proxy. CI/CD via GitHub Actions: push ke branch `main` otomatis trigger build + SSH deploy ke VPS. Lihat `.github/workflows/deploy.yml` untuk konfigurasi lengkap.
 
-| Key | Contoh | Keterangan |
-|-----|--------|------------|
-| `DATABASE_URL` | `postgres://tambangan:tambangan@db:5432/tambangan` | dev: `@localhost`, compose: `@db` |
-| `JWT_SECRET` | string acak >=32 char | Wajib ganti di produksi |
-| `ADMIN_USERNAME/PASSWORD` | `admin/admin123` | Seed saat boot pertama |
-| `POSTGRES_*` | `tambangan` | Untuk service `db` |
-| `CLOUDFLARE_TUNNEL_TOKEN` | `eyJ...` | Kosong = tunnel tidak aktif |
+---
 
-## API ringkas
+## Contributing
 
-Publik: `GET /api/tambangan`, `GET /api/tambangan/[slug]` (detail + kapal).
-Auth: `POST /api/auth/register|login|logout`, `GET /api/auth/me`.
-Protected (`tb_session` cookie): `POST /api/tambangan`, `POST /api/kapal`, `GET /api/nahkoda/kapal`, `GET|PATCH /api/kapal/[slug]`.
+1. Fork repository ini.
+2. Buat branch fitur (`git checkout -b feat/nama-fitur`).
+3. Buka Pull Request ke branch `development`.
 
-`PATCH /api/kapal/[slug]` actions:
-- `{"action":"status","value":"titik_a"|"proses"|"titik_b"}`
-- `{"action":"timer","minutes":5}` / `{"action":"timer_clear"}`
-- `{"action":"set_lokasi_titik","side":"a"|"b","lat":..,"lng":..}`
+---
 
-## Catatan
+## License
 
-- Penumpang tidak perlu akun; hanya nahkoda yang login. Kapal terikat `ownerId`, hanya pemilik yang bisa PATCH.
-- File asli disimpan di `docs/reference/TambanganTrack.original.tsx` untuk referensi visual (ChannelBar, Timer, dll.) di-porting setia.
-- GPS memerlukan HTTPS kecuali di `localhost`; domain tunnel sudah HTTPS.
+Dirilis di bawah lisensi **MIT** — lihat file [LICENSE](./LICENSE) untuk detail.
 
-## Perintah berguna
+---
 
-```bash
-pnpm build              # cek Turbopack + typecheck + generate routes
-pnpm lint
-docker compose logs -f db app
-docker compose down -v  # reset DB (hapus pgdata)
-```
+<p align="center">
+  Dibuat dengan Next.js, Tailwind, dan PostgreSQL — untuk penyeberangan Jatikalen – Megaluh.<br />
+  <a href="https://tambangan.abuamar.online">tambangan.abuamar.online</a> · <a href="https://github.com/abuamar142/tambangan">GitHub</a>
+</p>
