@@ -109,7 +109,7 @@ jobs:
             docker compose up -d --build
 
             echo "→ Running database migrations..."
-            docker compose exec -T app npx drizzle-kit migrate || echo "⚠ Migration skipped (may already be applied)"
+            npx drizzle-kit migrate || echo "⚠ Migration skipped (may already be applied)"
 
             echo "→ Waiting for app to be healthy..."
             # wait up to ~60s for app to respond
