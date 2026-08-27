@@ -86,10 +86,11 @@ export default function NahkodaPage() {
     <Screen>
       <ScreenHeader title="Mode Nahkoda" subtitle={me ? `Halo, ${me.username}` : undefined} />
       <ScreenContent>
+        {/* Action buttons */}
         <div className="flex flex-wrap gap-2">
           <Link
             href="/nahkoda/kapal/baru"
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-teal-600 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-teal-700 active:bg-teal-800 md:flex-none"
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--color-brand)] px-4 py-3 text-sm font-bold text-[var(--color-brand-foreground)] shadow-sm transition hover:bg-[var(--color-brand-dark)] active:bg-[var(--color-brand-800)] md:flex-none"
           >
             <Plus size={16} />
             Daftarkan Kapal
@@ -105,7 +106,7 @@ export default function NahkodaPage() {
           )}
           <button
             onClick={handleLogout}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 active:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm font-semibold text-[var(--color-text-secondary)] transition hover:bg-[var(--color-surface-alt)] active:bg-[var(--color-border-subtle)]"
           >
             <LogOut size={16} />
             Keluar
@@ -113,41 +114,54 @@ export default function NahkodaPage() {
         </div>
 
         {/* Ganti Password */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
+        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
           <button
             onClick={() => setShowPasswordForm(!showPasswordForm)}
-            className="flex w-full items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300"
+            aria-expanded={showPasswordForm}
+            className="flex w-full items-center gap-2 text-sm font-semibold text-[var(--color-text)]"
           >
             <KeyRound size={14} />
             {showPasswordForm ? "Tutup" : "Ganti Password"}
           </button>
           {showPasswordForm && (
             <div className="mt-3 space-y-2">
-              <input
-                type="password"
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-                placeholder="Password lama"
-                autoComplete="current-password"
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-              />
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Password baru (min 6 karakter)"
-                autoComplete="new-password"
-                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-              />
+              <div>
+                <label htmlFor="old-password" className="mb-1 block text-xs font-medium text-[var(--color-text-secondary)]">
+                  Password lama
+                </label>
+                <input
+                  id="old-password"
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  placeholder="Password lama"
+                  autoComplete="current-password"
+                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+                />
+              </div>
+              <div>
+                <label htmlFor="new-password" className="mb-1 block text-xs font-medium text-[var(--color-text-secondary)]">
+                  Password baru
+                </label>
+                <input
+                  id="new-password"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Min 6 karakter"
+                  autoComplete="new-password"
+                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+                />
+              </div>
               <button
                 onClick={() => void handlePasswordChange()}
                 disabled={passwordLoading}
-                className="w-full rounded-xl bg-teal-600 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-teal-700 disabled:opacity-50"
+                className="w-full rounded-xl bg-[var(--color-brand)] py-2.5 text-sm font-bold text-[var(--color-brand-foreground)] shadow-sm transition hover:bg-[var(--color-brand-dark)] disabled:opacity-50"
               >
                 {passwordLoading ? "Menyimpan…" : "Simpan"}
               </button>
               {passwordMsg && (
-                <p className={`text-xs ${passwordMsg.startsWith("✓") ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
+                <p className={`text-xs ${passwordMsg.startsWith("✓") ? "text-[var(--color-success)]" : "text-[var(--color-danger)]"}`}>
                   {passwordMsg}
                 </p>
               )}
@@ -157,12 +171,12 @@ export default function NahkodaPage() {
 
         <ErrorNote message={error} />
 
-        <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">
           Kapal Saya · {list.length}
         </p>
 
         {((loading && !data) || !checked) && (
-          <p className="rounded-xl bg-white p-8 text-center text-sm text-slate-500 shadow-sm dark:bg-slate-800 dark:text-slate-400">
+          <p className="rounded-xl bg-[var(--color-surface)] p-8 text-center text-sm text-[var(--color-text-muted)]">
             Memuat…
           </p>
         )}

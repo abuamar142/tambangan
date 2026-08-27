@@ -211,7 +211,7 @@ export default function KontrolKapalPage() {
     return (
       <Screen>
         <ScreenHeader title="Memuat…" backHref="/nahkoda" />
-        <p className="p-8 text-center text-sm text-slate-500 dark:text-slate-400">Mengambil data kapal…</p>
+        <p className="p-8 text-center text-sm text-[var(--color-text-muted)]">Mengambil data kapal…</p>
       </Screen>
     );
   }
@@ -232,50 +232,57 @@ export default function KontrolKapalPage() {
 
   return (
     <Screen>
-      <ScreenHeader title="" backHref="/nahkoda" />
+      <ScreenHeader title={k?.nama ?? "Kontrol Kapal"} backHref="/nahkoda" />
       <ScreenContent>
+        {/* Edit name card */}
         {editing ? (
-          <div className="flex items-center gap-2 rounded-2xl border border-teal-200 bg-white p-3 dark:border-slate-600 dark:bg-slate-800">
+          <div className="flex items-center gap-2 rounded-xl border border-[var(--color-brand-200)] bg-[var(--color-surface)] p-3">
+            <label htmlFor="edit-nama-kapal" className="sr-only">
+              Nama kapal
+            </label>
             <input
+              id="edit-nama-kapal"
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") void handleRename(); if (e.key === "Escape") setEditing(false); }}
               autoFocus
-              className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
+              className="min-w-0 flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm font-bold text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
             />
-            <button onClick={() => void handleRename()} className="rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white hover:bg-teal-700">Simpan</button>
-            <button onClick={() => setEditing(false)} className="rounded-xl bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300">Batal</button>
+            <button onClick={() => void handleRename()} className="rounded-xl bg-[var(--color-brand)] px-4 py-2 text-xs font-bold text-[var(--color-brand-foreground)] hover:bg-[var(--color-brand-dark)]">Simpan</button>
+            <button onClick={() => setEditing(false)} className="rounded-xl bg-[var(--color-surface-alt)] px-4 py-2 text-xs font-semibold text-[var(--color-text-secondary)] hover:bg-[var(--color-border-subtle)]">Batal</button>
           </div>
         ) : (
           <button
             onClick={() => { setEditing(true); setEditName(k?.nama ?? ""); }}
-            className="flex w-full items-center justify-between rounded-2xl border border-teal-100 bg-white px-4 py-3 text-left shadow-sm hover:bg-teal-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
+            className="flex w-full items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-left shadow-sm hover:bg-[var(--color-brand-50)]"
           >
             <div>
-              <p className="font-bold text-slate-900 dark:text-slate-100">{k?.nama}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{k?.tambanganNama}</p>
+              <p className="font-bold text-[var(--color-text)]">{k?.nama}</p>
+              <p className="text-xs text-[var(--color-text-muted)]">{k?.tambanganNama}</p>
             </div>
-            <Pencil size={14} className="text-slate-400 dark:text-slate-500" />
+            <Pencil size={14} className="text-[var(--color-text-muted)]" />
           </button>
         )}
 
-        <div className="rounded-2xl border border-teal-100 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        {/* Status card */}
+        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm">
           <div className="flex items-center justify-between gap-2">
             <StatusBadge status={k.status} departingFrom={k.departingFrom} titikA={k.titikA} titikB={k.titikB} />
-            <span className="font-mono text-xs text-slate-500 dark:text-slate-400">{timeAgo(k.lastUpdated)}</span>
+            <span className="font-mono text-xs text-[var(--color-text-muted)]">{timeAgo(k.lastUpdated)}</span>
           </div>
           <div className="mt-4">
             <ChannelBar status={k.status} departingFrom={k.departingFrom} />
-            <div className="mt-2 flex justify-between font-mono text-xs text-slate-500 dark:text-slate-400">
+            <div className="mt-2 flex justify-between font-mono text-xs text-[var(--color-text-muted)]">
               <span>{k.titikA.nama}</span>
               <span>{k.titikB.nama}</span>
             </div>
           </div>
         </div>
 
+        {/* Delete button */}
         <button
           onClick={() => void handleDelete()}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-red-200 bg-red-50 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-100 active:bg-red-200 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/40"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-danger)]/20 bg-[var(--color-danger)]/10 py-3 text-sm font-semibold text-[var(--color-danger)] transition hover:bg-[var(--color-danger)]/20 active:bg-[var(--color-danger)]/30"
         >
           <Trash2 size={14} />
           Hapus Kapal
@@ -283,13 +290,17 @@ export default function KontrolKapalPage() {
 
         {/* Pindah Tambangan */}
         {tambanganList.length > 1 && (
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-            <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400">
+          <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm">
+            <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)]">
               <ArrowRightLeft size={13} />
               Pindah Tambangan
             </p>
-            <p className="mb-2 text-xs text-slate-400 dark:text-slate-500">Sekarang: {k?.tambanganNama}</p>
+            <p className="mb-2 text-xs text-[var(--color-text-muted)]">Sekarang: {k?.tambanganNama}</p>
+            <label htmlFor="pindah-tambangan" className="sr-only">
+              Pilih tambangan tujuan
+            </label>
             <select
+              id="pindah-tambangan"
               onChange={(e) => {
                 if (e.target.value && e.target.value !== k?.tambanganSlug) {
                   if (confirm(`Pindah kapal ke tambangan ini? Status akan direset ke titik awal.`)) {
@@ -299,7 +310,7 @@ export default function KontrolKapalPage() {
                 e.target.value = "";
               }}
               defaultValue=""
-              className="w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200"
+              className="w-full appearance-none rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm font-medium text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
             >
               <option value="">Pilih tambangan tujuan…</option>
               {tambanganList
@@ -315,24 +326,27 @@ export default function KontrolKapalPage() {
 
         <ErrorNote message={actionError} />
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        {/* Mode toggle (Manual / GPS) */}
+        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-1 shadow-sm">
           <div className="flex gap-1">
             <button
               onClick={() => setMode("manual")}
+              aria-pressed={mode === "manual"}
               className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition ${
-                mode !== "gps"
-                  ? "bg-teal-600 text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-700"
+                mode === "manual"
+                  ? "bg-[var(--color-brand)] text-[var(--color-brand-foreground)] shadow-sm"
+                  : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-alt)]"
               }`}
             >
               Manual
             </button>
             <button
               onClick={() => setMode("gps")}
+              aria-pressed={mode === "gps"}
               className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition ${
                 mode === "gps"
-                  ? "bg-teal-600 text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-700"
+                  ? "bg-[var(--color-brand)] text-[var(--color-brand-foreground)] shadow-sm"
+                  : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-alt)]"
               }`}
             >
               GPS Otomatis
@@ -340,13 +354,14 @@ export default function KontrolKapalPage() {
           </div>
 
           {mode !== "gps" ? (
+            /* Manual status buttons grid */
             <div className="grid grid-cols-3 gap-2 p-2">
               <button
                 onClick={() => void patch({ action: "status", value: "titik_a" })}
                 className={`min-h-11 rounded-xl py-3 text-xs font-bold transition ${
                   k.status === "titik_a"
-                    ? "bg-emerald-600 text-white shadow-sm"
-                    : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                    ? "bg-[var(--color-success)] text-[var(--color-success-foreground)] shadow-sm"
+                    : "border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] active:bg-[var(--color-border-subtle)]"
                 }`}
               >
                 {k.titikA.nama}
@@ -355,8 +370,8 @@ export default function KontrolKapalPage() {
                 onClick={() => void patch({ action: "status", value: "proses" })}
                 className={`min-h-11 rounded-xl py-3 text-xs font-bold transition ${
                   k.status === "proses"
-                    ? "bg-blue-600 text-white shadow-sm"
-                    : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                    ? "bg-[var(--color-info)] text-[var(--color-info-foreground)] shadow-sm"
+                    : "border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] active:bg-[var(--color-border-subtle)]"
                 }`}
               >
                 Proses ⛵
@@ -365,31 +380,32 @@ export default function KontrolKapalPage() {
                 onClick={() => void patch({ action: "status", value: "titik_b" })}
                 className={`min-h-11 rounded-xl py-3 text-xs font-bold transition ${
                   k.status === "titik_b"
-                    ? "bg-emerald-600 text-white shadow-sm"
-                    : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                    ? "bg-[var(--color-success)] text-[var(--color-success-foreground)] shadow-sm"
+                    : "border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface-alt)] active:bg-[var(--color-border-subtle)]"
                 }`}
               >
                 {k.titikB.nama}
               </button>
             </div>
           ) : (
+            /* GPS mode */
             <div className="space-y-3 p-3">
-              {gpsError && <p className="rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600 dark:bg-red-900/30 dark:text-red-400">{gpsError}</p>}
-              <div className="space-y-2 rounded-xl bg-slate-50 p-3 dark:bg-slate-900/50">
-                <p className="flex items-center justify-between font-mono text-xs text-slate-600 dark:text-slate-400">
+              {gpsError && <p className="rounded-lg bg-[var(--color-danger)]/10 px-3 py-2 text-xs text-[var(--color-danger)]">{gpsError}</p>}
+              <div className="space-y-2 rounded-xl bg-[var(--color-surface-alt)] p-3">
+                <p className="flex items-center justify-between font-mono text-xs text-[var(--color-text-secondary)]">
                   <span>{k.titikA.nama}</span>
-                  <span className="font-semibold">{formatDistance(gpsDist.a)}</span>
+                  <span className="font-semibold text-[var(--color-text)]">{formatDistance(gpsDist.a)}</span>
                 </p>
-                <p className="flex items-center justify-between font-mono text-xs text-slate-600 dark:text-slate-400">
+                <p className="flex items-center justify-between font-mono text-xs text-[var(--color-text-secondary)]">
                   <span>{k.titikB.nama}</span>
-                  <span className="font-semibold">{formatDistance(gpsDist.b)}</span>
+                  <span className="font-semibold text-[var(--color-text)]">{formatDistance(gpsDist.b)}</span>
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
                 {k.titikA.lat === null && (
                   <button
                     onClick={() => void captureTitik("a")}
-                    className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl bg-teal-50 py-2.5 text-xs font-semibold text-teal-700 transition hover:bg-teal-100 dark:bg-teal-900/30 dark:text-teal-300"
+                    className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl bg-[var(--color-brand-50)] py-2.5 text-xs font-semibold text-[var(--color-brand-700)] transition hover:bg-[var(--color-brand-100)]"
                   >
                     <Crosshair size={12} />
                     {gettingLoc === "a" ? "Mengambil…" : `Set lokasi ${k.titikA.nama}`}
@@ -398,22 +414,23 @@ export default function KontrolKapalPage() {
                 {k.titikB.lat === null && (
                   <button
                     onClick={() => void captureTitik("b")}
-                    className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl bg-teal-50 py-2.5 text-xs font-semibold text-teal-700 transition hover:bg-teal-100 dark:bg-teal-900/30 dark:text-teal-300"
+                    className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl bg-[var(--color-brand-50)] py-2.5 text-xs font-semibold text-[var(--color-brand-700)] transition hover:bg-[var(--color-brand-100)]"
                   >
                     <Crosshair size={12} />
                     {gettingLoc === "b" ? "Mengambil…" : `Set lokasi ${k.titikB.nama}`}
                   </button>
                 )}
               </div>
-              <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+              <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">
                 Status terupdate otomatis dari GPS. Kalau sinyal lemah, pakai mode manual saja.
               </p>
             </div>
           )}
         </div>
 
+        {/* Timer section */}
         {showTimer && (
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-800 dark:bg-amber-900/20">
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-800 dark:bg-amber-900/20">
             <div className="flex items-center gap-2 text-sm font-semibold text-amber-800 dark:text-amber-300">
               <Clock size={16} />
               Estimasi berangkat lagi
@@ -443,12 +460,16 @@ export default function KontrolKapalPage() {
                     </button>
                   ))}
                 </div>
+                <label htmlFor="timer-custom" className="sr-only">
+                  Menit custom
+                </label>
                 <input
+                  id="timer-custom"
                   value={timerInput}
                   onChange={(e) => setTimerInput(e.target.value.replace(/[^0-9]/g, ""))}
                   placeholder="lainnya"
                   inputMode="numeric"
-                  className="w-16 rounded-xl border border-amber-200 bg-white px-3 py-2 text-xs outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-200 dark:border-amber-800 dark:bg-slate-800 dark:text-slate-100"
+                  className="w-16 rounded-xl border border-amber-200 bg-white px-3 py-2 text-xs text-[var(--color-text)] outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-200 dark:border-amber-800 dark:bg-slate-800"
                 />
                 <button
                   onClick={() => {
