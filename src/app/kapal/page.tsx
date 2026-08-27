@@ -51,7 +51,15 @@ export default function SemuaKapalPage() {
     4000,
   );
 
-  const list = data?.kapal ?? [];
+  const list = useMemo(() => {
+    const items = data?.kapal ?? [];
+    const statusOrder = { proses: 0, titik_a: 1, titik_b: 2 };
+    return [...items].sort((a, b) => {
+      const sa = statusOrder[a.status as keyof typeof statusOrder] ?? 3;
+      const sb = statusOrder[b.status as keyof typeof statusOrder] ?? 3;
+      return sa - sb;
+    });
+  }, [data]);
   const total = data?.total ?? 0;
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
