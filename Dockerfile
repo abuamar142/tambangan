@@ -4,7 +4,7 @@ RUN npm install -g bun
 
 FROM base AS deps
 WORKDIR /app
-COPY package.json bun.lock pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json bun.lock pnpm-workspace.yaml ./
 RUN bun install --frozen-lockfile
 
 FROM base AS builder
