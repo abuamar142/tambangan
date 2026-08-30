@@ -1,7 +1,9 @@
 services:
-  # Override db dengan container_name berbeda agar tidak bentrok dengan prod
+  # Override db dengan container_name & port berbeda agar tidak bentrok dengan prod
   db:
     container_name: tambangan-db-dev
+    ports:
+      - "5433:5432"   # host port 5433 agar tidak bentrok dengan prod (5432)
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-tambangan}_dev
 
