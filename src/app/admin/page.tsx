@@ -85,7 +85,7 @@ export default function AdminPage() {
   if (!checked) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--color-bg)]">
-        <p className="text-sm text-[var(--color-text-secondary)]">Memuat…</p>
+        <p className="text-sm text-[var(--color-text-muted)]">Memuat…</p>
       </div>
     );
   }
@@ -99,7 +99,7 @@ export default function AdminPage() {
       />
 
       {/* Tab bar */}
-      <div className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+      <div className="border-b border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-sm)]">
         <div className="flex gap-0 px-4 md:px-6">
           {TABS.map((t) => {
             const Icon = t.icon;
@@ -111,9 +111,9 @@ export default function AdminPage() {
                 aria-selected={active}
                 aria-controls={`panel-${t.id}`}
                 onClick={() => { setTab(t.id); setError(""); }}
-                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition ${
+                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                   active
-                    ? "border-teal-600 text-teal-700"
+                    ? "border-[var(--color-brand)] text-[var(--color-brand)]"
                     : "border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"
                 }`}
               >
@@ -125,7 +125,7 @@ export default function AdminPage() {
           <div className="flex flex-1 items-center justify-end">
             <Link
               href="/nahkoda"
-              className="hidden items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 text-xs font-medium text-[var(--color-text-secondary)] transition hover:bg-[var(--color-surface-hover)] md:inline-flex"
+              className="hidden items-center gap-1.5 rounded-full border border-[var(--color-border)] px-3 py-1 text-xs font-medium text-[var(--color-text-secondary)] transition-all duration-200 hover:bg-[var(--color-surface-alt)] hover:shadow-[var(--shadow-sm)] md:inline-flex"
             >
               Dashboard Nahkoda →
             </Link>
@@ -177,16 +177,16 @@ function StatsOverview() {
   if (!stats) return null;
 
   const items = [
-    { label: "Pengguna", value: stats.users, color: "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" },
-    { label: "Tambangan", value: stats.tambangan, color: "bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400" },
-    { label: "Total Kapal", value: stats.kapal, color: "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" },
-    { label: "Sedang Berangkat", value: stats.aktif, color: "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" },
+    { label: "Pengguna", value: stats.users, color: "bg-[var(--color-info)]/10 text-[var(--color-info)]" },
+    { label: "Tambangan", value: stats.tambangan, color: "bg-[var(--color-brand)]/10 text-[var(--color-brand)]" },
+    { label: "Total Kapal", value: stats.kapal, color: "bg-[var(--color-success)]/10 text-[var(--color-success)]" },
+    { label: "Sedang Berangkat", value: stats.aktif, color: "bg-[var(--color-accent)]/10 text-[var(--color-accent)]" },
   ];
 
   return (
     <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
       {items.map((item) => (
-        <div key={item.label} className={`rounded-xl p-4 ${item.color}`}>
+        <div key={item.label} className={`rounded-xl p-4 shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)] ${item.color}`}>
           <p className="text-2xl font-bold">{item.value}</p>
           <p className="text-xs font-medium opacity-75">{item.label}</p>
         </div>
@@ -256,10 +256,10 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
       </div>
 
       {/* Desktop: table */}
-      <div className="hidden overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm md:block">
+      <div className="hidden overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)] md:block">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="border-b border-[var(--color-border)] bg-[var(--color-bg)] text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary)]">
+            <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary)]">
               <th className="px-4 py-3">Nama</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Tambangan</th>
@@ -270,13 +270,13 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
           <tbody className="divide-y divide-[var(--color-border)]">
             {kapalList.map((k) => (
               <Fragment key={k.slug}>
-                <tr className="hover:bg-[var(--color-bg)]">
+                <tr className="hover:bg-[var(--color-surface-alt)] transition-colors duration-150">
                   <td className="px-4 py-3 font-medium text-[var(--color-text)]">{k.nama}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                       k.status === "proses"
-                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                        : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                        ? "bg-[var(--color-info)]/10 text-[var(--color-info)]"
+                        : "bg-[var(--color-success)]/10 text-[var(--color-success)]"
                     }`}>
                       {k.status === "proses" ? "Menyeberang" : `Standby`}
                     </span>
@@ -291,14 +291,14 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
                           setEditName(k.nama);
                           setError("");
                         }}
-                        className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400"
+                        className="rounded-lg p-2 text-[var(--color-text-secondary)] transition-all duration-200 hover:bg-[var(--color-info)]/10 hover:text-[var(--color-info)]"
                         title="Edit Nama"
                       >
                         <Pencil size={14} />
                       </button>
                       <button
                         onClick={() => void handleDelete(k.slug, k.nama)}
-                        className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/30 dark:hover:text-red-400"
+                        className="rounded-lg p-2 text-[var(--color-text-secondary)] transition-all duration-200 hover:bg-[var(--color-danger)]/10 hover:text-[var(--color-danger)]"
                         title="Hapus"
                       >
                         <Trash2 size={14} />
@@ -307,7 +307,7 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
                   </td>
                 </tr>
                 {expandedSlug === k.slug && (
-                  <tr className="bg-blue-50/50 dark:bg-blue-900/20">
+                  <tr className="bg-[var(--color-surface-alt)]">
                     <td colSpan={5} className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <span className="text-xs font-medium text-[var(--color-text-secondary)]">Nama baru:</span>
@@ -315,9 +315,9 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
                           value={editName}
                           onChange={(e) => setEditName(e.target.value)}
                           onKeyDown={(e) => { if (e.key === "Enter") void handleRename(k.slug); }}
-                          className="w-48 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)] outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+                          className="w-48 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
                         />
-                        <button onClick={() => void handleRename(k.slug)} className="inline-flex items-center gap-1.5 rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-teal-700">
+                        <button onClick={() => void handleRename(k.slug)} className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-brand)] px-3 py-1.5 text-xs font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-brand-dark)] hover:shadow-[var(--shadow-md)]">
                           <Save size={12} /> Simpan
                         </button>
                         <button onClick={() => setExpandedSlug(null)} className="text-xs text-[var(--color-text-secondary)] hover:text-[var(--color-text)]">
@@ -336,19 +336,19 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
       {/* Mobile: cards */}
       <div className="space-y-2 md:hidden">
         {kapalList.map((k) => (
-          <div key={k.slug} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm">
+          <div key={k.slug} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)]">
             {expandedSlug === k.slug ? (
               <div className="space-y-2">
-                <p className="text-xs font-bold text-teal-700 dark:text-teal-400">Edit Nama</p>
+                <p className="text-xs font-bold text-[var(--color-brand)]">Edit Nama</p>
                 <input
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") void handleRename(k.slug); }}
-                  className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)] outline-none focus:border-teal-500"
+                  className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)]"
                 />
                 <div className="flex gap-2">
-                  <button onClick={() => void handleRename(k.slug)} className="flex-1 rounded-lg bg-teal-600 py-2 text-xs font-bold text-white active:bg-teal-700">Simpan</button>
-                  <button onClick={() => setExpandedSlug(null)} className="rounded-lg bg-[var(--color-bg)] px-3 py-2 text-xs font-semibold text-[var(--color-text-secondary)]">Batal</button>
+                  <button onClick={() => void handleRename(k.slug)} className="flex-1 rounded-lg bg-[var(--color-brand)] py-2 text-xs font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-brand-dark)]">Simpan</button>
+                  <button onClick={() => setExpandedSlug(null)} className="rounded-lg bg-[var(--color-surface-alt)] px-3 py-2 text-xs font-semibold text-[var(--color-text-secondary)]">Batal</button>
                 </div>
               </div>
             ) : (
@@ -360,14 +360,14 @@ function KapalTab({ setError }: { setError: (s: string) => void }) {
                 <div className="flex gap-1.5">
                   <button
                     onClick={() => { setExpandedSlug(k.slug); setEditName(k.nama); }}
-                    className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+                    className="rounded-lg bg-[var(--color-info)]/10 p-2 text-[var(--color-info)]"
                     title="Edit Nama"
                   >
                     <Pencil size={14} />
                   </button>
                   <button
                     onClick={() => void handleDelete(k.slug, k.nama)}
-                    className="rounded-lg bg-red-50 p-2 text-red-500 dark:bg-red-900/30 dark:text-red-400"
+                    className="rounded-lg bg-[var(--color-danger)]/10 p-2 text-[var(--color-danger)]"
                     title="Hapus"
                   >
                     <Trash2 size={14} />
@@ -464,10 +464,10 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
       </div>
 
       {/* Desktop: table */}
-      <div className="hidden overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm md:block">
+      <div className="hidden overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)] md:block">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="border-b border-[var(--color-border)] bg-[var(--color-bg)] text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary)]">
+            <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary)]">
               <th className="px-4 py-3">Username</th>
               <th className="px-4 py-3">Role</th>
               <th className="px-4 py-3">Dibuat</th>
@@ -477,11 +477,11 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
           <tbody className="divide-y divide-[var(--color-border)]">
             {users.map((u) => (
               <Fragment key={u.id}>
-                <tr key={u.id} className="hover:bg-[var(--color-bg)]">
+                <tr key={u.id} className="hover:bg-[var(--color-surface-alt)] transition-colors duration-150">
                   <td className="px-4 py-3 font-medium text-[var(--color-text)]">{u.username}</td>
                   <td className="px-4 py-3">
                     {u.role === "admin" ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent)]/10 px-2.5 py-0.5 text-xs font-semibold text-[var(--color-accent)]">
                         <Shield size={11} /> Admin
                       </span>
                     ) : (
@@ -499,7 +499,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                           setNewPass("");
                           setError("");
                         }}
-                        className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400"
+                        className="rounded-lg p-2 text-[var(--color-text-secondary)] transition-all duration-200 hover:bg-[var(--color-info)]/10 hover:text-[var(--color-info)]"
                         title="Reset Password"
                       >
                         <RotateCcw size={14} />
@@ -507,7 +507,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                       {u.role !== "admin" && (
                         <button
                           onClick={() => handleDelete(u.id, u.username)}
-                          className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/30 dark:hover:text-red-400"
+                          className="rounded-lg p-2 text-[var(--color-text-secondary)] transition-all duration-200 hover:bg-[var(--color-danger)]/10 hover:text-[var(--color-danger)]"
                           title="Hapus"
                         >
                           <Trash2 size={14} />
@@ -517,7 +517,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                   </td>
                 </tr>
                 {expandedId === u.id && (
-                  <tr key={`${u.id}-expand`} className="bg-blue-50/50 dark:bg-blue-900/20">
+                  <tr key={`${u.id}-expand`} className="bg-[var(--color-surface-alt)]">
                     <td colSpan={4} className="px-4 py-3">
                       <div className="space-y-3">
                         <div className="flex flex-wrap items-center gap-3">
@@ -527,11 +527,11 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                             value={newPass}
                             onChange={(e) => setNewPass(e.target.value)}
                             placeholder="••••••••"
-                            className="w-48 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)] outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+                            className="w-48 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
                           />
                           <button
                             onClick={() => handleResetPassword(u.id)}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-teal-700"
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-brand)] px-3 py-1.5 text-xs font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-brand-dark)] hover:shadow-[var(--shadow-md)]"
                           >
                             <Save size={12} /> Reset Password
                           </button>
@@ -542,7 +542,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                             <select
                               value={u.tambanganId ?? ""}
                               onChange={(e) => handleAssignTambangan(u.id, e.target.value ? Number(e.target.value) : null)}
-                              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)] outline-none focus:border-teal-500"
+                              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)]"
                             >
                               <option value="">Belum diassign</option>
                               {tambanganList.map((t) => (
@@ -564,13 +564,13 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
       {/* Mobile: cards */}
       <div className="space-y-2 md:hidden">
         {users.map((u) => (
-          <div key={u.id} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm">
+          <div key={u.id} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)]">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-bold text-[var(--color-text)]">{u.username}</p>
                 <p className="text-xs text-[var(--color-text-secondary)]">
                   {u.role === "admin" ? (
-                    <span className="flex items-center gap-1 text-amber-600 font-semibold">
+                    <span className="flex items-center gap-1 text-[var(--color-accent)] font-semibold">
                       <Shield size={11} /> Admin
                     </span>
                   ) : (
@@ -585,7 +585,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                     setNewPass("");
                     setError("");
                   }}
-                  className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 active:bg-blue-100"
+                  className="rounded-lg bg-[var(--color-info)]/10 p-2 text-[var(--color-info)]"
                   title="Reset Password"
                 >
                   <RotateCcw size={14} />
@@ -593,7 +593,7 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                 {u.role !== "admin" && (
                   <button
                     onClick={() => handleDelete(u.id, u.username)}
-                    className="rounded-lg bg-red-50 p-2 text-red-500 dark:bg-red-900/30 dark:text-red-400 active:bg-red-100"
+                    className="rounded-lg bg-[var(--color-danger)]/10 p-2 text-[var(--color-danger)]"
                     title="Hapus"
                   >
                     <Trash2 size={14} />
@@ -608,11 +608,11 @@ function UsersTab({ setError }: { setError: (s: string) => void }) {
                   value={newPass}
                   onChange={(e) => setNewPass(e.target.value)}
                   placeholder="Password baru"
-                  className="flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)]"
+                  className="flex-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)]"
                 />
                 <button
                   onClick={() => handleResetPassword(u.id)}
-                  className="rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-bold text-white active:bg-teal-700"
+                  className="rounded-lg bg-[var(--color-brand)] px-3 py-1.5 text-xs font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-brand-dark)]"
                 >
                   <Save size={14} />
                 </button>
@@ -716,10 +716,10 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
       </div>
 
       {/* Desktop: table */}
-      <div className="hidden overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm md:block">
+      <div className="hidden overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)] md:block">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="border-b border-[var(--color-border)] bg-[var(--color-bg)] text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary)]">
+            <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-alt)] text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary)]">
               <th className="px-4 py-3">Nama</th>
               <th className="px-4 py-3">Titik A</th>
               <th className="px-4 py-3">Titik B</th>
@@ -729,10 +729,10 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
           <tbody className="divide-y divide-[var(--color-border)]">
             {list.map((t) => (
               <Fragment key={t.slug}>
-                <tr key={t.slug} className="hover:bg-[var(--color-bg)]">
+                <tr key={t.slug} className="hover:bg-[var(--color-surface-alt)] transition-colors duration-150">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <Anchor size={14} className="shrink-0 text-teal-500" />
+                      <Anchor size={14} className="shrink-0 text-[var(--color-brand)]" />
                       <span className="font-medium text-[var(--color-text)]">{t.nama}</span>
                     </div>
                   </td>
@@ -759,14 +759,14 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                           setExpandedSlug(expandedSlug === t.slug ? null : t.slug);
                           setError("");
                         }}
-                        className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400"
+                        className="rounded-lg p-2 text-[var(--color-text-secondary)] transition-all duration-200 hover:bg-[var(--color-info)]/10 hover:text-[var(--color-info)]"
                         title="Edit"
                       >
                         <Pencil size={14} />
                       </button>
                       <button
                         onClick={() => handleDelete(t.slug, t.nama)}
-                        className="rounded-lg p-2 text-[var(--color-text-secondary)] hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/30 dark:hover:text-red-400"
+                        className="rounded-lg p-2 text-[var(--color-text-secondary)] transition-all duration-200 hover:bg-[var(--color-danger)]/10 hover:text-[var(--color-danger)]"
                         title="Hapus"
                       >
                         <Trash2 size={14} />
@@ -775,12 +775,12 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                   </td>
                 </tr>
                 {expandedSlug === t.slug && (
-                  <tr key={`${t.slug}-expand`} className="bg-blue-50/50 dark:bg-blue-900/20">
+                  <tr key={`${t.slug}-expand`} className="bg-[var(--color-surface-alt)]">
                     <td colSpan={4} className="px-4 py-4">
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-teal-700 dark:text-teal-400">Edit Tambangan</span>
-                          <button onClick={() => setExpandedSlug(null)} className="rounded p-1 text-[var(--color-text-secondary)] hover:bg-[var(--color-bg)] hover:text-[var(--color-text)]">
+                          <span className="text-xs font-bold text-[var(--color-brand)]">Edit Tambangan</span>
+                          <button onClick={() => setExpandedSlug(null)} className="rounded p-1 text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-alt)] hover:text-[var(--color-text)]">
                             <X size={14} />
                           </button>
                         </div>
@@ -790,7 +790,7 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                             <input
                               value={editForm.nama}
                               onChange={(e) => setEditForm({ ...editForm, nama: e.target.value })}
-                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
                             />
                           </div>
                           <div>
@@ -798,7 +798,7 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                             <input
                               value={editForm.titik_a_nama}
                               onChange={(e) => setEditForm({ ...editForm, titik_a_nama: e.target.value })}
-                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
                             />
                           </div>
                           <div>
@@ -806,7 +806,7 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                             <input
                               value={editForm.titik_a_lat}
                               onChange={(e) => setEditForm({ ...editForm, titik_a_lat: e.target.value })}
-                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
                             />
                           </div>
                           <div>
@@ -814,7 +814,7 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                             <input
                               value={editForm.titik_a_lng}
                               onChange={(e) => setEditForm({ ...editForm, titik_a_lng: e.target.value })}
-                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
                             />
                           </div>
                           <div>
@@ -822,7 +822,7 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                             <input
                               value={editForm.titik_b_nama}
                               onChange={(e) => setEditForm({ ...editForm, titik_b_nama: e.target.value })}
-                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
                             />
                           </div>
                           <div>
@@ -830,7 +830,7 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                             <input
                               value={editForm.titik_b_lat}
                               onChange={(e) => setEditForm({ ...editForm, titik_b_lat: e.target.value })}
-                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
                             />
                           </div>
                           <div>
@@ -838,13 +838,13 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                             <input
                               value={editForm.titik_b_lng}
                               onChange={(e) => setEditForm({ ...editForm, titik_b_lng: e.target.value })}
-                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+                              className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
                             />
                           </div>
                         </div>
                         <button
                           onClick={() => handleSave(t.slug)}
-                          className="inline-flex items-center gap-1.5 rounded-lg bg-teal-600 px-4 py-2 text-sm font-bold text-white hover:bg-teal-700 dark:bg-teal-700 dark:hover:bg-teal-600"
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--color-brand)] px-4 py-2 text-sm font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-brand-dark)] hover:shadow-[var(--shadow-md)]"
                         >
                           <Save size={14} /> Simpan Perubahan
                         </button>
@@ -861,11 +861,11 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
       {/* Mobile: cards */}
       <div className="space-y-2 md:hidden">
         {list.map((t) => (
-          <div key={t.slug} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm">
+          <div key={t.slug} className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)]">
             {expandedSlug === t.slug ? (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-bold text-teal-700 dark:text-teal-400">Edit Tambangan</p>
+                  <p className="text-xs font-bold text-[var(--color-brand)]">Edit Tambangan</p>
                   <button onClick={() => setExpandedSlug(null)} className="text-[var(--color-text-secondary)]">
                     <X size={14} />
                   </button>
@@ -874,20 +874,20 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                   value={editForm.nama}
                   onChange={(e) => setEditForm({ ...editForm, nama: e.target.value })}
                   placeholder="Nama"
-                  className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)]"
+                  className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)]"
                 />
                 <div className="grid grid-cols-2 gap-2">
                   <input
                     value={editForm.titik_a_nama}
                     onChange={(e) => setEditForm({ ...editForm, titik_a_nama: e.target.value })}
                     placeholder="Titik A nama"
-                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)]"
+                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)]"
                   />
                   <input
                     value={editForm.titik_b_nama}
                     onChange={(e) => setEditForm({ ...editForm, titik_b_nama: e.target.value })}
                     placeholder="Titik B nama"
-                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)]"
+                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)]"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -895,13 +895,13 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                     value={editForm.titik_a_lat}
                     onChange={(e) => setEditForm({ ...editForm, titik_a_lat: e.target.value })}
                     placeholder="Titik A lat"
-                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)]"
+                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)]"
                   />
                   <input
                     value={editForm.titik_a_lng}
                     onChange={(e) => setEditForm({ ...editForm, titik_a_lng: e.target.value })}
                     placeholder="Titik A lng"
-                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)]"
+                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)]"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -909,18 +909,18 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                     value={editForm.titik_b_lat}
                     onChange={(e) => setEditForm({ ...editForm, titik_b_lat: e.target.value })}
                     placeholder="Titik B lat"
-                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)]"
+                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)]"
                   />
                   <input
                     value={editForm.titik_b_lng}
                     onChange={(e) => setEditForm({ ...editForm, titik_b_lng: e.target.value })}
                     placeholder="Titik B lng"
-                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-text)]"
+                    className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-1.5 text-sm text-[var(--color-text)]"
                   />
                 </div>
                 <button
                   onClick={() => handleSave(t.slug)}
-                  className="w-full rounded-lg bg-teal-600 py-2 text-xs font-bold text-white active:bg-teal-700"
+                  className="w-full rounded-lg bg-[var(--color-brand)] py-2 text-xs font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-brand-dark)]"
                 >
                   Simpan
                 </button>
@@ -929,7 +929,7 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <Anchor size={14} className="text-teal-600 dark:text-teal-400" />
+                    <Anchor size={14} className="text-[var(--color-brand)]" />
                     <p className="font-bold text-[var(--color-text)]">{t.nama}</p>
                   </div>
                   <p className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
@@ -939,14 +939,14 @@ function TambanganTab({ setError }: { setError: (s: string) => void }) {
                 <div className="flex gap-1.5">
                   <button
                     onClick={() => startEdit(t)}
-                    className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 active:bg-blue-100"
+                    className="rounded-lg bg-[var(--color-info)]/10 p-2 text-[var(--color-info)]"
                     title="Edit"
                   >
                     <Pencil size={14} />
                   </button>
                   <button
                     onClick={() => handleDelete(t.slug, t.nama)}
-                    className="rounded-lg bg-red-50 p-2 text-red-500 dark:bg-red-900/30 dark:text-red-400 active:bg-red-100"
+                    className="rounded-lg bg-[var(--color-danger)]/10 p-2 text-[var(--color-danger)]"
                     title="Hapus"
                   >
                     <Trash2 size={14} />
