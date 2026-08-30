@@ -1,25 +1,20 @@
+# Development override — docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 services:
   db:
     container_name: tambangan-db-dev
-    ports: !override ["127.0.0.1:5433:5432"]
-    volumes: !override ["pgdata_dev:/var/lib/postgresql/data"]
+    ports:
+      - "5433:5432"
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-tambangan}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tambangan}
-      POSTGRES_DB: tambangan_dev
+      POSTGRES_DB: ${POSTGRES_DB:-tambangan}_dev
 
   app:
-    # Override untuk dev environment
-    # Jalankan: docker compose -p tambangan-dev -f docker-compose.yml -f docker-compose.dev.yml up -d
     container_name: tambangan-app-dev
     environment:
       NODE_ENV: development
-      DATABASE_URL: postgres://${POSTGRES_USER:-tambangan}:${POSTGRES_PASSWORD:-tambangan}@db:5432/tambangan_dev
-    ports: !override ["3002:3000"]
-    command: bun run dev
+      DATABASE_URL: postgres://${POSTGRES_USER:-tambangan}:${POSTGRES_PASSWORD:-tambangan}@db:5432/${POSTGRES_DB:-tambangan}_dev
+    ports:
+      - "3002:3000"
+    command: sh -c "bunx drizzle-kit migrate && bun run dev"
     build:
       context: .
       dockerfile: Dockerfile.dev
-
-volumes:
-  pgdata_dev:
