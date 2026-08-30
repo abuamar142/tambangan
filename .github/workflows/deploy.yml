@@ -11,13 +11,13 @@
 #   VPS_SSH_KEY = <private key>   (cat ~/.ssh/id_ed25519 — the PRIVATE key, single line with \n preserved)
 #   Optional:
 #   VPS_PORT    = 22              (defaults to 22 if not set)
-#   VPS_PATH    = /opt/tambangan  (defaults to /opt/tambangan if not set)
+#   VPS_PATH    = /home/ubuntu/tambangan  (defaults to /home/ubuntu/tambangan if not set)
 #
 # VPS one-time setup (run once via SSH):
-#   sudo mkdir -p /opt/tambangan && sudo chown $USER:$USER /opt/tambangan
-#   git clone git@github.com:abuamar142/tambangan.git /opt/tambangan
-#   # or: git clone https://github.com/abuamar142/tambangan.git /opt/tambangan
-#   cd /opt/tambangan && cp .env.example .env  # then fill real secrets
+#   sudo mkdir -p /home/ubuntu/tambangan && sudo chown $USER:$USER /home/ubuntu/tambangan
+#   git clone git@github.com:abuamar142/tambangan.git /home/ubuntu/tambangan
+#   # or: git clone https://github.com/abuamar142/tambangan.git /home/ubuntu/tambangan
+#   cd /home/ubuntu/tambangan && cp .env.example .env  # then fill real secrets
 #   # ensure deploy key / GitHub access works for `git pull` (deploy key or HTTPS token)
 #
 # Local branch setup:
@@ -95,7 +95,7 @@ jobs:
           # optional fingerprint verification — add VPS_HOST_FINGERPRINT secret if you want strict host checking
           script: |
             set -euo pipefail
-            APP_DIR="${{ secrets.VPS_PATH || '/opt/tambangan' }}"
+            APP_DIR="${{ secrets.VPS_PATH || '/home/ubuntu/tambangan' }}"
             echo "→ Deploying to $APP_DIR on $(hostname) as $(whoami)"
             cd "$APP_DIR"
 
