@@ -1,20 +1,22 @@
-# Development override — docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+# Development override — docker compose --env-file .env -f docker-compose.yml -f docker-compose.dev.yml up -d
 services:
   db:
     container_name: tambangan-db-dev
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-tambangan}_dev
+      POSTGRES_DB: ${POSTGRES_DB}_dev
 
   app:
     container_name: tambangan-app-dev
+    env_file:
+      - .env
     environment:
       NODE_ENV: development
-      DATABASE_URL: postgres://${POSTGRES_USER:-tambangan}:${POSTGRES_PASSWORD:-tambangan}@db:5432/${POSTGRES_DB:-tambangan}_dev
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}_dev
     ports:
       - "3002:3000"
-    command: sh -c "bunx drizzle-kit migrate && bun run dev"
+    command: bun run dev
     build:
       context: .
       dockerfile: Dockerfile.dev
