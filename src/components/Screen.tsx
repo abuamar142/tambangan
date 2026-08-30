@@ -11,8 +11,10 @@ export function Screen({
 }) {
   const maxW = size === "wide" ? "max-w-6xl" : "max-w-md md:max-w-3xl";
   return (
-    <div className={`min-h-screen bg-[var(--color-bg)] dark:bg-[var(--color-bg)] ${className}`}>
-      <div className={`mx-auto flex min-h-screen w-full ${maxW} flex-col`}>{children}</div>
+    <div className={`relative min-h-screen bg-[var(--color-bg)] ${className}`}>
+      {/* Subtle brand glow at the top */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,rgba(13,148,136,0.12),transparent)] dark:bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,rgba(13,148,136,0.18),transparent)]" />
+      <div className={`relative mx-auto flex min-h-screen w-full ${maxW} flex-col`}>{children}</div>
     </div>
   );
 }

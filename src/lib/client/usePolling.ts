@@ -9,6 +9,7 @@ export function usePolling<T>(
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const fetcherRef = useRef(fetcher);
   const ctrlRef = useRef<AbortController | null>(null);
 
@@ -16,7 +17,8 @@ export function usePolling<T>(
     fetcherRef.current = fetcher;
   }, [fetcher]);
 
-  const run = useCallback(async (signal: AbortSignal) => {
+  const run = useCallback(async (signal: AbortSignal, isRefresh = false) => {
+    if (isRefresh) setRefreshing(true);
     try {
       const result = await fetcherRef.current(signal);
       if (!signal.aborted) {
@@ -27,10 +29,14 @@ export function usePolling<T>(
       if ((e as Error)?.name === "AbortError") return;
       setError((e as Error)?.message ?? "Gagal memuat");
     } finally {
-      if (!signal.aborted) setLoading(false);
+      if (!signal.aborted) {
+        setLoading(false);
+        setRefreshing(false);
+      }
     }
   }, []);
 
+  // Re-fetch when fetcher reference changes (e.g. filter changes)
   useEffect(() => {
     const ctrl = new AbortController();
     ctrlRef.current = ctrl;
@@ -43,12 +49,12 @@ export function usePolling<T>(
       clearInterval(id);
       ctrl.abort();
     };
-  }, [run, intervalMs]);
+  }, [fetcher, run, intervalMs]);
 
   const refresh = useCallback(() => {
     const ctrl = ctrlRef.current;
-    if (ctrl && !ctrl.signal.aborted) run(ctrl.signal);
+    if (ctrl && !ctrl.signal.aborted) run(ctrl.signal, true);
   }, [run]);
 
-  return { data, error, loading, refresh };
+  return { data, error, loading, refreshing, refresh };
 }

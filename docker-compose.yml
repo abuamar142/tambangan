@@ -31,5 +31,20 @@ services:
     ports:
       - "3000:3000"
 
+  dev:
+    build: .
+    container_name: tambangan-dev
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://tambangan:ir5RMGNS506gz4ZDMO9k5QKc@db:5432/tambangan
+      JWT_SECRET: ${JWT_SECRET:-9bc5bcb821e8ab2f22ab664e4885b25d75557f3e5c3fb33aa9a4b8cd3eabd4cc}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3002:3000"
+
 volumes:
   pgdata:

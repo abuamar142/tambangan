@@ -22,12 +22,19 @@ export function KapalCard({
   href?: string;
 }) {
   const countdown = useCountdown(k.timerEndAt);
+  const isActive = !!countdown && !countdown.expired;
 
   const card = (
-    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm transition-shadow hover:shadow-md active:shadow-sm">
+    <div
+      className={`rounded-xl border bg-[var(--color-surface)] p-4 shadow-md transition-all duration-200 hover:shadow-lg active:shadow-md ${
+        isActive
+          ? "border-[var(--color-accent)]/40 shadow-[var(--shadow-glow-amber)]"
+          : "border-[var(--color-border)]"
+      }`}
+    >
       <div className="flex items-center justify-between gap-2">
         <span className="flex items-center gap-2 font-bold text-[var(--color-text)]">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-brand-50)] text-[var(--color-brand)]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-brand)]/10 text-[var(--color-brand)]">
             <Anchor size={14} />
           </span>
           {k.nama}
@@ -57,7 +64,7 @@ export function KapalCard({
         </div>
       )}
       {countdown && (
-        <p className="mt-2 font-mono text-xs font-semibold text-amber-700 dark:text-amber-400">
+        <p className="mt-2 font-mono text-xs font-semibold text-[var(--color-accent)]">
           {countdown.expired
             ? "Waktu habis"
             : `${countdown.display} lagi berangkat`}
