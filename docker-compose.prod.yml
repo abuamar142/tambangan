@@ -1,0 +1,11 @@
+# Production override — docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+services:
+  db:
+    container_name: tambangan-db
+    ports:
+      - "5432:5432"
+
+  app:
+    container_name: tambangan-app
+    ports:
+      - "3000:3000"
