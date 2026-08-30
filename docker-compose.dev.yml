@@ -1,7 +1,14 @@
 services:
+  # Override db dengan container_name berbeda agar tidak bentrok dengan prod
+  db:
+    container_name: tambangan-db-dev
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tambangan}_dev
+
   app:
     # Override untuk dev environment
     # Jalankan: docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+    container_name: tambangan-app-dev
     environment:
       NODE_ENV: development
       DATABASE_URL: postgres://${POSTGRES_USER:-tambangan}:${POSTGRES_PASSWORD:-tambangan}@db:5432/${POSTGRES_DB:-tambangan}_dev
@@ -12,3 +19,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    depends_on:
+      - db
