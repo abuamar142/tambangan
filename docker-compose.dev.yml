@@ -14,7 +14,8 @@ services:
       DATABASE_URL: postgres://$${POSTGRES_USER:-tambangan}:$${POSTGRES_PASSWORD:-tambangan}@db:5432/$${POSTGRES_DB:-tambangan}_dev
     ports:
       - "3002:3000"
-    command: sh -c "bunx drizzle-kit migrate && bun run dev"
+    # Just run dev server; migrations handled separately via deploy script
+    command: bun run dev
     build:
       context: .
       dockerfile: Dockerfile.dev
