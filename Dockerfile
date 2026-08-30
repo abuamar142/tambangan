@@ -1,17 +1,18 @@
 FROM node:22-alpine AS base
 RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
+RUN npm install -g bun
 
 FROM base AS deps
 WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json bun.lock pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN bun install --frozen-lockfile
 
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN pnpm build
+RUN bun run build
 
 FROM base AS runner
 WORKDIR /app
