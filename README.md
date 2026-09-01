@@ -58,8 +58,8 @@
 ```bash
 cp .env.example .env
 docker compose up -d db
-pnpm install
-pnpm dev
+bun install
+bun dev
 ```
 
 Migrasi database otomatis jalan saat boot (`instrumentation.ts` → `drizzle-kit migrate`). Seed tambangan `jatikalen-megaluh` + akun `admin/admin123` juga otomatis.
@@ -94,7 +94,7 @@ Menggunakan **Drizzle Kit** untuk managed migrations. Migrasi otomatis dijalanka
 ```bash
 # 1. Edit src/lib/db/schema.ts
 # 2. Generate migration SQL
-pnpm db:generate
+bun run db:generate
 # 3. Commit file drizzle/*.sql
 # 4. Push ke main → CI/CD auto-apply migration + rebuild
 ```
@@ -103,9 +103,9 @@ pnpm db:generate
 
 | Command | Fungsi |
 |---------|--------|
-| `pnpm db:generate` | Generate migration SQL dari schema.ts |
-| `pnpm db:push` | Push schema langsung ke DB (dev, tanpa migration file) |
-| `pnpm db:migrate` | Apply semua pending migration |
+| `bun run db:generate` | Generate migration SQL dari schema.ts |
+| `bun run db:push` | Push schema langsung ke DB (dev, tanpa migration file) |
+| `bun run db:migrate` | Apply semua pending migration |
 | `make db-shell` | Buka psql shell ke database |
 
 Migrasi berjalan otomatis saat deploy (CI/CD) **dan** saat app boot (`instrumentation.ts`). Tidak perlu manual SSH untuk ALTER TABLE.

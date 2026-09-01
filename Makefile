@@ -4,19 +4,19 @@ help: ## Tampilkan semua commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
 dev: ## Jalankan dev server
-	pnpm dev
+	bun run dev
 
 build: ## Build production
-	pnpm build
+	bun run build
 
 preview: build ## Build + jalankan production server
-	pnpm start
+	bun run start
 
 lint: ## Run ESLint
-	pnpm lint
+	bun run lint
 
 install: ## Install dependencies
-	pnpm install
+	bun install
 
 db-up: ## Start PostgreSQL (Docker)
 	docker compose up -d db
@@ -25,7 +25,7 @@ down: ## Stop semua containers
 	docker compose down
 
 db-push: ## Push schema ke database
-	pnpm db:push
+	bun run db:push
 
 db-shell: ## Buka psql shell ke database
 	docker compose exec db psql -U $${POSTGRES_USER:-tambangan} -d $${POSTGRES_DB:-tambangan}

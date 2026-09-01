@@ -1,10 +1,8 @@
-FROM node:22-alpine AS base
-RUN corepack enable && corepack prepare pnpm@11.3.0 --activate
-RUN npm install -g bun
+FROM oven/bun:1.4-alpine AS base
 
 FROM base AS deps
 WORKDIR /app
-COPY package.json bun.lock pnpm-workspace.yaml ./
+COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
 FROM base AS builder
@@ -14,7 +12,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN bun run build
 
-FROM base AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
