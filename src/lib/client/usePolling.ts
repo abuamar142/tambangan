@@ -40,12 +40,13 @@ export function usePolling<T>(
   useEffect(() => {
     const ctrl = new AbortController();
     ctrlRef.current = ctrl;
-    run(ctrl.signal);
+    const first = setTimeout(() => run(ctrl.signal), 0);
     const id = setInterval(() => {
       if (ctrl.signal.aborted) return;
       run(ctrl.signal);
     }, intervalMs);
     return () => {
+      clearTimeout(first);
       clearInterval(id);
       ctrl.abort();
     };

@@ -1,4 +1,4 @@
-import { and, eq, ilike } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { currentUser, err, ok } from "@/lib/api-utils";
 import { db } from "@/lib/db";
