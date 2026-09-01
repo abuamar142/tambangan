@@ -32,7 +32,7 @@ export function HomeKapalSection() {
     4000,
   );
 
-  const list = data?.kapal ?? [];
+  const list = useMemo(() => data?.kapal ?? [], [data]);
   const total = data?.total ?? 0;
 
   const fastest = useMemo(() => {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "next/navigation";
-import { ArrowRightLeft, Clock, Crosshair, MapPin, Pencil, Timer, Trash2 } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { ArrowRightLeft, Clock, Crosshair, Pencil, Trash2 } from "lucide-react";
 import { EventsTimeline, type KapalEvent } from "@/components/EventsTimeline";
 import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
@@ -30,6 +30,7 @@ type StateAction =
 export default function KontrolKapalPage() {
   const params = useParams<{ slug: string }>();
   const slug = params.slug;
+  const router = useRouter();
 
   const [mode, setMode] = useState<"manual" | "gps">("manual");
   const [timerInput, setTimerInput] = useState("");
@@ -147,11 +148,11 @@ export default function KontrolKapalPage() {
     setActionError("");
     try {
       await api(`/api/kapal/${slug}`, { method: "DELETE" });
-      window.location.href = "/nahkoda";
+      router.push("/nahkoda");
     } catch (e) {
       setActionError((e as Error).message);
     }
-  }, [slug, k, refresh]);
+  }, [slug, k, router]);
 
   useEffect(() => {
     if (mode !== "gps") return;

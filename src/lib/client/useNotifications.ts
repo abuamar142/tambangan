@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/client/api";
 
 export function useNotifications() {
-  const [supported, setSupported] = useState(() => {
+  const [supported] = useState(() => {
     return typeof window !== "undefined" && "Notification" in window && "serviceWorker" in navigator;
   });
   const [permission, setPermission] = useState<NotificationPermission>(() => {

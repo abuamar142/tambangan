@@ -15,12 +15,15 @@ export function ChannelBar({
       : "bg-[var(--color-brand)] shadow-[var(--shadow-glow-brand)]";
   const left =
     status === "titik_a" ? "4%" : status === "titik_b" ? "96%" : departingFrom === "titik_a" ? "70%" : departingFrom === "titik_b" ? "30%" : "50%";
+  const percent =
+    status === "titik_a" ? 100 : status === "titik_b" ? 0 : departingFrom === "titik_a" ? 70 : departingFrom === "titik_b" ? 30 : 50;
   return (
     <div
       role="meter"
       aria-label={`Posisi kapal: ${status === "proses" ? "sedang menyeberang" : status === "titik_a" ? "standby di titik A" : "standby di titik B"}`}
       aria-valuemin={0}
       aria-valuemax={100}
+      aria-valuenow={percent}
       className={`relative ${compact ? "h-1.5" : "h-2"} w-full rounded-full bg-[var(--color-surface-alt)]`}
     >
       {/* Active track */}
