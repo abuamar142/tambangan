@@ -214,3 +214,35 @@ input, textarea {
     scroll-behavior: smooth;
   }
 }
+
+@theme inline {
+  /* Layout Tokens */
+  --layout-sidebar-width: 280px;
+  --layout-header-height: 56px;
+  --layout-bottom-nav-height: 64px;
+  --layout-content-max: 1400px;
+}
+
+/* Page transitions */
+.animate-page-in {
+  animation: pageIn 0.3s ease-out;
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered card reveal */
+.animate-card-in {
+  animation: cardIn 0.4s ease-out backwards;
+}
+.animate-card-in:nth-child(1) { animation-delay: 0ms; }
+.animate-card-in:nth-child(2) { animation-delay: 50ms; }
+.animate-card-in:nth-child(3) { animation-delay: 100ms; }
+.animate-card-in:nth-child(4) { animation-delay: 150ms; }
+.animate-card-in:nth-child(5) { animation-delay: 200ms; }
+.animate-card-in:nth-child(6) { animation-delay: 250ms; }
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}

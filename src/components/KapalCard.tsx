@@ -26,7 +26,7 @@ export function KapalCard({
 
   const card = (
     <div
-      className={`card bg-base-100 rounded-xl border p-4 shadow-md transition-all duration-200 hover:shadow-lg active:shadow-md ${
+      className={`card animate-card-in bg-base-100 rounded-xl border p-4 shadow-md transition-all duration-200 hover:shadow-lg active:shadow-md ${
         isActive
           ? "border-accent/40 shadow-[var(--shadow-glow-amber)]"
           : "border-base-300"

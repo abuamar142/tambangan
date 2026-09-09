@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { RefreshCw } from "lucide-react";
 import { EventsTimeline, type KapalEvent } from "@/components/EventsTimeline";
-import { Screen, ScreenContent } from "@/components/Screen";
-import { ShareButton } from "@/components/ShareButton";
 import { ScreenHeader } from "@/components/ScreenHeader";
+import { ShareButton } from "@/components/ShareButton";
 import { ErrorNote } from "@/components/ErrorNote";
 import { KapalGroup } from "@/components/KapalGroup";
 import { usePolling } from "@/lib/client/usePolling";
@@ -54,9 +53,8 @@ export default function StatusTambanganPage() {
   }, [slug]);
 
   return (
-    <Screen>
+    <div className="space-y-4">
       <ScreenHeader title={t?.nama ?? "Tambangan"} subtitle={`${list.length} kapal terdaftar`} backHref="/tambangan" />
-      <ScreenContent>
         <div className="inline-flex items-center gap-2">
           <button
             onClick={refresh}
@@ -106,7 +104,6 @@ export default function StatusTambanganPage() {
           loading={eventsLoading}
           title="Riwayat Terakhir"
         />
-      </ScreenContent>
-    </Screen>
+      </div>
   );
 }

@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { ChevronRight, MapPin } from "lucide-react";
-import { Screen, ScreenContent } from "@/components/Screen";
-import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
 import { EmptyState } from "@/components/EmptyState";
 import { SkeletonCard } from "@/components/Skeleton";
@@ -20,10 +18,8 @@ export default function PilihTambanganPage() {
   const list = data?.tambangan ?? [];
 
   return (
-    <Screen>
-      <ScreenHeader title="Pilih Tambangan" subtitle="Lihat kapal yang siap dinaiki" backHref="/" />
-      <ScreenContent>
-        <ErrorNote message={error} />
+    <div className="space-y-4">
+      <ErrorNote message={error} />
         {loading && !data && <SkeletonCard count={4} />}
         {!loading && !error && list.length === 0 && (
           <EmptyState title="Belum ada tambangan terdaftar." />
@@ -33,7 +29,7 @@ export default function PilihTambanganPage() {
             <Link
               key={t.slug}
               href={`/tambangan/${t.slug}`}
-              className="group block border border-base-300 bg-base-100 p-4 shadow-sm transition-shadow hover:shadow-md active:shadow-sm rounded-xl"
+              className="group block animate-card-in border border-base-300 bg-base-100 p-4 shadow-sm transition-shadow hover:shadow-md active:shadow-sm rounded-xl"
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="font-bold text-base-content">{t.nama}</span>
@@ -53,7 +49,6 @@ export default function PilihTambanganPage() {
             </Link>
           ))}
         </div>
-      </ScreenContent>
-    </Screen>
+    </div>
   );
 }

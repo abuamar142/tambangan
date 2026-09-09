@@ -2,8 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
-import { Screen, ScreenContent } from "@/components/Screen";
-import { ScreenHeader } from "@/components/ScreenHeader";
 import { KapalCard } from "@/components/KapalCard";
 import { ErrorNote } from "@/components/ErrorNote";
 import { EmptyState } from "@/components/EmptyState";
@@ -66,10 +64,8 @@ export default function SemuaKapalPage() {
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
-    <Screen>
-      <ScreenHeader title="Semua Kapal" subtitle={`${total} kapal terdaftar`} backHref="/" />
-      <ScreenContent>
-        <label className="block">
+    <div className="space-y-4">
+      <label className="block">
           <span className="sr-only">Filter status kapal</span>
           <div className="relative">
             <select
@@ -114,7 +110,7 @@ export default function SemuaKapalPage() {
           <EmptyState title="Belum ada kapal untuk filter ini." />
         )}
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((k) => {
             const tambanganData = tambanganOpts.find((t) => t.nama === k.tambanganNama);
             return (
@@ -151,7 +147,6 @@ export default function SemuaKapalPage() {
             </button>
           </div>
         )}
-      </ScreenContent>
-    </Screen>
+    </div>
   );
 }

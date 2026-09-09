@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowRightLeft, Clock, Crosshair, Pencil, Trash2 } from "lucide-react";
 import { EventsTimeline, type KapalEvent } from "@/components/EventsTimeline";
-import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -210,21 +209,19 @@ export default function KontrolKapalPage() {
 
   if (loading && !data) {
     return (
-      <Screen>
+      <div className="space-y-4">
         <ScreenHeader title="Memuat…" backHref="/nahkoda" />
         <p className="p-8 text-center text-sm text-base-content/50">Mengambil data kapal…</p>
-      </Screen>
+      </div>
     );
   }
 
   if (!k) {
     return (
-      <Screen>
+      <div className="space-y-4">
         <ScreenHeader title="Kapal" backHref="/nahkoda" />
-        <ScreenContent>
-          <ErrorNote message={error || "Kapal tidak ditemukan atau bukan milik Anda"} />
-        </ScreenContent>
-      </Screen>
+        <ErrorNote message={error || "Kapal tidak ditemukan atau bukan milik Anda"} />
+      </div>
     );
   }
 
@@ -232,9 +229,8 @@ export default function KontrolKapalPage() {
   const showTimer = k && (k.status === "titik_a" || k.status === "titik_b");
 
   return (
-    <Screen>
+    <div className="space-y-4">
       <ScreenHeader title={k?.nama ?? "Kontrol Kapal"} backHref="/nahkoda" />
-      <ScreenContent>
         {/* Edit name card */}
         {editing ? (
           <div className="flex items-center gap-2 border border-primary/20 bg-base-100 p-3 shadow-md rounded-xl">
@@ -327,6 +323,7 @@ export default function KontrolKapalPage() {
 
         <ErrorNote message={actionError} />
 
+        <div className="grid gap-4 lg:grid-cols-2">
         {/* Mode toggle (Manual / GPS) */}
         <div className="border border-base-300 bg-base-100 p-1 shadow-sm rounded-xl">
           <div className="flex gap-1">
@@ -490,6 +487,7 @@ export default function KontrolKapalPage() {
             </div>
           </div>
         )}
+        </div>
 
         {/* Riwayat Perjalanan */}
         <EventsTimeline
@@ -497,7 +495,6 @@ export default function KontrolKapalPage() {
           loading={eventsLoading}
           title="Riwayat Perjalanan"
         />
-      </ScreenContent>
-    </Screen>
+    </div>
   );
 }

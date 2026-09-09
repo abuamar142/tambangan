@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Crosshair, Loader2 } from "lucide-react";
-import { Screen, ScreenContent } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
 import { api } from "@/lib/client/api";
@@ -95,9 +94,8 @@ export default function KapalBaruPage() {
   }
 
   return (
-    <Screen>
+    <div className="space-y-4">
       <ScreenHeader title="Daftarkan Kapal" backHref="/nahkoda" />
-      <ScreenContent>
         <form onSubmit={handleSubmit} className="space-y-5">
           <ErrorNote message={error} />
 
@@ -219,8 +217,7 @@ export default function KapalBaruPage() {
             )}
           </button>
         </form>
-      </ScreenContent>
-    </Screen>
+    </div>
   );
 }
 

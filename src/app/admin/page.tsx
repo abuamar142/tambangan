@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Users, Map, Anchor } from "lucide-react";
-import { Screen } from "@/components/Screen";
-import { ScreenHeader } from "@/components/ScreenHeader";
 import { ErrorNote } from "@/components/ErrorNote";
 import { api } from "@/lib/client/api";
 import type { UserInfo } from "@/lib/types";
@@ -55,13 +53,7 @@ export default function AdminPage() {
   }
 
   return (
-    <Screen size="wide">
-      <ScreenHeader
-        title="Panel Admin"
-        subtitle={me ? `Masuk sebagai ${me.username}` : undefined}
-        backHref="/nahkoda"
-      />
-
+    <div className="space-y-0">
       {/* Tab bar */}
       <div className="border-b border-base-300 bg-base-100 shadow-sm">
         <div className="flex items-center gap-0 px-4 md:px-6">
@@ -105,6 +97,6 @@ export default function AdminPage() {
           {tab === "kapal" && <KapalTab setError={setError} />}
         </div>
       </main>
-    </Screen>
+    </div>
   );
 }
