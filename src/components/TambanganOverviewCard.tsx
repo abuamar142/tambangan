@@ -78,7 +78,7 @@ export function TambanganOverviewCard({ tambangan }: { tambangan: TambanganDto }
       {/* Fastest departure */}
       {fastest && (
         <div className="mt-3 rounded-lg bg-accent/5 border border-accent/10 px-3 py-2 text-center">
-          <span className="text-xs font-bold text-accent">⚡ {fastest.nama}</span>
+          <span className="text-xs font-bold text-accent">{fastest.nama}</span>
         </div>
       )}
 

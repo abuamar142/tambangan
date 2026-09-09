@@ -372,7 +372,7 @@ export default function KontrolKapalPage() {
                     : "border border-base-300 bg-base-200 text-base-content hover:bg-base-300"
                 }`}
               >
-                Proses ⛵
+                Proses
               </button>
               <button
                 onClick={() => void patch({ action: "status", value: "titik_b" })}
