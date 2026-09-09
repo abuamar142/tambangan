@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { RefreshCw } from "lucide-react";
 import { EventsTimeline, type KapalEvent } from "@/components/EventsTimeline";
 import { FastestDepartureHero } from "@/components/FastestDepartureHero";
@@ -21,7 +21,14 @@ interface DetailResponse {
 
 export default function StatusTambanganPage() {
   const params = useParams<{ slug: string }>();
+  const searchParams = useSearchParams();
   const slug = params.slug;
+
+  // Read initial filter from URL (?filter=titik_a, titik_b, proses, or all)
+  const initialFilter = searchParams.get("filter") as "titik_a" | "titik_b" | "proses" | "all" | null;
+  const [filter, setFilter] = useState<"all" | "titik_a" | "proses" | "titik_b">(
+    initialFilter && ["titik_a", "proses", "titik_b"].includes(initialFilter) ? initialFilter : "all"
+  );
 
   const { data, error, loading, refresh } = usePolling<DetailResponse>(
     (signal) => api(`/api/tambangan/${slug}`, { signal }),
@@ -36,6 +43,11 @@ export default function StatusTambanganPage() {
     proses: list.filter((k) => k.status === "proses"),
     titik_b: list.filter((k) => k.status === "titik_b").sort(sortByTimer),
   };
+
+  // Filtered groups based on active filter
+  const showTitikA = filter === "all" || filter === "titik_a";
+  const showProses = filter === "all" || filter === "proses";
+  const showTitikB = filter === "all" || filter === "titik_b";
 
   const fastest = [...groups.titik_a, ...groups.titik_b]
     .filter((k) => k.timerEndAt)
@@ -74,6 +86,35 @@ export default function StatusTambanganPage() {
 
         <ErrorNote message={error} />
 
+        {/* Quick filter */}
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {([
+            { value: "all", label: "Semua" },
+            { value: "titik_a", label: t?.titikA.nama ?? "Titik A" },
+            { value: "proses", label: "Menyeberang" },
+            { value: "titik_b", label: t?.titikB.nama ?? "Titik B" },
+          ] as const).map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setFilter(opt.value)}
+              className={`btn btn-sm shrink-0 ${
+                filter === opt.value
+                  ? "btn-primary"
+                  : "btn-ghost border border-base-300"
+              }`}
+            >
+              {opt.label}
+              {opt.value !== "all" && (
+                <span className="ml-1 text-[10px] opacity-70">
+                  {opt.value === "titik_a" && groups.titik_a.length}
+                  {opt.value === "proses" && groups.proses.length}
+                  {opt.value === "titik_b" && groups.titik_b.length}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+
         {fastest && t && (
           <FastestDepartureHero ship={fastest} tambangan={t} />
         )}
@@ -84,11 +125,9 @@ export default function StatusTambanganPage() {
           </div>
         )}
 
-        <div className="grid gap-6 sm:grid-cols-2">
-          {groups.titik_a.length > 0 && t && <KapalGroup label={`Standby di ${t.titikA.nama}`} items={groups.titik_a} tambangan={t} />}
-          {groups.titik_b.length > 0 && t && <KapalGroup label={`Standby di ${t.titikB.nama}`} items={groups.titik_b} tambangan={t} />}
-        </div>
-        <KapalGroup label="Sedang Menyeberang" items={groups.proses} tambangan={t} />
+        {showTitikA && groups.titik_a.length > 0 && t && <KapalGroup label={`Standby di ${t.titikA.nama}`} items={groups.titik_a} tambangan={t} />}
+        {showTitikB && groups.titik_b.length > 0 && t && <KapalGroup label={`Standby di ${t.titikB.nama}`} items={groups.titik_b} tambangan={t} />}
+        {showProses && <KapalGroup label="Sedang Menyeberang" items={groups.proses} tambangan={t} />}
 
         <EventsTimeline
           events={events}

@@ -40,39 +40,47 @@ export function TambanganOverviewCard({ tambangan }: { tambangan: TambanganDto }
         </h3>
       </div>
 
-      {/* Crossing diagram */}
+      {/* Crossing diagram — tappable counts */}
       <div className="mt-4 flex items-center justify-between gap-2">
-        {/* Point A */}
-        <div className="flex-1 text-center">
+        {/* Point A — tap to filter */}
+        <Link
+          href={`/tambangan/${tambangan.slug}?filter=titik_a`}
+          onClick={(e) => e.stopPropagation()}
+          className="flex-1 text-center rounded-xl py-2 transition-all hover:bg-primary/5 active:bg-primary/10"
+        >
           <div className="text-2xl font-extrabold text-primary">{counts.titik_a}</div>
           <div className="text-[10px] font-semibold uppercase tracking-wider text-base-content/50">
             {tambangan.titikA.nama}
           </div>
-        </div>
+        </Link>
 
         {/* Crossing indicator */}
         <div className="flex flex-col items-center gap-1 px-2">
           <div className="flex items-center gap-1">
-            <span className="text-[10px] text-base-content/50">◀</span>
+            <span className="text-[10px] text-base-content/50">&#9664;</span>
             {counts.proses > 0 ? (
               <Ship size={16} className="text-accent animate-pulse" />
             ) : (
               <Ship size={16} className="text-base-content/20" />
             )}
-            <span className="text-[10px] text-base-content/50">▶</span>
+            <span className="text-[10px] text-base-content/50">&#9654;</span>
           </div>
           {counts.proses > 0 && (
             <span className="text-[10px] font-bold text-accent">{counts.proses}</span>
           )}
         </div>
 
-        {/* Point B */}
-        <div className="flex-1 text-center">
+        {/* Point B — tap to filter */}
+        <Link
+          href={`/tambangan/${tambangan.slug}?filter=titik_b`}
+          onClick={(e) => e.stopPropagation()}
+          className="flex-1 text-center rounded-xl py-2 transition-all hover:bg-primary/5 active:bg-primary/10"
+        >
           <div className="text-2xl font-extrabold text-primary">{counts.titik_b}</div>
           <div className="text-[10px] font-semibold uppercase tracking-wider text-base-content/50">
             {tambangan.titikB.nama}
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Fastest departure */}
