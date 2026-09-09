@@ -67,7 +67,7 @@ export default function NahkodaPage() {
         method: "POST",
         body: JSON.stringify({ oldPassword, newPassword }),
       });
-      setPasswordMsg("✓ Password berhasil diubah");
+      setPasswordMsg("Berhasil: password diubah");
       setOldPassword("");
       setNewPassword("");
       setTimeout(() => setShowPasswordForm(false), 1500);
@@ -157,7 +157,7 @@ export default function NahkodaPage() {
                 {passwordLoading ? "Menyimpan…" : "Simpan"}
               </button>
               {passwordMsg && (
-                <p className={`text-xs ${passwordMsg.startsWith("✓") ? "text-success" : "text-error"}`}>
+                <p className={`text-xs ${passwordMsg.startsWith("Berhasil") ? "text-success" : "text-error"}`}>
                   {passwordMsg}
                 </p>
               )}
