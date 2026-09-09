@@ -33,19 +33,19 @@ export default function PilihTambanganPage() {
             <Link
               key={t.slug}
               href={`/tambangan/${t.slug}`}
-              className="group block rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm transition-shadow hover:shadow-md active:shadow-sm"
+              className="group block border border-base-300 bg-base-100 p-4 shadow-sm transition-shadow hover:shadow-md active:shadow-sm rounded-xl"
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="font-bold text-[var(--color-text)]">{t.nama}</span>
-                <ChevronRight className="shrink-0 text-[var(--color-text-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-brand)]" size={18} />
+                <span className="font-bold text-base-content">{t.nama}</span>
+                <ChevronRight className="shrink-0 text-base-content/50 transition group-hover:translate-x-0.5 group-hover:text-primary" size={18} />
               </div>
-              <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-[var(--color-text-secondary)]">
-                <MapPin size={13} className="shrink-0 text-[var(--color-brand)]" />
+              <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-base-content/70">
+                <MapPin size={13} className="shrink-0 text-primary" />
                 <span>
                   {t.titikA.nama} ↔ {t.titikB.nama}
                 </span>
                 {typeof t.jumlahKapal === "number" && (
-                  <span className="ml-auto inline-flex items-center rounded-full bg-[var(--color-brand-50)] px-2.5 py-1 font-mono text-xs font-semibold text-[var(--color-brand-700)]">
+                  <span className="ml-auto inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 font-mono text-xs font-semibold text-primary">
                     {t.jumlahKapal} kapal
                   </span>
                 )}

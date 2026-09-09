@@ -42,20 +42,20 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
+    <div className="min-h-screen bg-base-100">
       <div className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4 py-8 md:max-w-lg md:px-6">
-        <div className="relative overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-xl)] md:p-8">
+        <div className="relative overflow-hidden rounded-xl border border-base-300 bg-base-100 p-6 shadow-xl md:p-8">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(13,148,136,0.12),transparent)]" />
           <div className="relative">
             <div className="mb-6 flex items-center justify-between">
               <div className="flex-1 text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-brand)] text-[var(--color-brand-foreground)] shadow-[var(--shadow-glow-brand)]">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-content">
                   <Anchor size={24} />
                 </div>
-                <h1 className="mt-4 text-xl font-bold tracking-tight text-[var(--color-text)] md:text-2xl">
+                <h1 className="mt-4 text-xl font-bold tracking-tight text-base-content md:text-2xl">
                   Masuk Nahkoda
                 </h1>
-                <p className="mt-1 text-sm text-[var(--color-text-secondary)]">Masuk untuk mengelola kapal Anda</p>
+                <p className="mt-1 text-sm text-base-content/70">Masuk untuk mengelola kapal Anda</p>
               </div>
               <div className="absolute right-4 top-4">
                 <ThemeToggle />
@@ -65,7 +65,7 @@ function LoginForm() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <ErrorNote message={error} />
               <div>
-                <label htmlFor="username" className="mb-1.5 block text-xs font-semibold text-[var(--color-text-secondary)]">
+                <label htmlFor="username" className="mb-1.5 block text-xs font-semibold text-base-content/70">
                   Username
                 </label>
                 <input
@@ -76,11 +76,11 @@ function LoginForm() {
                   autoCapitalize="none"
                   autoComplete="username"
                   required
-                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-4 py-3 text-base text-[var(--color-text)] outline-none transition-all duration-200 placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+                  className="input input-bordered input-lg w-full"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="mb-1.5 block text-xs font-semibold text-[var(--color-text-secondary)]">
+                <label htmlFor="password" className="mb-1.5 block text-xs font-semibold text-base-content/70">
                   Password
                 </label>
                 <input
@@ -91,13 +91,13 @@ function LoginForm() {
                   placeholder="••••••••"
                   autoComplete="current-password"
                   required
-                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-4 py-3 text-base text-[var(--color-text)] outline-none transition-all duration-200 placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+                  className="input input-bordered input-lg w-full"
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading || !username || !password}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-brand)] py-3.5 font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-glow-brand)] transition-all duration-200 hover:bg-[var(--color-brand-dark)] hover:shadow-xl active:bg-[var(--color-brand-800)] disabled:cursor-not-allowed disabled:opacity-50"
+                className="btn btn-primary btn-block btn-lg"
               >
                 {loading ? (
                   <>
@@ -110,16 +110,16 @@ function LoginForm() {
               </button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-[var(--color-text-secondary)]">
+            <p className="mt-6 text-center text-sm text-base-content/70">
               Belum punya akun?{" "}
-              <Link href="/register" className="font-semibold text-[var(--color-brand)] hover:underline">
+              <Link href="/register" className="font-semibold text-primary hover:underline">
                 Daftar
               </Link>
             </p>
           </div>
         </div>
-        <p className="mt-6 text-center text-xs text-[var(--color-text-muted)]">
-          <Link href="/" className="hover:text-[var(--color-brand)]">
+        <p className="mt-6 text-center text-xs text-base-content/50">
+          <Link href="/" className="hover:text-primary">
             ← Kembali ke beranda
           </Link>
         </p>

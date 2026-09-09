@@ -45,31 +45,31 @@ export function PwaInstallPrompt() {
   if (!deferred || dismissed) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-lg">
+    <div className="alert fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md border-base-300 bg-base-200 shadow-lg">
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-brand-100)] text-[var(--color-brand-700)] dark:bg-[var(--color-brand-900)]/40 dark:text-[var(--color-brand-500)]">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
           <Download size={20} />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-[var(--color-text)]">Install Tambangan</p>
-          <p className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
+          <p className="text-sm font-bold text-base-content">Install Tambangan</p>
+          <p className="mt-0.5 text-xs text-base-content/60">
             Tambahkan ke home screen untuk akses cepat
           </p>
         </div>
-        <button onClick={handleDismiss} aria-label="Tutup" className="shrink-0 rounded-lg p-1 text-[var(--color-text-muted)] hover:bg-[var(--color-border-subtle)]">
+        <button onClick={handleDismiss} aria-label="Tutup" className="btn btn-ghost btn-sm shrink-0 p-1">
           <X size={16} />
         </button>
       </div>
       <div className="mt-3 flex gap-2">
         <button
           onClick={handleInstall}
-          className="flex-1 rounded-xl bg-[var(--color-brand-600)] py-2.5 text-sm font-bold text-[var(--color-brand-foreground)] transition hover:bg-[var(--color-brand-700)]"
+          className="btn btn-primary flex-1"
         >
           Install
         </button>
         <button
           onClick={handleDismiss}
-          className="rounded-xl px-4 py-2.5 text-sm font-semibold text-[var(--color-text-secondary)] hover:bg-[var(--color-border-subtle)]"
+          className="btn btn-ghost btn-sm"
         >
           Nanti
         </button>

@@ -90,7 +90,7 @@ export default function NahkodaPage() {
         <div className="flex flex-wrap gap-2">
           <Link
             href="/nahkoda/kapal/baru"
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--color-brand)] px-4 py-3 text-sm font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-glow-brand)] transition-all duration-200 hover:bg-[var(--color-brand-dark)] hover:shadow-xl active:bg-[var(--color-brand-800)] md:flex-none"
+            className="btn btn-primary flex-1 md:flex-none"
           >
             <Plus size={16} />
             Daftarkan Kapal
@@ -98,7 +98,7 @@ export default function NahkodaPage() {
           {me?.role === "admin" && (
             <Link
               href="/admin"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 px-4 py-3 text-sm font-bold text-[var(--color-accent)] transition-all duration-200 hover:bg-[var(--color-accent)]/20"
+              className="btn btn-accent btn-outline flex-1 md:flex-none"
             >
               <Shield size={16} />
               Admin
@@ -106,7 +106,7 @@ export default function NahkodaPage() {
           )}
           <button
             onClick={handleLogout}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm font-semibold text-[var(--color-text-secondary)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-surface-alt)] hover:shadow-[var(--shadow-md)]"
+            className="btn btn-ghost border border-base-300"
           >
             <LogOut size={16} />
             Keluar
@@ -114,11 +114,11 @@ export default function NahkodaPage() {
         </div>
 
         {/* Ganti Password */}
-        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)]">
+        <div className="bg-base-100 border border-base-300 p-4 shadow-sm transition-shadow hover:shadow-md rounded-xl">
           <button
             onClick={() => setShowPasswordForm(!showPasswordForm)}
             aria-expanded={showPasswordForm}
-            className="flex w-full items-center gap-2 text-sm font-semibold text-[var(--color-text)]"
+            className="flex w-full items-center gap-2 text-sm font-semibold text-base-content"
           >
             <KeyRound size={14} />
             {showPasswordForm ? "Tutup" : "Ganti Password"}
@@ -126,7 +126,7 @@ export default function NahkodaPage() {
           {showPasswordForm && (
             <div className="mt-3 space-y-2">
               <div>
-                <label htmlFor="old-password" className="mb-1 block text-xs font-medium text-[var(--color-text-secondary)]">
+                <label htmlFor="old-password" className="mb-1 block text-xs font-medium text-base-content/70">
                   Password lama
                 </label>
                 <input
@@ -136,11 +136,11 @@ export default function NahkodaPage() {
                   onChange={(e) => setOldPassword(e.target.value)}
                   placeholder="Password lama"
                   autoComplete="current-password"
-                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2.5 text-sm text-[var(--color-text)] outline-none transition-all duration-200 placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+                  className="input input-bordered w-full text-sm"
                 />
               </div>
               <div>
-                <label htmlFor="new-password" className="mb-1 block text-xs font-medium text-[var(--color-text-secondary)]">
+                <label htmlFor="new-password" className="mb-1 block text-xs font-medium text-base-content/70">
                   Password baru
                 </label>
                 <input
@@ -150,18 +150,18 @@ export default function NahkodaPage() {
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Min 6 karakter"
                   autoComplete="new-password"
-                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2.5 text-sm text-[var(--color-text)] outline-none transition-all duration-200 placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+                  className="input input-bordered w-full text-sm"
                 />
               </div>
               <button
                 onClick={() => void handlePasswordChange()}
                 disabled={passwordLoading}
-                className="w-full rounded-xl bg-[var(--color-brand)] py-2.5 text-sm font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-brand-dark)] hover:shadow-[var(--shadow-md)] disabled:opacity-50"
+                className="btn btn-primary btn-block"
               >
                 {passwordLoading ? "Menyimpan…" : "Simpan"}
               </button>
               {passwordMsg && (
-                <p className={`text-xs ${passwordMsg.startsWith("✓") ? "text-[var(--color-success)]" : "text-[var(--color-danger)]"}`}>
+                <p className={`text-xs ${passwordMsg.startsWith("✓") ? "text-success" : "text-error"}`}>
                   {passwordMsg}
                 </p>
               )}
@@ -171,13 +171,13 @@ export default function NahkodaPage() {
 
         <ErrorNote message={error} />
 
-        <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
           Kapal Saya · {list.length}
         </p>
 
         {((loading && !data) || !checked) && (
-          <div className="rounded-xl bg-[var(--color-surface-alt)] p-8 text-center shadow-[var(--shadow-sm)]">
-            <p className="text-sm text-[var(--color-text-muted)]">
+          <div className="bg-base-200 p-8 text-center shadow-sm rounded-xl">
+            <p className="text-sm text-base-content/50">
               Memuat…
             </p>
           </div>

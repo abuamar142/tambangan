@@ -26,22 +26,22 @@ export function KapalCard({
 
   const card = (
     <div
-      className={`rounded-xl border bg-[var(--color-surface)] p-4 shadow-md transition-all duration-200 hover:shadow-lg active:shadow-md ${
+      className={`card bg-base-100 rounded-xl border p-4 shadow-md transition-all duration-200 hover:shadow-lg active:shadow-md ${
         isActive
-          ? "border-[var(--color-accent)]/40 shadow-[var(--shadow-glow-amber)]"
-          : "border-[var(--color-border)]"
+          ? "border-accent/40 shadow-[var(--shadow-glow-amber)]"
+          : "border-base-300"
       }`}
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-2 font-bold text-[var(--color-text)]">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-brand)]/10 text-[var(--color-brand)]">
+        <span className="flex items-center gap-2 font-bold text-base-content">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Anchor size={14} />
           </span>
           {k.nama}
         </span>
         <div className="flex items-center gap-1">
           {showTime && (
-            <span className="font-mono text-xs text-[var(--color-text-muted)]">{timeAgo(k.lastUpdated)}</span>
+            <span className="font-mono text-xs text-base-content/50">{timeAgo(k.lastUpdated)}</span>
           )}
           <ShareButton
             title={k.nama}
@@ -52,19 +52,19 @@ export function KapalCard({
         </div>
       </div>
       {tambanganNama && !tambangan && (
-        <p className="mt-2 text-xs text-[var(--color-text-secondary)]">{tambanganNama}</p>
+        <p className="mt-2 text-xs text-base-content/70">{tambanganNama}</p>
       )}
       <div className="mt-2.5">
         <ChannelBar status={k.status} departingFrom={k.departingFrom} compact />
       </div>
       {tambangan && (
-        <div className="mt-1 flex justify-between font-mono text-xs text-[var(--color-text-muted)]">
+        <div className="mt-1 flex justify-between font-mono text-xs text-base-content/50">
           <span>{tambangan.titikA.nama}</span>
           <span>{tambangan.titikB.nama}</span>
         </div>
       )}
       {countdown && (
-        <p className="mt-2 font-mono text-xs font-semibold text-[var(--color-accent)]">
+        <p className="mt-2 font-mono text-xs font-semibold text-accent">
           {countdown.expired
             ? "Waktu habis"
             : `${countdown.display} lagi berangkat`}

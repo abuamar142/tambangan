@@ -15,7 +15,7 @@ export function KapalGroup({
   if (items.length === 0) return null;
   return (
     <div>
-      <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-base-content/50">
         {label} · {items.length}
       </p>
       <div className="space-y-2">

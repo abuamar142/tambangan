@@ -212,7 +212,7 @@ export default function KontrolKapalPage() {
     return (
       <Screen>
         <ScreenHeader title="Memuat…" backHref="/nahkoda" />
-        <p className="p-8 text-center text-sm text-[var(--color-text-muted)]">Mengambil data kapal…</p>
+        <p className="p-8 text-center text-sm text-base-content/50">Mengambil data kapal…</p>
       </Screen>
     );
   }
@@ -237,7 +237,7 @@ export default function KontrolKapalPage() {
       <ScreenContent>
         {/* Edit name card */}
         {editing ? (
-          <div className="flex items-center gap-2 rounded-xl border border-[var(--color-brand)]/20 bg-[var(--color-surface)] p-3 shadow-[var(--shadow-md)]">
+          <div className="flex items-center gap-2 border border-primary/20 bg-base-100 p-3 shadow-md rounded-xl">
             <label htmlFor="edit-nama-kapal" className="sr-only">
               Nama kapal
             </label>
@@ -247,33 +247,33 @@ export default function KontrolKapalPage() {
               onChange={(e) => setEditName(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") void handleRename(); if (e.key === "Escape") setEditing(false); }}
               autoFocus
-              className="min-w-0 flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2 text-sm font-bold text-[var(--color-text)] outline-none focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="input input-bordered min-w-0 flex-1 text-sm font-bold"
             />
-            <button onClick={() => void handleRename()} className="rounded-xl bg-[var(--color-brand)] px-4 py-2 text-xs font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-brand-dark)] hover:shadow-[var(--shadow-md)]">Simpan</button>
-            <button onClick={() => setEditing(false)} className="rounded-xl bg-[var(--color-surface-alt)] px-4 py-2 text-xs font-semibold text-[var(--color-text-secondary)] transition-all duration-200 hover:bg-[var(--color-border)]">Batal</button>
+            <button onClick={() => void handleRename()} className="btn btn-primary btn-sm">Simpan</button>
+            <button onClick={() => setEditing(false)} className="btn btn-ghost btn-sm">Batal</button>
           </div>
         ) : (
           <button
             onClick={() => { setEditing(true); setEditName(k?.nama ?? ""); }}
-            className="flex w-full items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-left shadow-[var(--shadow-sm)] transition-all duration-200 hover:shadow-[var(--shadow-md)]"
+            className="flex w-full items-center justify-between border border-base-300 bg-base-100 px-4 py-3 text-left shadow-sm transition-all duration-200 hover:shadow-md rounded-xl"
           >
             <div>
-              <p className="font-bold text-[var(--color-text)]">{k?.nama}</p>
-              <p className="text-xs text-[var(--color-text-muted)]">{k?.tambanganNama}</p>
+              <p className="font-bold text-base-content">{k?.nama}</p>
+              <p className="text-xs text-base-content/50">{k?.tambanganNama}</p>
             </div>
-            <Pencil size={14} className="text-[var(--color-text-muted)]" />
+            <Pencil size={14} className="text-base-content/50" />
           </button>
         )}
 
         {/* Status card */}
-        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)]">
+        <div className="border border-base-300 bg-base-100 p-5 shadow-sm transition-shadow hover:shadow-md rounded-xl">
           <div className="flex items-center justify-between gap-2">
             <StatusBadge status={k.status} departingFrom={k.departingFrom} titikA={k.titikA} titikB={k.titikB} />
-            <span className="font-mono text-xs text-[var(--color-text-muted)]">{timeAgo(k.lastUpdated)}</span>
+            <span className="font-mono text-xs text-base-content/50">{timeAgo(k.lastUpdated)}</span>
           </div>
           <div className="mt-4">
             <ChannelBar status={k.status} departingFrom={k.departingFrom} />
-            <div className="mt-2 flex justify-between font-mono text-xs text-[var(--color-text-muted)]">
+            <div className="mt-2 flex justify-between font-mono text-xs text-base-content/50">
               <span>{k.titikA.nama}</span>
               <span>{k.titikB.nama}</span>
             </div>
@@ -283,7 +283,7 @@ export default function KontrolKapalPage() {
         {/* Delete button */}
         <button
           onClick={() => void handleDelete()}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-danger)]/20 bg-[var(--color-danger)]/10 py-3 text-sm font-semibold text-[var(--color-danger)] transition-all duration-200 hover:bg-[var(--color-danger)]/20 hover:shadow-[var(--shadow-sm)] active:bg-[var(--color-danger)]/30"
+          className="btn btn-error btn-outline w-full"
         >
           <Trash2 size={14} />
           Hapus Kapal
@@ -291,12 +291,12 @@ export default function KontrolKapalPage() {
 
         {/* Pindah Tambangan */}
         {tambanganList.length > 1 && (
-          <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)]">
-            <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)]">
+          <div className="border border-base-300 bg-base-100 p-4 shadow-sm transition-shadow hover:shadow-md rounded-xl">
+            <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-base-content/70">
               <ArrowRightLeft size={13} />
               Pindah Tambangan
             </p>
-            <p className="mb-2 text-xs text-[var(--color-text-muted)]">Sekarang: {k?.tambanganNama}</p>
+            <p className="mb-2 text-xs text-base-content/50">Sekarang: {k?.tambanganNama}</p>
             <label htmlFor="pindah-tambangan" className="sr-only">
               Pilih tambangan tujuan
             </label>
@@ -311,7 +311,7 @@ export default function KontrolKapalPage() {
                 e.target.value = "";
               }}
               defaultValue=""
-              className="w-full appearance-none rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-4 py-2.5 text-sm font-medium text-[var(--color-text)] outline-none transition-all duration-200 focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="select select-bordered w-full text-sm font-medium"
             >
               <option value="">Pilih tambangan tujuan…</option>
               {tambanganList
@@ -328,15 +328,15 @@ export default function KontrolKapalPage() {
         <ErrorNote message={actionError} />
 
         {/* Mode toggle (Manual / GPS) */}
-        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-1 shadow-[var(--shadow-sm)]">
+        <div className="border border-base-300 bg-base-100 p-1 shadow-sm rounded-xl">
           <div className="flex gap-1">
             <button
               onClick={() => setMode("manual")}
               aria-pressed={mode === "manual"}
-              className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition-all duration-200 ${
+              className={`flex-1 py-2.5 text-sm font-semibold transition-all duration-200 rounded-xl ${
                 mode === "manual"
-                  ? "bg-[var(--color-brand)] text-[var(--color-brand-foreground)] shadow-[var(--shadow-glow-brand)]"
-                  : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-alt)]"
+                  ? "btn btn-primary"
+                  : "text-base-content/70 hover:bg-base-200"
               }`}
             >
               Manual
@@ -344,10 +344,10 @@ export default function KontrolKapalPage() {
             <button
               onClick={() => setMode("gps")}
               aria-pressed={mode === "gps"}
-              className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition-all duration-200 ${
+              className={`flex-1 py-2.5 text-sm font-semibold transition-all duration-200 rounded-xl ${
                 mode === "gps"
-                  ? "bg-[var(--color-brand)] text-[var(--color-brand-foreground)] shadow-[var(--shadow-glow-brand)]"
-                  : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-alt)]"
+                  ? "btn btn-primary"
+                  : "text-base-content/70 hover:bg-base-200"
               }`}
             >
               GPS Otomatis
@@ -359,30 +359,30 @@ export default function KontrolKapalPage() {
             <div className="grid grid-cols-3 gap-2 p-2">
               <button
                 onClick={() => void patch({ action: "status", value: "titik_a" })}
-                className={`min-h-11 rounded-xl py-3 text-xs font-bold transition-all duration-200 ${
+                className={`min-h-11 py-3 text-xs font-bold transition-all duration-200 rounded-xl ${
                   k.status === "titik_a"
-                    ? "bg-[var(--color-success)] text-[var(--color-success-foreground)] shadow-[var(--shadow-glow-brand)]"
-                    : "border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text)] hover:bg-[var(--color-border)]"
+                    ? "btn btn-success"
+                    : "border border-base-300 bg-base-200 text-base-content hover:bg-base-300"
                 }`}
               >
                 {k.titikA.nama}
               </button>
               <button
                 onClick={() => void patch({ action: "status", value: "proses" })}
-                className={`min-h-11 rounded-xl py-3 text-xs font-bold transition-all duration-200 ${
+                className={`min-h-11 py-3 text-xs font-bold transition-all duration-200 rounded-xl ${
                   k.status === "proses"
-                    ? "bg-[var(--color-info)] text-[var(--color-info-foreground)] shadow-[var(--shadow-md)]"
-                    : "border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text)] hover:bg-[var(--color-border)]"
+                    ? "btn btn-info"
+                    : "border border-base-300 bg-base-200 text-base-content hover:bg-base-300"
                 }`}
               >
                 Proses ⛵
               </button>
               <button
                 onClick={() => void patch({ action: "status", value: "titik_b" })}
-                className={`min-h-11 rounded-xl py-3 text-xs font-bold transition-all duration-200 ${
+                className={`min-h-11 py-3 text-xs font-bold transition-all duration-200 rounded-xl ${
                   k.status === "titik_b"
-                    ? "bg-[var(--color-success)] text-[var(--color-success-foreground)] shadow-[var(--shadow-glow-brand)]"
-                    : "border border-[var(--color-border)] bg-[var(--color-surface-alt)] text-[var(--color-text)] hover:bg-[var(--color-border)]"
+                    ? "btn btn-success"
+                    : "border border-base-300 bg-base-200 text-base-content hover:bg-base-300"
                 }`}
               >
                 {k.titikB.nama}
@@ -391,22 +391,22 @@ export default function KontrolKapalPage() {
           ) : (
             /* GPS mode */
             <div className="space-y-3 p-3">
-              {gpsError && <p className="rounded-lg bg-[var(--color-danger)]/10 px-3 py-2 text-xs text-[var(--color-danger)]">{gpsError}</p>}
-              <div className="space-y-2 rounded-xl bg-[var(--color-surface-alt)] p-3 shadow-[var(--shadow-sm)]">
-                <p className="flex items-center justify-between font-mono text-xs text-[var(--color-text-secondary)]">
+              {gpsError && <p className="rounded-lg bg-error/10 px-3 py-2 text-xs text-error">{gpsError}</p>}
+              <div className="space-y-2 bg-base-200 p-3 shadow-sm rounded-xl">
+                <p className="flex items-center justify-between font-mono text-xs text-base-content/70">
                   <span>{k.titikA.nama}</span>
-                  <span className="font-semibold text-[var(--color-text)]">{formatDistance(gpsDist.a)}</span>
+                  <span className="font-semibold text-base-content">{formatDistance(gpsDist.a)}</span>
                 </p>
-                <p className="flex items-center justify-between font-mono text-xs text-[var(--color-text-secondary)]">
+                <p className="flex items-center justify-between font-mono text-xs text-base-content/70">
                   <span>{k.titikB.nama}</span>
-                  <span className="font-semibold text-[var(--color-text)]">{formatDistance(gpsDist.b)}</span>
+                  <span className="font-semibold text-base-content">{formatDistance(gpsDist.b)}</span>
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
                 {k.titikA.lat === null && (
                   <button
                     onClick={() => void captureTitik("a")}
-                    className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl bg-[var(--color-brand)]/10 py-2.5 text-xs font-semibold text-[var(--color-brand)] transition-all duration-200 hover:bg-[var(--color-brand)]/20"
+                    className="btn btn-primary/10 text-primary btn-sm flex-1"
                   >
                     <Crosshair size={12} />
                     {gettingLoc === "a" ? "Mengambil…" : `Set lokasi ${k.titikA.nama}`}
@@ -415,14 +415,14 @@ export default function KontrolKapalPage() {
                 {k.titikB.lat === null && (
                   <button
                     onClick={() => void captureTitik("b")}
-                    className="inline-flex flex-1 items-center justify-center gap-1 rounded-xl bg-[var(--color-brand)]/10 py-2.5 text-xs font-semibold text-[var(--color-brand)] transition-all duration-200 hover:bg-[var(--color-brand)]/20"
+                    className="btn btn-primary/10 text-primary btn-sm flex-1"
                   >
                     <Crosshair size={12} />
                     {gettingLoc === "b" ? "Mengambil…" : `Set lokasi ${k.titikB.nama}`}
                   </button>
                 )}
               </div>
-              <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">
+              <p className="text-xs leading-relaxed text-base-content/50">
                 Status terupdate otomatis dari GPS. Kalau sinyal lemah, pakai mode manual saja.
               </p>
             </div>
@@ -431,21 +431,21 @@ export default function KontrolKapalPage() {
 
         {/* Timer section */}
         {showTimer && (
-          <div className="relative overflow-hidden rounded-xl border border-[var(--color-accent)]/20 bg-[var(--color-surface)] p-5 shadow-[var(--shadow-glow-amber)] ring-1 ring-[var(--color-accent)]/10">
+          <div className="relative overflow-hidden border border-accent/20 bg-base-100 p-5 shadow-md ring-1 ring-accent/10 rounded-xl">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(245,158,11,0.1),transparent)]" />
             <div className="relative">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[var(--color-accent)]">
+              <div className="flex items-center gap-2 text-sm font-semibold text-accent">
                 <Clock size={16} />
                 Estimasi berangkat lagi
               </div>
               {mins !== null ? (
                 <div className="mt-3 flex items-center justify-between">
-                  <span className="font-mono text-2xl font-bold text-[var(--color-accent)]">
+                  <span className="font-mono text-2xl font-bold text-accent">
                     {countdown ? countdown.display : `${mins}m`}
                   </span>
                   <button
                     onClick={() => void patch({ action: "timer_clear" })}
-                    className="rounded-xl bg-[var(--color-surface-alt)] px-4 py-2 text-xs font-semibold text-[var(--color-accent)] shadow-[var(--shadow-sm)] ring-1 ring-[var(--color-accent)]/20 transition-all duration-200 hover:shadow-[var(--shadow-md)]"
+                    className="btn btn-ghost btn-sm border border-accent/20 text-accent"
                   >
                     Hapus Timer
                   </button>
@@ -457,7 +457,7 @@ export default function KontrolKapalPage() {
                       <button
                         key={m}
                         onClick={() => void patch({ action: "timer", minutes: m })}
-                        className="rounded-xl bg-[var(--color-surface-alt)] px-4 py-2 text-xs font-semibold text-[var(--color-accent)] shadow-[var(--shadow-sm)] ring-1 ring-[var(--color-accent)]/20 transition-all duration-200 hover:shadow-[var(--shadow-md)]"
+                        className="btn btn-ghost btn-sm border border-accent/20 text-accent"
                       >
                         {m}m
                       </button>
@@ -472,7 +472,7 @@ export default function KontrolKapalPage() {
                     onChange={(e) => setTimerInput(e.target.value.replace(/[^0-9]/g, ""))}
                     placeholder="lainnya"
                     inputMode="numeric"
-                    className="w-16 rounded-xl border border-[var(--color-accent)]/20 bg-[var(--color-surface-alt)] px-3 py-2 text-xs text-[var(--color-text)] outline-none transition-all duration-200 focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent)]/20"
+                    className="input input-bordered input-sm w-16 text-xs"
                   />
                   <button
                     onClick={() => {
@@ -481,7 +481,7 @@ export default function KontrolKapalPage() {
                       setTimerInput("");
                     }}
                     disabled={!timerInput}
-                    className="rounded-xl bg-[var(--color-accent)] px-4 py-2 text-xs font-bold text-[var(--color-accent-foreground)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-accent-dark)] hover:shadow-[var(--shadow-md)] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="btn btn-accent btn-sm"
                   >
                     Set
                   </button>

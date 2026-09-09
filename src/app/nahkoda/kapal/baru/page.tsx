@@ -103,7 +103,7 @@ export default function KapalBaruPage() {
 
           {/* Step 1: Nama Kapal */}
           <div>
-            <label htmlFor="nama-kapal" className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-[var(--color-text-secondary)]">
+            <label htmlFor="nama-kapal" className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-base-content/70">
               Nama Kapal
             </label>
             <input
@@ -112,19 +112,19 @@ export default function KapalBaruPage() {
               onChange={(e) => setNama(e.target.value)}
               placeholder="cth. Perahu Jaya 1"
               required
-              className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-4 py-3 text-base text-[var(--color-text)] outline-none transition-all duration-200 placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="input input-bordered w-full text-base"
             />
           </div>
 
           {/* Step 2: Pilih / Buat Tambangan */}
           {!buatBaru ? (
             <div>
-              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-[var(--color-text-secondary)]">
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-base-content/70">
                 Pilih Tambangan
               </label>
               <div className="grid gap-2 md:grid-cols-2">
                 {list.length === 0 && (
-                  <p className="col-span-full rounded-xl border border-dashed border-[var(--color-border)] p-4 text-center text-sm text-[var(--color-text-muted)]">
+                  <p className="col-span-full border border-dashed border-base-300 p-4 text-center text-sm text-base-content/50 rounded-xl">
                     Belum ada tambangan. Buat baru di bawah.
                   </p>
                 )}
@@ -136,14 +136,14 @@ export default function KapalBaruPage() {
                       setPilihId(t.id);
                       setBuatBaru(false);
                     }}
-                    className={`rounded-xl border p-4 text-left shadow-[var(--shadow-sm)] transition-all duration-200 hover:shadow-[var(--shadow-md)] ${
+                    className={`p-4 text-left shadow-sm transition-all duration-200 hover:shadow-md rounded-xl ${
                       pilihId === t.id && !buatBaru
-                        ? "border-[var(--color-brand)] bg-[var(--color-brand)]/5 ring-1 ring-[var(--color-brand)]/20"
-                        : "border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-brand)]/30"
+                        ? "border border-primary bg-primary/5 ring-1 ring-primary/20"
+                        : "border border-base-300 bg-base-100 hover:border-primary/30"
                     }`}
                   >
-                    <span className="font-bold text-[var(--color-text)]">{t.nama}</span>
-                    <span className="mt-1 block text-xs text-[var(--color-text-muted)]">
+                    <span className="font-bold text-base-content">{t.nama}</span>
+                    <span className="mt-1 block text-xs text-base-content/50">
                       {t.titikA.nama} ↔ {t.titikB.nama}
                     </span>
                   </button>
@@ -152,25 +152,25 @@ export default function KapalBaruPage() {
               <button
                 type="button"
                 onClick={() => setBuatBaru(true)}
-                className="mt-3 w-full rounded-xl border border-dashed border-[var(--color-brand)]/30 bg-[var(--color-brand)]/5 py-3 text-sm font-semibold text-[var(--color-brand)] transition-all duration-200 hover:bg-[var(--color-brand)]/10"
+                className="mt-3 w-full border border-dashed border-primary/30 bg-primary/5 py-3 text-sm font-semibold text-primary transition-all duration-200 hover:bg-primary/10 rounded-xl"
               >
                 + Buat Tambangan Baru
               </button>
             </div>
           ) : (
-            <div className="space-y-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-sm)]">
+            <div className="space-y-4 bg-base-100 border border-base-300 p-5 shadow-sm rounded-xl">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-widest text-[var(--color-brand)]">Tambangan Baru</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-primary">Tambangan Baru</span>
                 <button
                   type="button"
                   onClick={() => setBuatBaru(false)}
-                  className="rounded-lg px-2 py-1 text-xs font-semibold text-[var(--color-text-muted)] hover:bg-[var(--color-surface-alt)]"
+                  className="rounded-lg px-2 py-1 text-xs font-semibold text-base-content/50 hover:bg-base-200"
                 >
                   Batal
                 </button>
               </div>
               <div>
-                <label htmlFor="nama-tambangan" className="mb-1 block text-xs font-medium text-[var(--color-text-secondary)]">
+                <label htmlFor="nama-tambangan" className="mb-1 block text-xs font-medium text-base-content/70">
                   Nama Tambangan
                 </label>
                 <input
@@ -178,7 +178,7 @@ export default function KapalBaruPage() {
                   value={namaTambangan}
                   onChange={(e) => setNamaTambangan(e.target.value)}
                   placeholder="Nama tambangan, cth. Jatikalen - Megaluh"
-                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-3 py-2.5 text-sm text-[var(--color-text)] outline-none transition-all duration-200 placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+                  className="input input-bordered w-full text-sm"
                 />
               </div>
               <TitikInput
@@ -197,7 +197,7 @@ export default function KapalBaruPage() {
                 getting={gettingLoc === "b"}
                 onCapture={() => capture("b")}
               />
-              <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">
+              <p className="text-xs leading-relaxed text-base-content/50">
                 Posisi GPS diambil dari perangkat Anda — berdiri di dermaga saat menekan tombol.
               </p>
             </div>
@@ -207,7 +207,7 @@ export default function KapalBaruPage() {
           <button
             type="submit"
             disabled={loading || !nama.trim()}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-brand)] py-3.5 font-bold text-[var(--color-brand-foreground)] shadow-[var(--shadow-glow-brand)] transition-all duration-200 hover:bg-[var(--color-brand-dark)] hover:shadow-xl active:bg-[var(--color-brand-800)] disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn btn-primary btn-block text-base"
           >
             {loading ? (
               <>
@@ -242,7 +242,7 @@ function TitikInput({
   const inputId = `titik-${label.toLowerCase().replace(/\s+/g, "-")}`;
   return (
     <div className="flex items-center gap-2">
-      <label htmlFor={inputId} className="w-14 shrink-0 font-mono text-xs font-bold text-[var(--color-text-muted)]">
+      <label htmlFor={inputId} className="w-14 shrink-0 font-mono text-xs font-bold text-base-content/50">
         {label}
       </label>
       <input
@@ -250,16 +250,16 @@ function TitikInput({
         value={nama}
         onChange={(e) => setNama(e.target.value)}
         placeholder="Nama tempat"
-        className="min-w-0 flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+        className="input input-bordered min-w-0 flex-1 text-sm"
       />
       <button
         type="button"
         onClick={onCapture}
         disabled={getting}
-        className={`inline-flex shrink-0 items-center gap-1 rounded-xl px-3 py-2.5 text-xs font-semibold transition-all duration-200 ${
+        className={`inline-flex shrink-0 items-center gap-1 px-3 py-2.5 text-xs font-semibold transition-all duration-200 rounded-xl ${
           coord
-            ? "bg-[var(--color-success)]/10 text-[var(--color-success)] ring-1 ring-[var(--color-success)]/20"
-            : "bg-[var(--color-brand)]/10 text-[var(--color-brand)] ring-1 ring-[var(--color-brand)]/20"
+            ? "bg-success/10 text-success ring-1 ring-success/20"
+            : "bg-primary/10 text-primary ring-1 ring-primary/20"
         }`}
       >
         <Crosshair size={13} />

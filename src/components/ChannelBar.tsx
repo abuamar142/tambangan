@@ -11,8 +11,8 @@ export function ChannelBar({
 }) {
   const dotColor =
     status === "proses"
-      ? "bg-[var(--color-accent)] shadow-[var(--shadow-glow-amber)]"
-      : "bg-[var(--color-brand)] shadow-[var(--shadow-glow-brand)]";
+      ? "bg-accent shadow-[var(--shadow-glow-amber)]"
+      : "bg-primary shadow-[var(--shadow-glow-brand)]";
   const left =
     status === "titik_a" ? "4%" : status === "titik_b" ? "96%" : departingFrom === "titik_a" ? "70%" : departingFrom === "titik_b" ? "30%" : "50%";
   const percent =
@@ -24,15 +24,15 @@ export function ChannelBar({
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={percent}
-      className={`relative ${compact ? "h-1.5" : "h-2"} w-full rounded-full bg-[var(--color-surface-alt)]`}
+      className={`relative ${compact ? "h-1.5" : "h-2"} w-full rounded-full bg-base-300`}
     >
       {/* Active track */}
       <div
-        className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[var(--color-brand)]/20 via-[var(--color-brand)]/10 to-transparent transition-all duration-700 motion-reduce:transition-none`}
+        className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary/20 via-primary/10 to-transparent transition-all duration-700 motion-reduce:transition-none`}
         style={{ width: status === "titik_a" ? "100%" : status === "titik_b" ? "0%" : departingFrom === "titik_a" ? "70%" : departingFrom === "titik_b" ? "30%" : "50%" }}
       />
       <div
-        className={`absolute top-1/2 rounded-full border-2 border-[var(--color-surface)] transition-all duration-700 motion-reduce:transition-none ${dotColor} ${
+        className={`absolute top-1/2 rounded-full border-2 border-base-100 transition-all duration-700 motion-reduce:transition-none ${dotColor} ${
           compact ? "h-3.5 w-3.5" : "h-5 w-5"
         } ${status === "proses" ? "animate-pulse motion-reduce:animate-none" : ""}`}
         style={{ left, transform: "translate(-50%, -50%)" }}

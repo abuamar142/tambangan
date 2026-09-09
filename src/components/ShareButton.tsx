@@ -35,7 +35,7 @@ export function ShareButton({
     return (
       <button
         onClick={handleShare}
-        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-[var(--color-text-muted)] transition hover:bg-[var(--color-border-subtle)] hover:text-[var(--color-text-secondary)]"
+        className="btn btn-ghost btn-xs btn-square rounded-full"
         aria-label="Bagikan status"
         title={copied ? "Disalin!" : "Bagikan"}
       >
@@ -47,7 +47,7 @@ export function ShareButton({
   return (
     <button
       onClick={handleShare}
-      className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text-secondary)] shadow-sm transition hover:bg-[var(--color-surface-alt)]"
+      className="btn btn-outline btn-sm gap-1.5 rounded-full text-xs"
       aria-label="Bagikan status"
     >
       <Share2 size={13} />
