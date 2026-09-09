@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { RefreshCw } from "lucide-react";
 import { EventsTimeline, type KapalEvent } from "@/components/EventsTimeline";
+import { FastestDepartureHero } from "@/components/FastestDepartureHero";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { ShareButton } from "@/components/ShareButton";
 import { ErrorNote } from "@/components/ErrorNote";
 import { KapalGroup } from "@/components/KapalGroup";
 import { usePolling } from "@/lib/client/usePolling";
 import { api } from "@/lib/client/api";
-import { minutesLeft, sortByTimer } from "@/lib/format";
+import { sortByTimer } from "@/lib/format";
 import type { KapalLiveDto, TambanganDto } from "@/lib/types";
 
 interface DetailResponse {
@@ -74,17 +75,7 @@ export default function StatusTambanganPage() {
         <ErrorNote message={error} />
 
         {fastest && t && (
-          <div className="relative overflow-hidden bg-base-100 p-5 shadow-md ring-1 ring-accent/15 transition-shadow hover:shadow-xl rounded-xl">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(245,158,11,0.15),transparent)]" />
-            <div className="relative">
-              <p className="text-xs font-semibold uppercase tracking-widest text-accent">Paling cepat berangkat</p>
-              <p className="mt-1 text-lg font-bold text-base-content">{fastest.nama}</p>
-              <p className="font-mono text-sm text-base-content/70">
-                ~{minutesLeft(fastest.timerEndAt)} menit lagi, standby di{" "}
-                {fastest.status === "titik_a" ? t.titikA.nama : t.titikB.nama}
-              </p>
-            </div>
-          </div>
+          <FastestDepartureHero ship={fastest} tambangan={t} />
         )}
 
         {!loading && !error && list.length === 0 && (
