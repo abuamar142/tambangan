@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Anchor, KeyRound, LogOut, Plus, Shield } from "lucide-react";
-import { Screen, ScreenContent } from "@/components/Screen";
-import { ScreenHeader } from "@/components/ScreenHeader";
 import { KapalCard } from "@/components/KapalCard";
 import { ErrorNote } from "@/components/ErrorNote";
 import { EmptyState } from "@/components/EmptyState";
@@ -83,10 +81,8 @@ export default function NahkodaPage() {
   const list = data?.kapal ?? [];
 
   return (
-    <Screen>
-      <ScreenHeader title="Mode Nahkoda" subtitle={me ? `Halo, ${me.username}` : undefined} />
-      <ScreenContent>
-        {/* Action buttons */}
+    <div className="space-y-4">
+      {/* Action buttons */}
         <div className="flex flex-wrap gap-2">
           <Link
             href="/nahkoda/kapal/baru"
@@ -202,7 +198,6 @@ export default function NahkodaPage() {
             />
           ))}
         </div>
-      </ScreenContent>
-    </Screen>
+    </div>
   );
 }

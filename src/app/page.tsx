@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-base-100">
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col md:max-w-3xl">
+      <div className="mx-auto flex min-h-screen w-full flex-col md:max-w-6xl">
         {/* Hero header — teal ground with depth */}
         <div className="relative overflow-hidden bg-base-100 px-4 pb-10 pt-12 text-center text-base-content md:rounded-b-[2rem] md:px-8 md:pt-10 shadow-xl">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(13,148,136,0.25),transparent)]" />
@@ -27,10 +27,10 @@ export default function HomePage() {
         </div>
 
         {/* Quick links + home section */}
-        <div className="mx-auto -mt-5 w-full flex-1 space-y-3 rounded-t-3xl bg-base-100 px-4 pb-8 pt-6 md:mt-0 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 md:rounded-t-none md:px-6 md:py-6">
+        <div className="mx-auto -mt-5 w-full flex-1 space-y-3 rounded-t-3xl bg-base-100 px-4 pb-8 pt-6 md:mt-0 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 md:rounded-t-none md:px-6 md:py-8">
           <Link
             href="/tambangan"
-            className="group flex w-full items-center gap-4 rounded-xl border border-base-300 bg-base-100 p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+            className="group flex w-full items-center gap-4 animate-card-in rounded-xl border border-base-300 bg-base-100 p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
           >
             <div className="rounded-lg bg-accent p-3 text-accent-content transition group-hover:scale-105">
               <Users size={22} />
@@ -46,7 +46,7 @@ export default function HomePage() {
 
           <Link
             href="/nahkoda"
-            className="group flex w-full items-center gap-4 rounded-xl border border-base-300 bg-base-100 p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+            className="group flex w-full items-center gap-4 animate-card-in rounded-xl border border-base-300 bg-base-100 p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
           >
             <div className="rounded-lg bg-primary p-3 text-primary-content transition group-hover:scale-105">
               <Anchor size={22} />

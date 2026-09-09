@@ -104,7 +104,7 @@ export function HomeKapalSection() {
         </div>
       )}
 
-      <div className={`grid gap-3 md:grid-cols-2 transition-opacity duration-200 ${refreshing ? "opacity-60" : ""}`}>
+      <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 transition-opacity duration-200 ${refreshing ? "opacity-60" : ""}`}>
         {list.map((k) => {
           const tambanganData = tambanganOpts.find((t) => t.nama === k.tambanganNama);
           return (
