@@ -45,12 +45,12 @@ export function HomeKapalSection() {
     <section className="w-full space-y-4 px-4 py-6 md:px-6">
       {/* Countdown hero — amber glow card */}
       {fastest && (
-        <div className="relative overflow-hidden rounded-2xl border border-[var(--color-accent)]/20 bg-[var(--color-surface)] p-5 shadow-[var(--shadow-glow-amber)] ring-1 ring-[var(--color-accent)]/10 transition-shadow hover:shadow-xl">
+        <div className="relative overflow-hidden rounded-2xl border border-accent/20 bg-base-100 p-5 shadow-[var(--shadow-glow-amber)] ring-1 ring-accent/10 transition-shadow hover:shadow-xl">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(245,158,11,0.12),transparent)]" />
           <div className="relative">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">Berangkat paling cepat</p>
-            <p className="mt-1.5 text-lg font-bold text-[var(--color-text)]">{fastest.nama}</p>
-            <p className="mt-1 font-mono text-sm text-[var(--color-text-secondary)]">
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent">Berangkat paling cepat</p>
+            <p className="mt-1.5 text-lg font-bold text-base-content">{fastest.nama}</p>
+            <p className="mt-1 font-mono text-sm text-base-content/70">
               standby di {fastest.status === "titik_a" ? (tambanganOpts[0]?.titikA.nama ?? "Titik A") : (tambanganOpts[0]?.titikB.nama ?? "Titik B")}
             </p>
           </div>
@@ -58,13 +58,13 @@ export function HomeKapalSection() {
       )}
 
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-sm font-bold tracking-tight text-[var(--color-text)]">
+        <h2 className="text-sm font-bold tracking-tight text-base-content">
           Kapal Terbaru
-          {total > 0 && <span className="ml-1.5 text-[var(--color-text-muted)] font-normal">· {total}</span>}
+          {total > 0 && <span className="ml-1.5 text-base-content/50 font-normal">· {total}</span>}
         </h2>
         <button
           onClick={refresh}
-          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-brand)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-surface-alt)] hover:shadow-[var(--shadow-md)]"
+          className="btn btn-primary btn-outline btn-sm rounded-full gap-1.5 shadow-[var(--shadow-sm)] transition-all duration-200 hover:shadow-[var(--shadow-md)]"
         >
           <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
           Segarkan
@@ -75,7 +75,7 @@ export function HomeKapalSection() {
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value as Filter)}
-          className="w-full appearance-none rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 pr-10 text-sm font-medium text-[var(--color-text-secondary)] shadow-[var(--shadow-sm)] outline-none transition-all duration-200 focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20 hover:shadow-[var(--shadow-md)]"
+          className="select select-bordered w-full pr-10 shadow-[var(--shadow-sm)] transition-all duration-200 hover:shadow-[var(--shadow-md)]"
           aria-label="Filter kapal"
         >
           <option value="all">Semua</option>
@@ -85,7 +85,7 @@ export function HomeKapalSection() {
         </select>
         <ChevronDown
           size={16}
-          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
+          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-base-content/50"
         />
       </div>
 
@@ -98,7 +98,7 @@ export function HomeKapalSection() {
       )}
 
       {refreshing && data && (
-        <div className="flex items-center justify-center gap-2 py-3 text-xs text-[var(--color-text-muted)]">
+        <div className="flex items-center justify-center gap-2 py-3 text-xs text-base-content/50">
           <RefreshCw size={12} className="animate-spin" />
           Memperbarui...
         </div>
@@ -120,7 +120,7 @@ export function HomeKapalSection() {
 
       <Link
         href="/kapal"
-        className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] py-3 text-sm font-bold text-[var(--color-brand)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:shadow-[var(--shadow-md)]"
+        className="btn btn-primary btn-outline w-full gap-2 py-3 text-sm font-bold shadow-[var(--shadow-sm)] transition-all duration-200 hover:shadow-[var(--shadow-md)]"
       >
         Lihat semua kapal →
       </Link>

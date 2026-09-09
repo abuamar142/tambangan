@@ -13,16 +13,16 @@ export function ServiceStatusBlock({
 }) {
   const accent =
     variant === "active"
-      ? "border-[var(--color-accent)]/30 bg-[var(--color-accent)]/5"
+      ? "border-accent/30 bg-accent/5"
       : variant === "standby"
-        ? "border-[var(--color-brand)]/25 bg-[var(--color-brand)]/5"
-        : "border-[var(--color-border)] bg-[var(--color-surface)]";
+        ? "border-primary/25 bg-primary/5"
+        : "border-base-300 bg-base-100";
   const iconBg =
     variant === "active"
-      ? "bg-[var(--color-accent)]/15 text-[var(--color-accent)]"
+      ? "bg-accent/15 text-accent"
       : variant === "standby"
-        ? "bg-[var(--color-brand)]/15 text-[var(--color-brand)]"
-        : "bg-[var(--color-surface-alt)] text-[var(--color-text-secondary)]";
+        ? "bg-primary/15 text-primary"
+        : "bg-base-300 text-base-content/60";
 
   return (
     <div className={`rounded-xl border p-4 shadow-md transition-shadow hover:shadow-lg ${accent}`}>
@@ -31,10 +31,10 @@ export function ServiceStatusBlock({
           {icon}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">
+          <p className="text-xs font-semibold uppercase tracking-widest text-base-content/50">
             {label}
           </p>
-          <p className="text-2xl font-extrabold tabular-nums text-[var(--color-text)]">
+          <p className="text-2xl font-extrabold tabular-nums text-base-content">
             {count}
           </p>
         </div>

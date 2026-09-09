@@ -32,56 +32,56 @@ function renderEvent(e: KapalEvent): { label: string; detail: string; icon: Reac
         label: "Ubah status",
         detail: `${labelStatus(m?.from)} → ${labelStatus(m?.to)}`,
         icon: <Navigation size={13} />,
-        color: "bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400",
+        color: "bg-info/20 text-info",
       };
     case "timer_set":
       return {
         label: "Timer diatur",
         detail: `${m?.minutes ?? "?"} menit`,
         icon: <Timer size={13} />,
-        color: "bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-400",
+        color: "bg-warning/20 text-warning",
       };
     case "timer_clear":
       return {
         label: "Timer dihapus",
         detail: "",
         icon: <Clock size={13} />,
-        color: "bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400",
+        color: "bg-base-300 text-base-content/50",
       };
     case "set_lokasi_titik":
       return {
         label: "Lokasi GPS diatur",
         detail: `Titik ${(m?.side ?? "").toUpperCase()}`,
         icon: <MapPin size={13} />,
-        color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400",
+        color: "bg-success/20 text-success",
       };
     case "rename":
       return {
         label: "Nama diubah",
         detail: `${m?.from ?? "?"} → ${m?.to ?? "?"}`,
         icon: <Pencil size={13} />,
-        color: "bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400",
+        color: "bg-base-300 text-base-content/50",
       };
     case "dibuat":
       return {
         label: "Kapal dibuat",
         detail: m?.oleh ? `oleh ${m.oleh}` : "",
         icon: <Anchor size={13} />,
-        color: "bg-teal-100 text-teal-600 dark:bg-teal-900/40 dark:text-teal-400",
+        color: "bg-primary/20 text-primary",
       };
     case "move_tambangan":
       return {
         label: "Pindah tambangan",
         detail: `${m?.from ?? "?"} → ${m?.to ?? "?"}`,
         icon: <ArrowRightLeft size={13} />,
-        color: "bg-purple-100 text-purple-600 dark:bg-purple-900/40 dark:text-purple-400",
+        color: "bg-secondary/20 text-secondary",
       };
     default:
       return {
         label: e.event,
         detail: m ? Object.entries(m).map(([k, v]) => `${k}: ${String(v)}`).join(" · ") : "",
         icon: <Clock size={13} />,
-        color: "bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400",
+        color: "bg-base-300 text-base-content/50",
       };
   }
 }
@@ -90,15 +90,15 @@ function renderEvent(e: KapalEvent): { label: string; detail: string; icon: Reac
 
 function TimelineSkeleton() {
   return (
-    <div className="mt-2 space-y-2 rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-800">
+    <div className="mt-2 space-y-2 rounded-2xl border border-base-300 bg-base-100 p-3">
       {Array.from({ length: 4 }).map((_, i) => (
         <div key={i} className="flex items-start gap-3 rounded-xl px-3 py-2.5">
-          <div className="mt-0.5 h-6 w-6 animate-pulse rounded-full bg-slate-100 dark:bg-slate-700" />
+          <div className="mt-0.5 h-6 w-6 animate-pulse rounded-full bg-base-300" />
           <div className="flex-1 space-y-2">
-            <div className="h-3.5 w-3/4 animate-pulse rounded bg-slate-100 dark:bg-slate-700" />
-            <div className="h-3 w-1/2 animate-pulse rounded bg-slate-100 dark:bg-slate-700" />
+            <div className="h-3.5 w-3/4 animate-pulse rounded bg-base-300" />
+            <div className="h-3 w-1/2 animate-pulse rounded bg-base-300" />
           </div>
-          <div className="h-3 w-12 animate-pulse rounded bg-slate-100 dark:bg-slate-700" />
+          <div className="h-3 w-12 animate-pulse rounded bg-base-300" />
         </div>
       ))}
     </div>
@@ -128,23 +128,23 @@ export function EventsTimeline({
       {expandable && (
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex w-full items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+          className="flex w-full items-center gap-2 rounded-2xl border border-base-300 bg-base-100 px-4 py-3 text-sm font-semibold text-base-content transition hover:bg-base-200"
           aria-expanded={expanded}
         >
           <History size={16} />
           {title}
-          <span className="ml-auto text-xs text-slate-400 dark:text-slate-500">{expanded ? "▲" : "▼"}</span>
+          <span className="ml-auto text-xs text-base-content/40">{expanded ? "▲" : "▼"}</span>
         </button>
       )}
       {isOpen && (
         <div
-          className={`${expandable ? "mt-2 " : ""}space-y-1 rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-800`}
+          className={`${expandable ? "mt-2 " : ""}space-y-1 rounded-2xl border border-base-300 bg-base-100 p-3`}
           role="list"
           aria-label={title}
         >
           {loading && <TimelineSkeleton />}
           {!loading && events.length === 0 && (
-            <p className="p-4 text-center text-xs text-slate-400 dark:text-slate-500">{emptyText}</p>
+            <p className="p-4 text-center text-xs text-base-content/40">{emptyText}</p>
           )}
           {events.map((e) => {
             const ev = renderEvent(e);
@@ -152,28 +152,28 @@ export function EventsTimeline({
               <div
                 key={e.id}
                 role="listitem"
-                className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition hover:bg-slate-50 dark:hover:bg-slate-700/50"
+                className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition hover:bg-base-200/50"
               >
                 <div className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${ev.color}`}>
                   {ev.icon}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  <p className="text-sm font-medium text-base-content">
                     {e.kapalNama && e.kapalSlug && (
                       <>
                         <a href={`/nahkoda/kapal/${e.kapalSlug}`} className="hover:underline">
                           {e.kapalNama}
                         </a>
-                        <span className="mx-1.5 text-slate-300 dark:text-slate-600">·</span>
+                        <span className="mx-1.5 text-base-content/30">·</span>
                       </>
                     )}
                     {ev.label}
                   </p>
                   {ev.detail && (
-                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{ev.detail}</p>
+                    <p className="mt-0.5 text-xs text-base-content/50">{ev.detail}</p>
                   )}
                 </div>
-                <span className="shrink-0 font-mono text-xs text-slate-400 dark:text-slate-500">
+                <span className="shrink-0 font-mono text-xs text-base-content/40">
                   {timeAgo(e.createdAt)}
                 </span>
               </div>

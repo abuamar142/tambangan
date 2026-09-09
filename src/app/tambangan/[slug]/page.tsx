@@ -60,7 +60,7 @@ export default function StatusTambanganPage() {
         <div className="inline-flex items-center gap-2">
           <button
             onClick={refresh}
-            className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-brand)]/20 bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-brand)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:bg-[var(--color-surface-alt)] hover:shadow-[var(--shadow-md)]"
+            className="btn btn-ghost btn-sm border border-primary/20"
           >
             <RefreshCw size={13} className={loading ? "animate-spin" : ""} />
             Segarkan
@@ -76,12 +76,12 @@ export default function StatusTambanganPage() {
         <ErrorNote message={error} />
 
         {fastest && t && (
-          <div className="relative overflow-hidden rounded-xl bg-[var(--color-surface)] p-5 shadow-[var(--shadow-glow-amber)] ring-1 ring-[var(--color-accent)]/15 transition-shadow hover:shadow-xl">
+          <div className="relative overflow-hidden bg-base-100 p-5 shadow-md ring-1 ring-accent/15 transition-shadow hover:shadow-xl rounded-xl">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(245,158,11,0.15),transparent)]" />
             <div className="relative">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">Paling cepat berangkat</p>
-              <p className="mt-1 text-lg font-bold text-[var(--color-text)]">{fastest.nama}</p>
-              <p className="font-mono text-sm text-[var(--color-text-secondary)]">
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent">Paling cepat berangkat</p>
+              <p className="mt-1 text-lg font-bold text-base-content">{fastest.nama}</p>
+              <p className="font-mono text-sm text-base-content/70">
                 ~{minutesLeft(fastest.timerEndAt)} menit lagi, standby di{" "}
                 {fastest.status === "titik_a" ? t.titikA.nama : t.titikB.nama}
               </p>
@@ -90,8 +90,8 @@ export default function StatusTambanganPage() {
         )}
 
         {!loading && !error && list.length === 0 && (
-          <div className="rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface-alt)] p-8 text-center shadow-[var(--shadow-sm)]">
-            <p className="text-sm text-[var(--color-text-muted)]">Belum ada kapal di tambangan ini.</p>
+          <div className="border border-dashed border-base-300 bg-base-200 p-8 text-center shadow-sm rounded-xl">
+            <p className="text-sm text-base-content/50">Belum ada kapal di tambangan ini.</p>
           </div>
         )}
 

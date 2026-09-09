@@ -78,7 +78,7 @@ export default function SemuaKapalPage() {
                 setFilter(e.target.value as Filter);
                 setPage(1);
               }}
-              className="w-full appearance-none rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 pr-10 text-sm font-medium text-[var(--color-text)] shadow-sm outline-none transition focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="select select-bordered w-full pr-10 text-sm font-medium"
               aria-label="Filter kapal"
             >
               <option value="all">Semua</option>
@@ -88,7 +88,7 @@ export default function SemuaKapalPage() {
             </select>
             <ChevronDown
               size={16}
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-base-content/50"
             />
           </div>
         </label>
@@ -96,12 +96,12 @@ export default function SemuaKapalPage() {
         <label className="block">
           <span className="sr-only">Cari nama kapal</span>
           <div className="relative">
-            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
+            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-base-content/50" />
             <input
               value={searchInput}
               onChange={(e) => handleSearchInput(e.target.value)}
               placeholder="Cari nama kapal…"
-              className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] py-2.5 pl-9 pr-4 text-sm text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20"
+              className="input input-bordered w-full py-2.5 pl-9 pr-4 text-sm"
             />
           </div>
         </label>
@@ -129,22 +129,22 @@ export default function SemuaKapalPage() {
         </div>
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2">
+          <div className="flex items-center justify-between border border-base-300 bg-base-100 px-3 py-2 rounded-xl">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="inline-flex items-center gap-1 rounded-xl px-3 py-1.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-alt)] disabled:cursor-not-allowed disabled:opacity-40"
+              className="btn btn-ghost btn-sm"
             >
               <ChevronLeft size={14} />
               Sebelumnya
             </button>
-            <span className="text-xs font-semibold text-[var(--color-text-muted)]">
+            <span className="text-xs font-semibold text-base-content/50">
               Hal {page} / {totalPages}
             </span>
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages}
-              className="inline-flex items-center gap-1 rounded-xl px-3 py-1.5 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-alt)] disabled:cursor-not-allowed disabled:opacity-40"
+              className="btn btn-ghost btn-sm"
             >
               Selanjutnya
               <ChevronRight size={14} />
