@@ -14,6 +14,7 @@ import type { KapalMineDto, TambanganDto } from "@/lib/types";
 
 export function HomeTambanganSection() {
   const [tambanganList, setTambanganList] = useState<TambanganDto[]>([]);
+  const [pointFilter, setPointFilter] = useState<"all" | "titik_a" | "titik_b">("all");
 
   useEffect(() => {
     api<{ tambangan: TambanganDto[] }>("/api/tambangan")
@@ -29,11 +30,17 @@ export function HomeTambanganSection() {
 
   const allShips = useMemo(() => data?.kapal ?? [], [data]);
 
+  // Filter ships by selected point for fastest departure
+  const filteredShips = useMemo(() => {
+    if (pointFilter === "all") return allShips;
+    return allShips.filter((k) => k.status === pointFilter);
+  }, [allShips, pointFilter]);
+
   const fastest = useMemo(() => {
-    const withTimer = allShips.filter((k) => k.timerEndAt);
+    const withTimer = filteredShips.filter((k) => k.timerEndAt);
     if (withTimer.length === 0) return null;
     return withTimer.sort((a, b) => new Date(a.timerEndAt!).getTime() - new Date(b.timerEndAt!).getTime())[0];
-  }, [allShips]);
+  }, [filteredShips]);
 
   const fastestTambangan = useMemo(() => {
     if (!fastest) return null;
@@ -42,6 +49,27 @@ export function HomeTambanganSection() {
 
   return (
     <section className="w-full space-y-4 px-4 py-6 md:px-6">
+      {/* Point filter toggle */}
+      <div className="flex gap-2">
+        {([
+          { value: "all", label: "Semua Titik" },
+          { value: "titik_a", label: "Standby A" },
+          { value: "titik_b", label: "Standby B" },
+        ] as const).map((opt) => (
+          <button
+            key={opt.value}
+            onClick={() => setPointFilter(opt.value)}
+            className={`btn btn-sm ${
+              pointFilter === opt.value
+                ? "btn-primary"
+                : "btn-ghost border border-base-300"
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+
       {/* Fastest departure hero — PROMINENT */}
       {fastest && fastestTambangan && (
         <FastestDepartureHero ship={fastest} tambangan={fastestTambangan} />
@@ -80,7 +108,7 @@ export function HomeTambanganSection() {
 
       <div className="grid gap-3 sm:grid-cols-2">
         {tambanganList.map((t) => (
-          <TambanganOverviewCard key={t.slug} tambangan={t} />
+          <TambanganOverviewCard key={t.slug} tambangan={t} filter={pointFilter === "all" ? undefined : pointFilter} />
         ))}
       </div>
 
@@ -88,7 +116,7 @@ export function HomeTambanganSection() {
         href="/kapal"
         className="btn btn-primary btn-outline w-full gap-2 py-3 text-sm font-bold"
       >
-        Lihat semua kapal →
+        Lihat semua kapal
       </Link>
     </section>
   );

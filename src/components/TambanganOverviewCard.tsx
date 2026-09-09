@@ -1,13 +1,20 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Anchor, Ship } from "lucide-react";
 import { usePolling } from "@/lib/client/usePolling";
 import { api } from "@/lib/client/api";
 import type { KapalLiveDto, TambanganDto } from "@/lib/types";
 
-export function TambanganOverviewCard({ tambangan }: { tambangan: TambanganDto }) {
-  const { data, loading } = usePolling<{ kapal: KapalLiveDto[] }>(
+export function TambanganOverviewCard({
+  tambangan,
+  filter,
+}: {
+  tambangan: TambanganDto;
+  filter?: "titik_a" | "titik_b";
+}) {
+  const router = useRouter();
+  const { data } = usePolling<{ kapal: KapalLiveDto[] }>(
     (signal) => api(`/api/tambangan/${tambangan.slug}`, { signal }),
     4000,
   );
@@ -20,15 +27,31 @@ export function TambanganOverviewCard({ tambangan }: { tambangan: TambanganDto }
   };
   const total = list.length;
 
-  // Find fastest departure from this tambangan
-  const fastest = list
+  // Filtered ships based on active filter
+  const filteredShips = filter
+    ? list.filter((k) => k.status === filter)
+    : list;
+
+  const fastest = filteredShips
     .filter((k) => k.timerEndAt)
     .sort((a, b) => new Date(a.timerEndAt!).getTime() - new Date(b.timerEndAt!).getTime())[0];
 
+  function handleCardClick() {
+    router.push(`/tambangan/${tambangan.slug}`);
+  }
+
+  function handlePointClick(e: React.MouseEvent, pointFilter: "titik_a" | "titik_b") {
+    e.stopPropagation();
+    router.push(`/tambangan/${tambangan.slug}?filter=${pointFilter}`);
+  }
+
   return (
-    <Link
-      href={`/tambangan/${tambangan.slug}`}
-      className="group block animate-card-in rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg active:translate-y-0"
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={handleCardClick}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleCardClick(); }}
+      className="group block animate-card-in cursor-pointer rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg active:translate-y-0"
     >
       {/* Route name */}
       <div className="flex items-center gap-2">
@@ -42,17 +65,18 @@ export function TambanganOverviewCard({ tambangan }: { tambangan: TambanganDto }
 
       {/* Crossing diagram — tappable counts */}
       <div className="mt-4 flex items-center justify-between gap-2">
-        {/* Point A — tap to filter */}
-        <Link
-          href={`/tambangan/${tambangan.slug}?filter=titik_a`}
-          onClick={(e) => e.stopPropagation()}
-          className="flex-1 text-center rounded-xl py-2 transition-all hover:bg-primary/5 active:bg-primary/10"
+        {/* Point A */}
+        <button
+          onClick={(e) => handlePointClick(e, "titik_a")}
+          className={`flex-1 text-center rounded-xl py-2 transition-all active:bg-primary/10 ${
+            filter === "titik_a" ? "bg-primary/10 ring-1 ring-primary/30" : "hover:bg-primary/5"
+          }`}
         >
           <div className="text-2xl font-extrabold text-primary">{counts.titik_a}</div>
           <div className="text-[10px] font-semibold uppercase tracking-wider text-base-content/50">
             {tambangan.titikA.nama}
           </div>
-        </Link>
+        </button>
 
         {/* Crossing indicator */}
         <div className="flex flex-col items-center gap-1 px-2">
@@ -70,17 +94,18 @@ export function TambanganOverviewCard({ tambangan }: { tambangan: TambanganDto }
           )}
         </div>
 
-        {/* Point B — tap to filter */}
-        <Link
-          href={`/tambangan/${tambangan.slug}?filter=titik_b`}
-          onClick={(e) => e.stopPropagation()}
-          className="flex-1 text-center rounded-xl py-2 transition-all hover:bg-primary/5 active:bg-primary/10"
+        {/* Point B */}
+        <button
+          onClick={(e) => handlePointClick(e, "titik_b")}
+          className={`flex-1 text-center rounded-xl py-2 transition-all active:bg-primary/10 ${
+            filter === "titik_b" ? "bg-primary/10 ring-1 ring-primary/30" : "hover:bg-primary/5"
+          }`}
         >
           <div className="text-2xl font-extrabold text-primary">{counts.titik_b}</div>
           <div className="text-[10px] font-semibold uppercase tracking-wider text-base-content/50">
             {tambangan.titikB.nama}
           </div>
-        </Link>
+        </button>
       </div>
 
       {/* Fastest departure */}
@@ -94,6 +119,6 @@ export function TambanganOverviewCard({ tambangan }: { tambangan: TambanganDto }
       <div className="mt-3 text-center text-[11px] text-base-content/40">
         {total} kapal terdaftar
       </div>
-    </Link>
+    </div>
   );
 }
