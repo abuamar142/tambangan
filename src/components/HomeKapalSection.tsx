@@ -23,7 +23,7 @@ export function HomeTambanganSection() {
 
   // Fetch all ships to find fastest departure across all tambangan
   const { data, error, loading, refreshing, refresh } = usePolling<{ kapal: KapalMineDto[] }>(
-    (signal) => api("/api/kapal?limit=100", { signal }),
+    (signal) => api("/api/kapal?limit=50", { signal }),
     4000,
   );
 
