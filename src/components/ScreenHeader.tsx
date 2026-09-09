@@ -1,18 +1,19 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { ThemeToggle } from "./ThemeToggle";
 
 export function ScreenHeader({
   title,
   subtitle,
   backHref,
+  actions,
 }: {
   title: string;
   subtitle?: string;
   backHref?: string;
+  actions?: React.ReactNode;
 }) {
   return (
-    <div className="navbar sticky top-0 z-10 border-b border-base-300 bg-base-100/80 backdrop-blur-md">
+    <div className="sticky top-0 z-10 border-b border-base-300 bg-base-100/80 backdrop-blur-md">
       <div className="flex items-center gap-3 px-4 py-3">
         {backHref && (
           <Link
@@ -27,7 +28,7 @@ export function ScreenHeader({
           <h1 className="truncate text-base font-bold tracking-tight text-base-content">{title}</h1>
           {subtitle && <p className="truncate text-xs text-base-content/70">{subtitle}</p>}
         </div>
-        <ThemeToggle />
+        {actions}
       </div>
     </div>
   );
