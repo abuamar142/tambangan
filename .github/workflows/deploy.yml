@@ -5,20 +5,17 @@
 #   • development → CI only (install → lint → build)
 #   • main        → CI + deploy to VPS via SSH + docker compose
 #
-# Required GitHub Secrets (Settings → Secrets and variables → Actions → New repository secret):
-#   VPS_HOST    = 43.129.53.235  (or your VPS IP / hostname)
+#   VPS_HOST    = 43.129.53.235  (atau IP/hostname VPS)
+# Required GitHub Secrets (Settings → Secrets and variables → Actions):
 #   VPS_USER    = ubuntu          (SSH user on VPS)
 #   VPS_SSH_KEY = <private key>   (cat ~/.ssh/id_ed25519 — the PRIVATE key, single line with \n preserved)
-#   Optional:
-#   VPS_PORT    = 22              (defaults to 22 if not set)
-#   VPS_PATH    = /opt/tambangan  (defaults to /opt/tambangan if not set)
+#   VPS_PORT    = 22              (opsional, default 22)
 #
-# VPS one-time setup (run once via SSH):
-#   sudo mkdir -p /opt/tambangan && sudo chown $USER:$USER /opt/tambangan
-#   git clone git@github.com:abuamar142/tambangan.git /opt/tambangan
-#   # or: git clone https://github.com/abuamar142/tambangan.git /opt/tambangan
-#   cd /opt/tambangan && cp .env.example .env  # then fill real secrets
-#   # ensure deploy key / GitHub access works for `git pull` (deploy key or HTTPS token)
+# Pola deploy: SELALU lewat /opt/ops/bin/deploy-tambangan.sh di VPS
+# (pull -> bun install -> docker compose prod -> migrate -> health-check).
+# Jangan duplikat logika deploy di workflow ini, cukup panggil scriptnya.
+# Panduan: /opt/ops/docs/README.md di VPS.
+# Setup awal VPS sudah dilakukan 2026-09-15 (repo /opt/tambangan).
 #
 # Local branch setup:
 #   git checkout -b development   # first time only
@@ -86,40 +83,4 @@ jobs:
           # optional fingerprint verification — add VPS_HOST_FINGERPRINT secret if you want strict host checking
           script: |
             set -euo pipefail
-            APP_DIR="${{ secrets.VPS_PATH || '/opt/tambangan' }}"
-            echo "→ Deploying to $APP_DIR on $(hostname) as $(whoami)"
-            cd "$APP_DIR"
-
-            echo "→ Pulling latest main..."
-            # ensure we are on main and fast-forward only; adjust if you use a different remote/branch
-            git fetch origin main
-            git checkout main
-            git pull --ff-only origin main
-
-            echo "→ Rebuilding containers..."
-            docker compose up -d --build
-
-            echo "→ Running database migrations..."
-            npx drizzle-kit migrate || echo "⚠ Migration skipped (may already be applied)"
-
-            echo "→ Waiting for app to be healthy..."
-            # wait up to ~60s for app to respond
-            for i in $(seq 1 12); do
-              if curl -fsS http://127.0.0.1:3000/ > /dev/null; then
-                echo "✓ Healthcheck passed (attempt $i)"
-                break
-              fi
-              echo "  ...not ready yet (attempt $i/12), retrying in 5s"
-              sleep 5
-              if [ "$i" -eq 12 ]; then
-                echo "::error::Healthcheck failed after 60s — showing logs:"
-                docker compose ps -a || true
-                docker compose logs --tail 200 app || true
-                exit 1
-              fi
-            done
-
-            echo "→ Pruning dangling images..."
-            docker image prune -f || true
-
-            echo "✓ Deploy complete."
+            /opt/ops/bin/deploy-tambangan.sh main
