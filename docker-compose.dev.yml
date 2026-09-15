@@ -29,7 +29,7 @@ services:
     environment:
       NODE_ENV: development
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db-dev:5432/${POSTGRES_DB}_dev
-    depends_on:
+    depends_on: !reset
       db-dev:
         condition: service_healthy
     ports:
