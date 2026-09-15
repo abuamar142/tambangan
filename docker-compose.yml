@@ -32,9 +32,11 @@ services:
     build: .
     container_name: tambangan-dev
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      DATABASE_URL: postgres://tambangan:ir5RMGNS506gz4ZDMO9k5QKc@db:5432/tambangan
-      JWT_SECRET: ${JWT_SECRET:-9bc5bcb821e8ab2f22ab664e4885b25d75557f3e5c3fb33aa9a4b8cd3eabd4cc}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
       ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
     depends_on:
