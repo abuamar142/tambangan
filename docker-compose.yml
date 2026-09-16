@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-tambangan}
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - tambangan-pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tambangan} -d ${POSTGRES_DB:-tambangan}"]
       interval: 5s
@@ -29,4 +29,5 @@ services:
         condition: service_healthy
 
 volumes:
-  pgdata:
+  tambangan-pgdata:
+    name: tambangan-pgdata
