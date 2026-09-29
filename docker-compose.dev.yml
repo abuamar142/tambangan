@@ -1,5 +1,14 @@
 # Development override — docker compose --env-file .env -f docker-compose.yml -f docker-compose.dev.yml up -d
 services:
+  # Dev hanya pakai db-dev/app-dev. Base compose mendefinisikan db/app, dan
+  # tanpa profile mereka ikut menyala di setiap perintah dev — dua Postgres
+  # dan dua Next.js, di project name yang sama, dari satu stack "dev".
+  # Profile yang tidak pernah diaktifkan membuat keduanya tetap terdefinisi
+  # (supaya `!reset` dan referensi tetap sah) tapi tidak pernah dijalankan.
+  db:
+    profiles: ["prod-only"]
+  app:
+    profiles: ["prod-only"]
   # Dev postgres terisolasi: data di volume pgdata_dev, port host 5433.
   # Credentials SAMA dengan prod (.env) — satu password yang dirotasi,
   # tapi DATABASE berbeda (${POSTGRES_DB}_dev) sehingga data tidak campur.
