@@ -24,6 +24,10 @@ services:
 
   app-dev:
     container_name: tambangan-app-dev
+    # restart: sama dengan db-dev dan prod. Tanpa ini container dev tidak ikut
+    # hidup lagi setelah VPS reboot, dan domain dev-nya jadi 502 sampai ada
+    # yang ingat menjalankannya manual.
+    restart: unless-stopped
     env_file:
       - .env
     environment:
