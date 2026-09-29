@@ -3,9 +3,10 @@ services:
   db:
     container_name: tambangan-db
     ports:
-      - "5432:5432"
+      # Loopback only — see docker-compose.dev.yml.
+      - "127.0.0.1:5432:5432"
 
   app:
     container_name: tambangan-app
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"

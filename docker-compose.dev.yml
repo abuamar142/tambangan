@@ -12,7 +12,9 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB}_dev
     ports:
-      - "5433:5432"
+      # Loopback only: nginx reaches this over 127.0.0.1, and a database
+      # bound to 0.0.0.0 answers anyone who can reach the VPS.
+      - "127.0.0.1:5433:5432"
     volumes:
       - tambangan-pgdata-dev:/var/lib/postgresql/data
     healthcheck:
@@ -37,7 +39,7 @@ services:
       db-dev:
         condition: service_healthy
     ports:
-      - "3002:3000"
+      - "127.0.0.1:3002:3000"
     command: bun run dev
     build:
       context: .
