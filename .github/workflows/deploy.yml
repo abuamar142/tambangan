@@ -32,10 +32,13 @@ on:
     branches: [main, development]
   workflow_dispatch:
 
-# cancel superseded runs on same branch
+# One deploy per branch. The group MUST differ from ci.yml's: when ci.yml runs
+# as the reusable gate, `github.workflow` resolves to this workflow's name, so
+# a shared pattern put the gate and its caller in one group — and the gate's
+# cancel-in-progress killed the very run that spawned it.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: deploy-tambangan-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   verify:
